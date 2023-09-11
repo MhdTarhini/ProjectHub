@@ -1,0 +1,9 @@
+.outler-page {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar {
+    display: flex;
+    gap: 20px;
+}
