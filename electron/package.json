@@ -2,13 +2,20 @@
   "name": "projecthub",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "electron:start": "electron .",
+    "react:start": "cd ../frontend && cross-env BROWSER=none npm start ",
+    "start": "concurrently -n react,electron \"npm run react:start \" \"npm run electron:start\" "
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "electron": "^26.2.0"
+  },
+  "dependencies": {
+    "concurrently": "^8.2.1",
+    "cross-env": "^7.0.3"
   }
 }
