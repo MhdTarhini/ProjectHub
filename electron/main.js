@@ -50,18 +50,18 @@ app.on("window-all-closed", () => {
 
 let pyshell = new PythonShell("./main.py");
 
-pyshell.on("message", function (message) {
-  console.log(message);
-});
-
-pyshell.end(function (err) {
-  if (err) {
-    throw err;
-  }
-  console.log("finished");
-});
 
 ipcMain.on(channels.GET_DATA, (event, arg) => {
   const { product } = arg;
-  console.log(product);
+  pyshell.send(product);
+  pyshell.on("message", function (message) {
+    mainWindow.webContents.send(channels.POST_DATA, message);
+  });
+
+  pyshell.end(function (err) {
+    if (err) {
+      throw err;
+    }
+    console.log("finished");
+  });
 });
