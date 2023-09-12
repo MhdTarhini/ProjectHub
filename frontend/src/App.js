@@ -6,6 +6,7 @@ import Register from "./pages/register/register";
 import Login from "./pages/login/login";
 import FilesSection from "./pages/files-section/files-section";
 
+
 function App() {
   return (
     <BrowserRouter>

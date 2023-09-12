@@ -1,5 +1,6 @@
-const { app, BrowserWindow, screen } = require("electron");
+const { app, BrowserWindow, screen, ipcMain } = require("electron");
 const path = require("path");
+const { channels } = require("../frontend/src/shared/constants");
 
 const isMac = process.platform === "darwin";
 
@@ -13,6 +14,12 @@ function createMainWindow() {
     title: "ProjectHub",
     width: width,
     height: height,
+    webPreferences: {
+      contextIsolation: true,
+      nodeIntegrationL: true,
+      sandbox: false,
+      preload: path.join(__dirname, "preload.js"),
+    },
   });
 
   if (isDev) {
@@ -38,4 +45,9 @@ app.on("window-all-closed", () => {
   if (!isMac) {
     app.quit();
   }
+});
+
+ipcMain.on(channels.GET_DATA, (event, arg) => {
+  const { product } = arg;
+  console.log(product);
 });
