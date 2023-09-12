@@ -48,17 +48,32 @@ app.on("window-all-closed", () => {
   }
 });
 
-let pyshell = new PythonShell("./main.py");
 
-
-ipcMain.on(channels.GET_DATA, (event, arg) => {
+ipcMain.on(channels.Extract_Data, (event, arg) => {
   const { fileData } = arg;
-  pyshell.send(fileData);
-  pyshell.on("message", function (message) {
-    mainWindow.webContents.send(channels.POST_DATA, message);
+  let pyExtract = new PythonShell("./extract_data.py");
+  pyExtract.send(fileData);
+  pyExtract.on("message", function (message) {
+    mainWindow.webContents.send(channels.Extract_Data_IsDone, message);
   });
 
-  pyshell.end(function (err) {
+  pyExtract.end(function (err) {
+    if (err) {
+      throw err;
+    }
+    console.log("finished");
+  });
+});
+
+ipcMain.on(channels.Compare_Data, (event, arg) => {
+  const { new_version_data } = arg;
+  let pyCompare = new PythonShell("./compare_data.py");
+  pyCompare.send(new_version_data);
+  pyCompare.on("message", function (message) {
+    mainWindow.webContents.send(channels.Compare_Data_IsDone, message);
+  });
+
+  pyCompare.end(function (err) {
     if (err) {
       throw err;
     }
