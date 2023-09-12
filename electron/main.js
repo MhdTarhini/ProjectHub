@@ -1,5 +1,6 @@
 const { app, BrowserWindow, screen, ipcMain } = require("electron");
 const path = require("path");
+const { PythonShell } = require("python-shell");
 const { channels } = require("../frontend/src/shared/constants");
 
 const isMac = process.platform === "darwin";
@@ -45,6 +46,19 @@ app.on("window-all-closed", () => {
   if (!isMac) {
     app.quit();
   }
+});
+
+let pyshell = new PythonShell("./main.py");
+
+pyshell.on("message", function (message) {
+  console.log(message);
+});
+
+pyshell.end(function (err) {
+  if (err) {
+    throw err;
+  }
+  console.log("finished");
 });
 
 ipcMain.on(channels.GET_DATA, (event, arg) => {
