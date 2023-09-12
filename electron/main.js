@@ -52,8 +52,8 @@ let pyshell = new PythonShell("./main.py");
 
 
 ipcMain.on(channels.GET_DATA, (event, arg) => {
-  const { product } = arg;
-  pyshell.send(product);
+  const { fileData } = arg;
+  pyshell.send(fileData);
   pyshell.on("message", function (message) {
     mainWindow.webContents.send(channels.POST_DATA, message);
   });
