@@ -41,8 +41,7 @@ function FilesSection() {
     });
     window.electron.on(channels.Compare_Data_IsDone, (data) => {
       setCompareSuccess(true);
-      console.log("compare data");
-      console.log(data);
+      setCompareResult(data);
     });
   }, []);
 
