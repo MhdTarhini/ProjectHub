@@ -8,8 +8,10 @@ function OutletPage() {
   return (
     <div className="outlet-page">
       <Navbar />
-      <div className="sidebar">
-        <Sidebar />
+      <div className="sidebar-page">
+        <div className="sidebar">
+          <Sidebar />
+        </div>
         <div className="main">
           <Outlet />
         </div>

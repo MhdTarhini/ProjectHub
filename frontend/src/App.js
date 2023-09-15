@@ -5,6 +5,7 @@ import OutletPage from "./outlet/outlet";
 import Register from "./pages/register/register";
 import Login from "./pages/login/login";
 import FilesSection from "./pages/files-section/files-section";
+import "./utilities.css";
 
 
 function App() {

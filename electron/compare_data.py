@@ -82,57 +82,47 @@ def compareData(data):
         return json.dumps(combined_results)
     
     def create_dxf_from_json_data(data, output_path_json):
-        # Create a new DXF document
         doc = ezdxf.new()
     
-        # Define layers with specified colors
         doc.layers.add("NEW_VERSION", color=ezdxf.colors.GRAY)
         doc.layers.add("NEW", color=ezdxf.colors.GREEN)
         doc.layers.add("REMOVED", color=ezdxf.colors.RED)
         
         msp = doc.modelspace()
 
-        # Process entities based on the provided category
         def process_entities(entities, category):
             for entity in entities:
                 entity_type = entity[0]
                 
-                # For LINE entity
                 if entity_type == "LINE":
                     start_point = tuple(entity[1][:2])
                     end_point = tuple(entity[2][:2])
                     msp.add_line(start_point, end_point, dxfattribs={"layer": category})
     
-                # For LWPOLYLINE entity
                 elif entity_type == "LWPOLYLINE":
                     vertices = [tuple(point[:2]) for point in entity[1]]
                     msp.add_lwpolyline(vertices, dxfattribs={"layer": category})
 
-                # For CIRCLE entity
                 elif entity_type == "CIRCLE":
                     center = tuple(entity[1][:2])
                     radius = entity[2]
                     msp.add_circle(center, radius, dxfattribs={"layer": category})
 
-            # For ARC entity
                 elif entity_type == "ARC":
                     center = tuple(entity[1][:2])
                     radius = entity[2]
                     start_angle = entity[3]
                     end_angle = entity[4]
                     msp.add_arc(center, radius, start_angle=start_angle, end_angle=end_angle, dxfattribs={"layer": category})
-            # For TEXT entity
                 elif entity_type == "TEXT":
                     insertion_point = tuple(entity[1][:2])
                     text_content = entity[2]
                     msp.add_text(text_content, dxfattribs={"insert": insertion_point, "layer": category})
     
-        # Process the new version, new objects, and removed objects data
         process_entities(data['new_version'], "NEW_VERSION")
         process_entities(data['new_objects'], "NEW")
         process_entities(data['removed_objects'], "REMOVED")
 
-        # Save the DXF document
         doc.saveas(output_path_json)
 
 
