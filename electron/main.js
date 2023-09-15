@@ -80,3 +80,19 @@ ipcMain.on(channels.Compare_Data, (event, arg) => {
     console.log("finished");
   });
 });
+ipcMain.on(channels.Covert_Data_to_svg, (event, arg) => {
+  const { dxf_file } = arg;
+  let pyCompare = new PythonShell("./convert_svg.py");
+  pyCompare.send(dxf_file);
+  console.log("hello");
+  pyCompare.on("message", function (message) {
+    mainWindow.webContents.send(channels.Covert_Data_to_svg_IsDone, message);
+  });
+
+  pyCompare.end(function (err) {
+    if (err) {
+      throw err;
+    }
+    console.log("finished");
+  });
+});

@@ -10,14 +10,17 @@ function FilesSection() {
   const [CompareResult, setCompareResult] = useState("");
   const [FileDetails, setFileDetails] = useState("");
   const [detailsSuccess, setDetailsSuccess] = useState(false);
+  const [getSvg, setGetSvg] = useState("");
+  const [SvgSuccess, setSvgSuccess] = useState(false);
 
-  function handleUpload() {
-    const file_uploaded = file;
+  function handleUpload(e) {
+    setfile(e.target.files[0]);
+    const file_uploaded = e.target.files[0];
     if (file_uploaded) {
       const reader = new FileReader();
       reader.onload = (event) => {
-        const fileData = event.target.result;
-        window.electron.send(channels.Extract_Data, { fileData });
+        const dxf_file = event.target.result;
+        window.electron.send(channels.Covert_Data_to_svg, { dxf_file });
       };
       reader.readAsDataURL(file_uploaded);
     } else {
@@ -56,14 +59,13 @@ function FilesSection() {
       setUploadSuccess(true);
       console.log("done");
     });
-    window.electron.on(channels.Compare_Data_IsDone, (data) => {
-      setCompareSuccess(true);
-      setCompareResult(data);
-      // console.log(typeof data);
-      console.log(data);
-      // console.log(data.removed_objects);
-      // const newjson = JSON.parse(data);
-      // console.log(newjson);
+    // window.electron.on(channels.Compare_Data_IsDone, (data) => {
+    //   setCompareSuccess(true);
+    //   setCompareResult(data);
+    // });
+    window.electron.on(channels.Covert_Data_to_svg_IsDone, (data) => {
+      setSvgSuccess(true);
+      setGetSvg(data);
     });
     window.electron.on(channels.Get_Details_IsDone, (data) => {
       setDetailsSuccess(true);
@@ -75,10 +77,7 @@ function FilesSection() {
     <div className="files-section">
       <div className="top-file-section">
         <div className="file-section-title">Files Section</div>
-        <label
-          className="new-file"
-          //  onClick={handleUpload}
-          htmlFor="new-file">
+        <label className="new-file" htmlFor="new-file">
           New file
         </label>
         <input
@@ -86,7 +85,7 @@ function FilesSection() {
           id="new-file"
           name="new-file"
           onChange={(e) => {
-            setfile(e.target.files[0]);
+            handleUpload(e);
           }}
           className="none"
         />
