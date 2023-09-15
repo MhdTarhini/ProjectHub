@@ -27,7 +27,7 @@
     align-items: center;
 }
 
-.new-file {
+.btn {
     display: inline-flex;
     padding: 10px 20px;
     justify-content: center;
@@ -128,4 +128,41 @@
     font-style: normal;
     font-weight: 400;
     line-height: 20px
+}
+.new-file-model {
+    color: #000;
+    position: absolute;
+    top: 30%;
+    left: 30%;
+    width: 500px;
+    height: 300px;
+    border: 1px solid var(--stroke, #E8E8E8);
+    background: #FFF;
+}
+
+.model-title {
+    display: flex;
+    justify-content: center;
+}
+
+.new-file-model {}
+
+.upload-file-form {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: space-around;
+}
+
+.input-upload-file {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.btns {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }

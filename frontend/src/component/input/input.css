@@ -1,16 +1,12 @@
-.input {
-    position: relative;
-    padding: 0 5px 0 5px;
-    background-color: #166866;
-}
 
 input {
-    border: none;
     outline: none;
     padding: 8px;
     font-size: 16px;
-    background-color: #166866;
-    border-bottom: 1px solid black;
+    flex-shrink: 0;
+    border-radius: 20px;
+    border: 1px solid var(--stroke, #E8E8E8);
+    background: #FFF;
 }
 
 .input::placeholder {
@@ -18,10 +14,8 @@ input {
 }
 
 .label {
-    position: absolute;
-    top: -10px;
-    left: 5px;
     font-size: 12px;
+    margin-left: 10px;
     opacity: 0.5;
     pointer-events: none;
     transition: opacity 0.3s ease;
