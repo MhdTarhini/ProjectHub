@@ -2,13 +2,13 @@ import matplotlib.pyplot as plt
 import ezdxf 
 from ezdxf.addons.drawing import RenderContext, Frontend 
 from ezdxf.addons.drawing.matplotlib import MatplotlibBackend
-import os
 import sys
 import io
 import base64
 
 def convert_svg(data):
     filename="get_data.dxf"
+
     _, data = data.split(',', 1)
     
     dxf_content = base64.b64decode(data).decode('utf-8')
@@ -35,20 +35,18 @@ def convert_svg(data):
         file.writelines(cleaned_lines)
 
     doc = ezdxf.readfile(filename)
-    print(doc)
     fig = plt.figure()
     out = MatplotlibBackend(fig.add_axes([0, 0, 1, 1]))
     Frontend(RenderContext(doc), out).draw_layout(doc.modelspace(), finalize=True)
-    # fig.savefig(os.path.join("hello.svg"))
+
 
     svg_output = io.BytesIO()
     fig.savefig(svg_output, format='svg')
     
     svg_data = svg_output.getvalue().decode('utf-8')
+
+
     print(svg_data)
-
-    # print("success")
-
 
 if __name__ == "__main__":
     for line in sys.stdin:

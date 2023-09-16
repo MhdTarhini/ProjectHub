@@ -16,8 +16,8 @@ Route::group(["middleware" => "auth:api"], function(){
         Route::post("logout", [AuthController::class, "logout"]);
         Route::post("refresh", [AuthController::class, "refresh"]);
         Route::get("profile", [AuthController::class, "profile"]);
-        
+
         Route::group(["prefix" => "file-section"], function(){
-            Route::post("unauthorized", [FileController::class, "uploadFile"]);
+            Route::post("upload_file", [FileController::class, "uploadFile"]);
         });
 });
