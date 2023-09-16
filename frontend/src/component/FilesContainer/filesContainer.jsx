@@ -4,9 +4,6 @@ import axios from "axios";
 import { channels } from "../../shared/constants";
 import Input from "../input/input";
 import Modal from "react-modal";
-// const fs = require("fs");
-// const os = require("os");
-// const path = require("path");
 
 function FilesContainer({ branche, file }) {
   const [getFiles, setGetFiles] = useState([]);
@@ -45,7 +42,7 @@ function FilesContainer({ branche, file }) {
       console.error(error);
     }
   }
-  function handleUpdate(e, old_version_path) {
+  function handleCompare(e, old_version_path) {
     const file_update = e.target.files[0];
     if (file_update) {
       const reader = new FileReader();
@@ -70,28 +67,28 @@ function FilesContainer({ branche, file }) {
     window.electron.send(channels.Get_Details, { file_dxf });
   }
   async function submitCommit(old_path_dxf) {
+    console.log(update);
     const data = new FormData();
     data.append("message", commitMessage);
     data.append("compare_path_svg", CompareResult);
     data.append("old_path_dxf", old_path_dxf);
-    data.append("new_path_dxf", file);
+    data.append("new_path_dxf", update);
     data.append("version", 1);
-    data.append("project_id", 1);
+    data.append("status", 1);
     data.append("user_id", 3);
-    data.append("branche_id", 1);
+    data.append("file_id", 1);
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/file-section/upload_file",
+        "http://127.0.0.1:8000/api/file-section/add_commit",
         data
       );
     } catch (error) {
       console.error(error);
     }
   }
-  async function displayConflict(fullSvgData) {
-    console.log(fullSvgData);
+  async function displayConflict() {
     const data = new FormData();
-    data.append("svg_data", fullSvgData);
+    data.append("svg_data", CompareResult);
     try {
       const response = await axios.post(
         "http://127.0.0.1:8000/api/file-section/check_conflict",
@@ -99,7 +96,6 @@ function FilesContainer({ branche, file }) {
       );
       const conflictSVG = response.data;
       setConflitSvg(conflictSVG.data);
-      console.log(conflictSVG.data);
     } catch (error) {
       console.error(error);
     }
@@ -120,7 +116,6 @@ function FilesContainer({ branche, file }) {
       if (data.includes("</svg>")) {
         const fullSvgData = accumulatedData.join("");
         setCompareResult(fullSvgData);
-        displayConflict(fullSvgData);
       }
     });
     window.electron.on(channels.Get_Details_IsDone, (data) => {
@@ -187,7 +182,7 @@ function FilesContainer({ branche, file }) {
                   id="updated-file"
                   onChange={(e) => {
                     setUpdate(e.target.files[0]);
-                    handleUpdate(e, openedfileDetails.path_dxf);
+                    handleCompare(e, openedfileDetails.path_dxf);
                   }}
                   className="none"
                 />
@@ -203,7 +198,11 @@ function FilesContainer({ branche, file }) {
                 check-conflict
               </div>
 
-              <button className="btn">update file</button>
+              <button
+                className="btn"
+                onClick={() => submitCommit(openedfileDetails.path_dxf)}>
+                update file
+              </button>
             </div>
             <div className="show-file-details">{FileDetails}</div>
 
