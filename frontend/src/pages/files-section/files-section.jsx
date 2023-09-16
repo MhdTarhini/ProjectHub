@@ -4,6 +4,7 @@ import "./files-section.css";
 import Modal from "react-modal";
 import Input from "../../component/input/input";
 import axios from "axios";
+import FilesContainer from "../../component/FilesContainer/filesContainer";
 
 function FilesSection() {
   const [file, setfile] = useState([]);
@@ -17,6 +18,7 @@ function FilesSection() {
   const [getSvg, setGetSvg] = useState("");
   const [SvgSuccess, setSvgSuccess] = useState(false);
   const [dxfFile, setDxfFile] = useState(null);
+  const [branche, setBranche] = useState("main");
   let subtitle;
   const [modalIsOpen, setIsOpen] = React.useState(false);
 
@@ -74,7 +76,7 @@ function FilesSection() {
   }
   axios.defaults.headers.common[
     "Authorization"
-  ] = `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2d1ZXN0L2xvZ2luIiwiaWF0IjoxNjk0ODUzNTk3LCJleHAiOjE2OTQ4NTcxOTcsIm5iZiI6MTY5NDg1MzU5NywianRpIjoibVd3aHZWQkN5TVFIVHVGTCIsInN1YiI6IjMiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.HtDKTT5xNIw_1CbtZ_4jkLFJUv2pNeMn7OspKQNzN1g`;
+  ] = `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2d1ZXN0L2xvZ2luIiwiaWF0IjoxNjk0ODU3Mzc4LCJleHAiOjE2OTQ4NjA5NzgsIm5iZiI6MTY5NDg1NzM3OCwianRpIjoiSFUwVE14VlUwdzZxUHE0ZCIsInN1YiI6IjMiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.gBxbz8z-JPHsPXaNkr6BHMYbjK_coEIYNo7P1TEpsxo`;
   async function handleSubmitUpload() {
     const data = new FormData();
     data.append("name", fileName);
@@ -83,6 +85,7 @@ function FilesSection() {
     data.append("version", 1);
     data.append("project_id", 1);
     data.append("user_id", 3);
+    data.append("branche_id", 1);
     try {
       const response = await axios.post(
         "http://127.0.0.1:8000/api/file-section/upload_file",
@@ -110,10 +113,11 @@ function FilesSection() {
     window.electron.on(channels.Covert_Data_to_svg_IsDone, (data) => {
       setSvgSuccess(true);
 
-      const cleanMessage = data.replace(/^\d*files-section\.jsx:\d+\s/, "");
+      // const cleanMessage = data.replace(/^\d*files-section\.jsx:\d+\s/, "");
       if (!isDuplicate) {
-        accumulatedData.push(cleanMessage);
-        if (cleanMessage.includes(">")) {
+        accumulatedData.push(data);
+        console.log(data);
+        if (data.includes(">")) {
           accumulatedData.push("\n");
         }
       }
@@ -147,24 +151,7 @@ function FilesSection() {
         </div>
         <div className="hr"></div>
         <div className="file-section-card">
-          <div className="card-container">
-            <div className="card">
-              <img
-                src="./hello.svg"
-                className="file-section-card-img"
-                alt="Description"
-              />
-              <div className="middle-card">
-                <div className="file-name">hello world</div>
-                <div className="card-option">
-                  <div className="point"></div>
-                  <div className="point"></div>
-                  <div className="point"></div>
-                </div>
-              </div>
-              <div className="uploaded-by">User name</div>
-            </div>
-          </div>
+          <FilesContainer branche={branche} />
         </div>
 
         <button onClick={handleUpdate}> update file</button>

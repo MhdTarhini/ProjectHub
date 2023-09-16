@@ -17,4 +17,17 @@ class File extends Model
     {
         return $this->belongsTo(Project::class);
     }
+        public function branche()
+    {
+        return $this->belongsTo(Branche::class);
+    }
+        public function getUserAttribute()
+    {
+        return $this->belongsTo(User::class)->first();
+    }
+         public function getProjectAttribute()
+    {
+        return $this->belongsTo(Project::class)->first();
+    }
+    
 }

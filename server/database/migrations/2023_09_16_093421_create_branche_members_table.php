@@ -11,15 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('files', function (Blueprint $table) {
+        Schema::create('branche_members', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('path_dxf');
-            $table->string('path_svg');
-            $table->string('version');
-            $table->unsignedBigInteger('project_id');
-            $table->foreign('project_id')->references('id')->on('projects');
-            $table->unsignedBigInteger('user_id');
+             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('branche_id');
             $table->foreign('branche_id')->references('id')->on('branches');
@@ -32,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('files');
+        Schema::dropIfExists('branche_members');
     }
 };

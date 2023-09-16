@@ -18,6 +18,7 @@ class FileController extends Controller
         'version' => 'required|string|max:255',
         'project_id' => 'required|integer',
         'user_id' => 'required|integer', 
+        'branche_id' => 'required|integer', 
         ]);
 
         $file = $request->file('path_dxf');
@@ -42,10 +43,31 @@ class FileController extends Controller
         $file->version = $request->version;
         $file->project_id = $request->project_id;
         $file->user_id = Auth::id();
+        $file->branche_id =$request->branche_id;
 
         $file->save();
         return response()->json([
             'status' => 'success',
         ]);
+    }
+
+    function getFiles(Request $request) {
+
+        $request->validate([
+        'branche_id' => 'required|string|max:255',
+        'project_id' => 'required|string|max:255',
+        ]);
+
+        $get_files = File::with(["user","project"])->where('branche_id', $request->branche_id)
+            ->where('project_id', $request->project_id)
+            ->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' =>$get_files,
+        ]);
+
+
+        
     }
 }
