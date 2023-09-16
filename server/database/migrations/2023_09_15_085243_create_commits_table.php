@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('commits', function (Blueprint $table) {
             $table->id();
             $table->string('message');
-            $table->string('path_dxf');
+            $table->string('old_path_dxf');
+            $table->string('new_path_dxf');
             $table->string('compare_path_svg');
             $table->string('version');
             $table->string('status');

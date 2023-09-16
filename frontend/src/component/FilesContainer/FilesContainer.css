@@ -153,3 +153,13 @@
     padding: 10px;
     border: 1px solid var(--stroke, #E8E8E8);
 }
+.check-conflict-model {
+    color: #000;
+    position: absolute;
+    top: 10%;
+    left: 30%;
+    width: fit-content;
+    height: fit-content;
+    border: 1px solid var(--stroke, #E8E8E8);
+    background: #FFF;
+}

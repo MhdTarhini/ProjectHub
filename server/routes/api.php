@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommitController;
 use App\Http\Controllers\FileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,5 +22,8 @@ Route::group(["middleware" => "auth:api"], function(){
             Route::post("upload_file", [FileController::class, "uploadFile"]);
             Route::post("get_files", [FileController::class, "getFiles"]);
             Route::get("get_dxf_Data/{id?}", [FileController::class, "getdxfFileData"]);
+            Route::post("add_commit", [CommitController::class, "addCommit"]);
+            Route::post("check_conflict", [CommitController::class, "checkConflict"]);
+
         });
 });
