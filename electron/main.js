@@ -2,6 +2,7 @@ const { app, BrowserWindow, screen, ipcMain } = require("electron");
 const path = require("path");
 const { PythonShell } = require("python-shell");
 const { channels } = require("../frontend/src/shared/constants");
+const fs = require("fs");
 
 const isMac = process.platform === "darwin";
 
@@ -48,7 +49,6 @@ app.on("window-all-closed", () => {
   }
 });
 
-
 ipcMain.on(channels.Extract_Data, (event, arg) => {
   const { fileData } = arg;
   let pyExtract = new PythonShell("./extract_data.py");
@@ -66,9 +66,13 @@ ipcMain.on(channels.Extract_Data, (event, arg) => {
 });
 
 ipcMain.on(channels.Compare_Data, (event, arg) => {
-  const { new_version_data } = arg;
-  let pyCompare = new PythonShell("./compare_data.py");
-  pyCompare.send(new_version_data);
+  const { new_version_data, old_version_path } = arg;
+  const tempFilePath = "tempfile.dxf"; // Replace with your preferred path
+  fs.writeFileSync(tempFilePath, new_version_data);
+  let pyCompare = new PythonShell("./compare_data.py", {
+    args: [tempFilePath, old_version_path], // Pass command-line arguments here
+  });
+  // pyCompare.send(new_version_data, old_version_path);
   pyCompare.on("message", function (message) {
     mainWindow.webContents.send(channels.Compare_Data_IsDone, message);
   });

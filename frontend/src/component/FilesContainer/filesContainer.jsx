@@ -34,13 +34,16 @@ function FilesContainer({ branche, file }) {
       console.error(error);
     }
   }
-  function handleUpdate() {
+  function handleUpdate(old_version_path) {
     const file_update = update;
     if (file_update) {
       const reader = new FileReader();
       reader.onload = (event) => {
         const new_version_data = event.target.result;
-        window.electron.send(channels.Compare_Data, { new_version_data });
+        window.electron.send(channels.Compare_Data, {
+          new_version_data,
+          old_version_path,
+        });
       };
       reader.readAsDataURL(file_update);
     } else {
@@ -52,14 +55,34 @@ function FilesContainer({ branche, file }) {
     setCommitMessage(e.target.value);
   }
 
-  async function getDxfData(file_dxf) {
-      window.electron.send(channels.Get_Details, { file_dxf });
+  function getDxfData(file_dxf) {
+    window.electron.send(channels.Get_Details, { file_dxf });
   }
+  async function SubmitCommit(){
+    try {
+      
+    } catch (error) {
+      console.error(error)
+    }
+
+  }
+  let accumulatedData = [];
+  let isDuplicate = false;
   useEffect(() => {
     handleGetFiles();
     window.electron.on(channels.Compare_Data_IsDone, (data) => {
       setCompareSuccess(true);
-      setCompareResult(data);
+      if (!isDuplicate) {
+        accumulatedData.push(data);
+        if (data.includes(">")) {
+          accumulatedData.push("\n");
+        }
+      }
+      isDuplicate = !isDuplicate;
+      if (data.includes("</svg>")) {
+        const fullSvgData = accumulatedData.join("");
+        setCompareResult(fullSvgData);
+      }
     });
     window.electron.on(channels.Get_Details_IsDone, (data) => {
       setDetailsSuccess(true);
@@ -130,15 +153,15 @@ function FilesContainer({ branche, file }) {
               <div>{update.name}</div>
             </div>
 
-            <button onClick={handleUpdate} className="btn">
+            <button
+              onClick={() => handleUpdate(openedfileDetails.path_dxf)}
+              className="btn">
               update file
             </button>
           </div>
           <div className="show-file-details">{FileDetails}</div>
 
-          <button className="btn delete" >
-            delete file
-          </button>
+          <button className="btn delete">delete file</button>
         </div>
       )}
     </div>

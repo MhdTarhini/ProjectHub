@@ -2,12 +2,40 @@ import ezdxf
 import sys
 import base64
 import json
+import requests
+import matplotlib.pyplot as plt
+import ezdxf 
+from ezdxf.addons.drawing import RenderContext, Frontend 
+from ezdxf.addons.drawing.matplotlib import MatplotlibBackend
+import io
 
-def compareData(data):
+def compareData(new_version_data,old_version_path):
+    def download_file(file_url, local_filename):
+        try:
+            response = requests.get(file_url, stream=True)
+
+            if response.status_code == 200:
+                with open(local_filename, 'wb') as local_file:
+                    for chunk in response.iter_content(chunk_size=1024):
+                        if chunk:
+                            local_file.write(chunk)
+                # print(f"File downloaded as {local_filename}")
+            else:
+                print(f"Error with status code: {response.status_code}")
+        except Exception as e:
+            print(f"An error occurred: {e}")
+
+    file_url = old_version_path  
+    local_filename = "downloaded_file.dxf"
+    download_file(file_url, local_filename)
+
+    with open(new_version_data, 'r') as temp_file:
+        new_version_data = temp_file.read()
+        
     filename="new_version_data.dxf"
-    _, data = data.split(',', 1)
+    _, new_version_data = new_version_data.split(',', 1)
     
-    dxf_content = base64.b64decode(data).decode('utf-8')
+    dxf_content = base64.b64decode(new_version_data).decode('utf-8')
     
     with open(filename, "w") as file:
         file.write(dxf_content)
@@ -31,7 +59,7 @@ def compareData(data):
         file.writelines(cleaned_lines)
 
     new_version = filename
-    old_version="the-model.dxf"
+    old_version="downloaded_file.dxf"
     # response = requests.get('API')
     # if response.status_code == 200:
     #     old_version= response.json()
@@ -134,10 +162,30 @@ def compareData(data):
 
     create_dxf_from_json_data(results_dict, output_path_json)
 
+    doc = ezdxf.readfile(output_path_json)
+    fig = plt.figure()
+    out = MatplotlibBackend(fig.add_axes([0, 0, 1, 1]))
+    Frontend(RenderContext(doc), out).draw_layout(doc.modelspace(), finalize=True)
 
-    print(results)
+
+    svg_output = io.BytesIO()
+    fig.savefig(svg_output, format='svg')
+    
+    svg_data = svg_output.getvalue().decode('utf-8')
+
+
+    print(svg_data)
+
+
+    # print(results)
 
 if __name__ == "__main__":
-    for line in sys.stdin:
-        data = line.strip()
-        compareData(data)
+    # for line in sys.stdin:
+    #     data = line.strip()
+    if len(sys.argv) < 3:
+        print("Usage: compare_data.py new_version_data old_version_path")
+        sys.exit(1)
+
+    new_version_data = sys.argv[1]
+    old_version_path = sys.argv[2]
+    compareData(new_version_data,old_version_path)
