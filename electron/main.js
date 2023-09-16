@@ -96,9 +96,10 @@ ipcMain.on(channels.Covert_Data_to_svg, (event, arg) => {
   });
 });
 ipcMain.on(channels.Get_Details, (event, arg) => {
-  const { dxfData } = arg;
+  const { file_dxf } = arg;
+  console.log(file_dxf);
   let pyDetails = new PythonShell("./get_details.py");
-  pyDetails.send(dxfData);
+  pyDetails.send(file_dxf);
   pyDetails.on("message", function (message) {
     mainWindow.webContents.send(channels.Get_Details_IsDone, message);
   });

@@ -3,6 +3,9 @@ import "./FilesContainer.css";
 import axios from "axios";
 import { channels } from "../../shared/constants";
 import Input from "../input/input";
+// const fs = require("fs");
+// const os = require("os");
+// const path = require("path");
 
 function FilesContainer({ branche, file }) {
   const [getFiles, setGetFiles] = useState([]);
@@ -49,30 +52,8 @@ function FilesContainer({ branche, file }) {
     setCommitMessage(e.target.value);
   }
 
-  function handleDetails() {
-    // const file_details = dxfData;
-    // if (file_details) {
-    //   const reader = new FileReader();
-    //   reader.onload = (event) => {
-    //     const details_for_data = event.target.result;
-    window.electron.send(channels.Get_Details, { dxfData });
-    //   };
-    //   reader.readAsDataURL(file_details);
-    // } else {
-    //   console.log("No file uploaded");
-    // }
-  }
-
-  async function getDxfData(file_id) {
-    try {
-      const response = await axios.get(
-        `http://127.0.0.1:8000/api/file-section/get_dxf_Data/${file_id}`
-      );
-      const dxf_data = await response.data;
-      setDxfData(dxf_data.data);
-    } catch (error) {
-      console.error(error);
-    }
+  async function getDxfData(file_dxf) {
+      window.electron.send(channels.Get_Details, { file_dxf });
   }
   useEffect(() => {
     handleGetFiles();
@@ -80,7 +61,7 @@ function FilesContainer({ branche, file }) {
       setCompareSuccess(true);
       setCompareResult(data);
     });
-    window.electron.on(channels.Extract_Data_IsDone, (data) => {
+    window.electron.on(channels.Get_Details_IsDone, (data) => {
       setDetailsSuccess(true);
       setFileDetails(data);
     });
@@ -103,7 +84,7 @@ function FilesContainer({ branche, file }) {
                   onClick={() => {
                     setOpenOption(!openOption);
                     setOpenedFileDetails(file);
-                    getDxfData(file.id);
+                    getDxfData(file.path_dxf);
                   }}>
                   <div className="point"></div>
                   <div className="point"></div>
@@ -121,7 +102,7 @@ function FilesContainer({ branche, file }) {
           <div className="side-details-file">
             <div className="file-details-title">{openedfileDetails.name}</div>
             <div className="file-details-version">
-              version {openedfileDetails.path_dxf}
+              version {openedfileDetails.version}
             </div>
             <div className="file-details-user">{`${openedfileDetails.user.first_name} ${openedfileDetails.user.last_name}`}</div>
             <div className="hr-details"></div>
@@ -150,14 +131,12 @@ function FilesContainer({ branche, file }) {
             </div>
 
             <button onClick={handleUpdate} className="btn">
-              {" "}
               update file
             </button>
           </div>
           <div className="show-file-details">{FileDetails}</div>
 
-          <button className="btn delete" onClick={handleDetails}>
-            {" "}
+          <button className="btn delete" >
             delete file
           </button>
         </div>

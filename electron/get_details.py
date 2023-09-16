@@ -2,39 +2,32 @@ import ezdxf
 import math
 import sys
 import base64
+import requests
 
 
 def getDataDetails(data):
-    print(data)
-    # filename="decoded_data.dxf"
-    # _, data = data.split(',', 1)
-    
-    # dxf_content = base64.b64decode(data).decode('utf-8')
-    
-    # with open(filename, "w") as file:
-    #     file.write(dxf_content)
-    
-    # with open(filename, "r") as file:
-    #     lines = file.readlines()
+    def download_file(file_url, local_filename):
+        try:
+            response = requests.get(file_url, stream=True)
 
-    # cleaned_lines = []
-    # i = 0
-    # while i < len(lines):
-    #     if not lines[i].strip() and (i == len(lines) - 1 or lines[i+1].strip()):
-    #         pass
-    #     elif not lines[i].strip() and not lines[i+1].strip():
-    #         cleaned_lines.append(lines[i])
-    #         i += 1
-    #     else:
-    #         cleaned_lines.append(lines[i])
-    #     i += 1
+            if response.status_code == 200:
+                with open(local_filename, 'wb') as local_file:
+                    for chunk in response.iter_content(chunk_size=1024):
+                        if chunk:
+                            local_file.write(chunk)
+                print(f"File downloaded as {local_filename}")
+            else:
+                print(f"Error with status code: {response.status_code}")
+        except Exception as e:
+            print(f"An error occurred: {e}")
 
-    # with open(filename, "w") as file:
-    #     file.writelines(cleaned_lines)
+    file_url = data  
+    local_filename = "downloaded_file.dxf"
+    download_file(file_url, local_filename)
 
-    # doc = ezdxf.readfile(filename)
+    doc = ezdxf.readfile(local_filename)
 
-    msp = data.modelspace()
+    msp = doc.modelspace()
 
     def distance(point1, point2):
         return math.sqrt((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2)
@@ -89,7 +82,7 @@ def getDataDetails(data):
 
     
 
-    group_table = data.groups
+    group_table = doc.groups
 
     dxf_details={}
     tamperay_list=[]
