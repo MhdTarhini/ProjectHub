@@ -39,6 +39,11 @@
     font-weight: 700;
     border-radius: 8px;
     background: #0F8EEA;
+    cursor: pointer;
+    }
+    
+    .delete {
+        background-color: red;
 }
 
 .branches-filter {

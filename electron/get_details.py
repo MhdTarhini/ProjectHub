@@ -1,12 +1,40 @@
 import ezdxf
 import math
-
-doc = ezdxf.readfile("typical-model.dxf")
-
-msp = doc.modelspace()
+import sys
+import base64
 
 
-with open("results.txt", "w") as f:
+def getDataDetails(data):
+    print(data)
+    # filename="decoded_data.dxf"
+    # _, data = data.split(',', 1)
+    
+    # dxf_content = base64.b64decode(data).decode('utf-8')
+    
+    # with open(filename, "w") as file:
+    #     file.write(dxf_content)
+    
+    # with open(filename, "r") as file:
+    #     lines = file.readlines()
+
+    # cleaned_lines = []
+    # i = 0
+    # while i < len(lines):
+    #     if not lines[i].strip() and (i == len(lines) - 1 or lines[i+1].strip()):
+    #         pass
+    #     elif not lines[i].strip() and not lines[i+1].strip():
+    #         cleaned_lines.append(lines[i])
+    #         i += 1
+    #     else:
+    #         cleaned_lines.append(lines[i])
+    #     i += 1
+
+    # with open(filename, "w") as file:
+    #     file.writelines(cleaned_lines)
+
+    # doc = ezdxf.readfile(filename)
+
+    msp = data.modelspace()
 
     def distance(point1, point2):
         return math.sqrt((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2)
@@ -61,7 +89,7 @@ with open("results.txt", "w") as f:
 
     
 
-    group_table = doc.groups
+    group_table = data.groups
 
     dxf_details={}
     tamperay_list=[]
@@ -86,4 +114,9 @@ with open("results.txt", "w") as f:
             process(entity)
             saveData(entity,process(entity))
 
-    f.write(f"{dxf_details}")
+    print(dxf_details)
+
+if __name__ == "__main__":
+    for line in sys.stdin:
+        data = line.strip()
+        getDataDetails(data)

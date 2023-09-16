@@ -95,3 +95,18 @@ ipcMain.on(channels.Covert_Data_to_svg, (event, arg) => {
     console.log("finished");
   });
 });
+ipcMain.on(channels.Get_Details, (event, arg) => {
+  const { dxfData } = arg;
+  let pyDetails = new PythonShell("./get_details.py");
+  pyDetails.send(dxfData);
+  pyDetails.on("message", function (message) {
+    mainWindow.webContents.send(channels.Get_Details_IsDone, message);
+  });
+
+  pyDetails.end(function (err) {
+    if (err) {
+      throw err;
+    }
+    console.log("finished");
+  });
+});

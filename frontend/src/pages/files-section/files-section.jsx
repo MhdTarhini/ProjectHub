@@ -8,18 +8,12 @@ import FilesContainer from "../../component/FilesContainer/filesContainer";
 
 function FilesSection() {
   const [file, setfile] = useState([]);
-  const [update, setUpdate] = useState([]);
   const [fileName, setFileName] = useState("");
   const [uploadSuccess, setUploadSuccess] = useState(false);
-  const [compareSuccess, setCompareSuccess] = useState(false);
-  const [CompareResult, setCompareResult] = useState("");
-  const [FileDetails, setFileDetails] = useState("");
-  const [detailsSuccess, setDetailsSuccess] = useState(false);
   const [getSvg, setGetSvg] = useState("");
   const [SvgSuccess, setSvgSuccess] = useState(false);
   const [dxfFile, setDxfFile] = useState(null);
   const [branche, setBranche] = useState("main");
-  let subtitle;
   const [modalIsOpen, setIsOpen] = React.useState(false);
 
   function openModal() {
@@ -44,39 +38,13 @@ function FilesSection() {
       console.log("No file uploaded");
     }
   }
-  function handleUpdate() {
-    const file_update = update;
-    if (file_update) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const new_version_data = event.target.result;
-        window.electron.send(channels.Compare_Data, { new_version_data });
-      };
-      reader.readAsDataURL(file_update);
-    } else {
-      console.log("No file uploaded");
-    }
-  }
-  function handleDetails() {
-    const file_update = update;
-    if (file_update) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const details_for_data = event.target.result;
-        window.electron.send(channels.Get_Details, { details_for_data });
-      };
-      reader.readAsDataURL(file_update);
-    } else {
-      console.log("No file uploaded");
-    }
-  }
 
   function handleFileName(e) {
     setFileName(e.target.value);
   }
   axios.defaults.headers.common[
     "Authorization"
-  ] = `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2d1ZXN0L2xvZ2luIiwiaWF0IjoxNjk0ODU3Mzc4LCJleHAiOjE2OTQ4NjA5NzgsIm5iZiI6MTY5NDg1NzM3OCwianRpIjoiSFUwVE14VlUwdzZxUHE0ZCIsInN1YiI6IjMiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.gBxbz8z-JPHsPXaNkr6BHMYbjK_coEIYNo7P1TEpsxo`;
+  ] = `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2d1ZXN0L2xvZ2luIiwiaWF0IjoxNjk0ODc0Mzk0LCJleHAiOjE2OTQ4Nzc5OTQsIm5iZiI6MTY5NDg3NDM5NCwianRpIjoiR1dBOGJrVVR6N0RETGdwVyIsInN1YiI6IjMiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.txp0dj3p_5cx3RaJdGL0r2WBgmqsJc1N1Aljc2jhpkc`;
   async function handleSubmitUpload() {
     const data = new FormData();
     data.append("name", fileName);
@@ -96,8 +64,6 @@ function FilesSection() {
     }
   }
 
-  console.log(getSvg);
-  let svg = "";
   let accumulatedData = [];
   let isDuplicate = false;
 
@@ -106,14 +72,9 @@ function FilesSection() {
       setUploadSuccess(true);
       console.log("done");
     });
-    window.electron.on(channels.Compare_Data_IsDone, (data) => {
-      setCompareSuccess(true);
-      setCompareResult(data);
-    });
+
     window.electron.on(channels.Covert_Data_to_svg_IsDone, (data) => {
       setSvgSuccess(true);
-
-      // const cleanMessage = data.replace(/^\d*files-section\.jsx:\d+\s/, "");
       if (!isDuplicate) {
         accumulatedData.push(data);
         console.log(data);
@@ -128,10 +89,6 @@ function FilesSection() {
         const fullSvgData = accumulatedData.join("");
         setGetSvg(fullSvgData);
       }
-    });
-    window.electron.on(channels.Get_Details_IsDone, (data) => {
-      setDetailsSuccess(true);
-      setFileDetails(data);
     });
   }, []);
 
@@ -151,17 +108,8 @@ function FilesSection() {
         </div>
         <div className="hr"></div>
         <div className="file-section-card">
-          <FilesContainer branche={branche} />
+          <FilesContainer branche={branche} file={file} />
         </div>
-
-        <button onClick={handleUpdate}> update file</button>
-        <input
-          type="file"
-          name="update"
-          onChange={(e) => {
-            setUpdate(e.target.files[0]);
-          }}
-        />
       </div>
       <div className="model-container">
         <Modal

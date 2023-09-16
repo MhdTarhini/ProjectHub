@@ -20,5 +20,6 @@ Route::group(["middleware" => "auth:api"], function(){
         Route::group(["prefix" => "file-section"], function(){
             Route::post("upload_file", [FileController::class, "uploadFile"]);
             Route::post("get_files", [FileController::class, "getFiles"]);
+            Route::get("get_dxf_Data/{id?}", [FileController::class, "getdxfFileData"]);
         });
 });

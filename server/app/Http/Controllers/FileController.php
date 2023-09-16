@@ -28,11 +28,6 @@ class FileController extends Controller
         $dxf=$file_name.".dxf";
         $svg=$file_name.".svg";
 
-        // $path_dxf = Storage::disk('public')->storeAs('directory_for_dxf', $file, $dxf);
-        // $path_svg = Storage::disk('public')->putFileAs('directory_for_svg', $request->path_svg, $svg);
-
-
-
         $path_dxf = Storage::disk('public')->put($dxf, $content);
         $path_svg = Storage::disk('public')->put($svg, $request->path_svg);
 
@@ -66,8 +61,28 @@ class FileController extends Controller
             'status' => 'success',
             'data' =>$get_files,
         ]);
-
-
-        
     }
+    function getdxfFileData($id) {
+        $file = File::find($id);
+
+        if (!$file) {
+            return response()->json([
+              'status' => 'error',
+              'message' => 'File not found',
+            ], 404);
+        }
+
+        if (Storage::disk('public')->exists($file->name.".dxf")) {
+            $contents = Storage::disk('public')->get($file->name.".dxf");
+          
+            return response()->json([
+              'status' => 'success',
+              'data' => $contents,
+            ]);
+        } else {
+            return response()->json([
+              'status' => 'error',
+            ], 404);
+        }
+}
 }
