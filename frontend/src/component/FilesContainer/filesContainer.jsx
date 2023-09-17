@@ -7,6 +7,26 @@ import Modal from "react-modal";
 import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { Listbox } from "@headlessui/react";
+import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
+
+function classNames(...classes) {
+  return classes.filter(Boolean).join(" ");
+}
+const people = [
+  {
+    id: 1,
+    name: "Wade Cooper",
+    avatar:
+      "https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+  },
+  {
+    id: 2,
+    name: "Arlene Mccoy",
+    avatar:
+      "https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+  },
+];
 
 function FilesContainer({ branche, file }) {
   const [open, setOpen] = useState(false);
@@ -22,6 +42,8 @@ function FilesContainer({ branche, file }) {
   const [dxfData, setDxfData] = useState("");
   const [conflictSvg, setConflitSvg] = useState("");
   const [modalIsOpen, setIsOpen] = React.useState(false);
+  const [selected, setSelected] = useState(people[3]);
+  const [allCommit, setAllCommit] = useState(people[3]);
 
   function openModal() {
     setIsOpen(true);
@@ -31,7 +53,17 @@ function FilesContainer({ branche, file }) {
     setIsOpen(false);
   }
 
-  async function getfileCommit() {}
+  async function getfileCommit(file_id) {
+    try {
+      const response = await axios.get(
+        `http://127.0.0.1:8000/api/file-section/get_commits/${file_id}`
+      );
+      const commitData = await response.data;
+      setAllCommit(commitData.data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   async function handleGetFiles() {
     const data = new FormData();
@@ -152,6 +184,7 @@ function FilesContainer({ branche, file }) {
                       setOpen(!open);
                       setOpenedFileDetails(file);
                       getDxfData(file.path_dxf);
+                      getfileCommit(file.id);
                     }}>
                     <div className="point"></div>
                     <div className="point"></div>
@@ -297,9 +330,9 @@ function FilesContainer({ branche, file }) {
                                       leaveFrom="opacity-100"
                                       leaveTo="opacity-0">
                                       <Listbox.Options className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                                        {people.map((person) => (
+                                        {allCommit.map((commit) => (
                                           <Listbox.Option
-                                            key={person.id}
+                                            key={commit.id}
                                             className={({ active }) =>
                                               classNames(
                                                 active
@@ -308,15 +341,10 @@ function FilesContainer({ branche, file }) {
                                                 "relative cursor-default select-none py-2 pl-3 pr-9"
                                               )
                                             }
-                                            value={person}>
+                                            value={commit.id}>
                                             {({ selected, active }) => (
                                               <>
                                                 <div className="flex items-center">
-                                                  <img
-                                                    src={person.avatar}
-                                                    alt=""
-                                                    className="h-5 w-5 flex-shrink-0 rounded-full"
-                                                  />
                                                   <span
                                                     className={classNames(
                                                       selected
@@ -324,7 +352,7 @@ function FilesContainer({ branche, file }) {
                                                         : "font-normal",
                                                       "ml-3 block truncate"
                                                     )}>
-                                                    {person.name}
+                                                    {commit.message}
                                                   </span>
                                                 </div>
 

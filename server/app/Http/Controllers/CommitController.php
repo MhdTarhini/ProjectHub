@@ -78,4 +78,13 @@ class CommitController extends Controller
             'data'=>$path_svg
         ]);
     }
+
+    function getFileCommit($file_id){
+        $file = File::with('commits')->find($file_id);
+        $commits = $file->commits;
+        return response()->json([
+            'status' => 'success',
+            'data'=>$commits
+        ]);
+    }
 }

@@ -26,8 +26,9 @@ Route::group(["middleware" => "auth:api"], function(){
             Route::get("get_dxf_Data/{id?}", [FileController::class, "getdxfFileData"]);
             Route::post("add_commit", [CommitController::class, "addCommit"]);
             Route::post("check_conflict", [CommitController::class, "checkConflict"]);
+            Route::get("get_commits/{file_id?}", [CommitController::class, "getFileCommit"]);
             Route::get("get_branches/{project_id?}", [BranchController::class, "getBranches"]);
-            Route::post("new_branch", [BranchController::class, "store"]);
+            Route::post("new_branch", [BranchController::class, "addBranch"]);
         });
 
         Route::group(["prefix" => "common"], function(){

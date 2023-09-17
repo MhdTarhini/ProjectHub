@@ -23,23 +23,7 @@ class BranchController extends Controller
 
     }
 
-    // public function addBranch(Request $request)
-    // {
-    //     $data = $request->validate([
-    //         'name' => 'required|string|max:255',
-    //         'project_id' => 'required|integer|exists:projects,id', // assuming you have a projects table
-    //     ]);
-
-    //     $branch = Branch::create($data);
-
-    //     return response()->json([
-    //         'status' => 'success',
-    //         'message' => 'Branch created successfully!',
-    //         'data' => $branch
-    //     ]);
-    // }
-
-      public function store(Request $request)
+      public function addBranch(Request $request)
     {
         // Validate the request data
         $data = $request->validate([
