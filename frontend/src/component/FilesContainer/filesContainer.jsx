@@ -13,20 +13,6 @@ import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
-const people = [
-  {
-    id: 1,
-    name: "Wade Cooper",
-    avatar:
-      "https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  {
-    id: 2,
-    name: "Arlene Mccoy",
-    avatar:
-      "https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-];
 
 function FilesContainer({ branche, file }) {
   const [open, setOpen] = useState(false);
@@ -36,14 +22,19 @@ function FilesContainer({ branche, file }) {
   const [update, setUpdate] = useState([]);
   const [compareSuccess, setCompareSuccess] = useState(false);
   const [CompareResult, setCompareResult] = useState("");
+  const [mainCompareSuccess, setMainCompareSuccess] = useState(false);
+  const [mainCompareResult, setMainCompareResult] = useState("");
   const [commitMessage, setCommitMessage] = useState("");
   const [FileDetails, setFileDetails] = useState("");
   const [detailsSuccess, setDetailsSuccess] = useState(false);
   const [dxfData, setDxfData] = useState("");
   const [conflictSvg, setConflitSvg] = useState("");
   const [modalIsOpen, setIsOpen] = React.useState(false);
-  const [selected, setSelected] = useState(people[3]);
-  const [allCommit, setAllCommit] = useState(people[3]);
+  const [CheckCommitIsOpen, setCheckCommitIsOpen] = React.useState(false);
+  const [selected, setSelected] = useState(["commit message </> version"]);
+  const [allCommit, setAllCommit] = useState([]);
+  const [seletedCommitSVG, setSeletedCommitSVG] = useState("");
+  const [mainDxfPatch, setMainDxfPatch] = useState("");
 
   function openModal() {
     setIsOpen(true);
@@ -51,6 +42,13 @@ function FilesContainer({ branche, file }) {
 
   function closeModal() {
     setIsOpen(false);
+  }
+  function openCommitModal() {
+    setCheckCommitIsOpen(true);
+  }
+
+  function closeCheckCommit() {
+    setCheckCommitIsOpen(false);
   }
 
   async function getfileCommit(file_id) {
@@ -67,7 +65,7 @@ function FilesContainer({ branche, file }) {
 
   async function handleGetFiles() {
     const data = new FormData();
-    data.append("branche_id", branche);
+    data.append("branche_id", branche.id);
     data.append("project_id", 1);
     try {
       const response = await axios.post(
@@ -97,6 +95,18 @@ function FilesContainer({ branche, file }) {
     }
   }
 
+  async function getMainFilePath(file_name) {
+    try {
+      const response = await axios.get(
+        `http://127.0.0.1:8000/api/file-section/get_dxf_path/${file_name}`
+      );
+      const dxf_path = await response.data;
+      setMainDxfPatch(dxf_path.data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   function handleCommitMessage(e) {
     setCommitMessage(e.target.value);
   }
@@ -104,7 +114,7 @@ function FilesContainer({ branche, file }) {
   function getDxfData(file_dxf) {
     window.electron.send(channels.Get_Details, { file_dxf });
   }
-  async function submitCommit(old_path_dxf) {
+  async function submitCommit(old_path_dxf, file_id) {
     console.log(update);
     const data = new FormData();
     data.append("message", commitMessage);
@@ -114,7 +124,7 @@ function FilesContainer({ branche, file }) {
     data.append("version", 1);
     data.append("status", 1);
     data.append("user_id", 3);
-    data.append("file_id", 1);
+    data.append("file_id", file_id);
     try {
       const response = await axios.post(
         "http://127.0.0.1:8000/api/file-section/add_commit",
@@ -124,9 +134,9 @@ function FilesContainer({ branche, file }) {
       console.error(error);
     }
   }
-  async function displayConflict() {
+  async function displayConflict(svg_data) {
     const data = new FormData();
-    data.append("svg_data", CompareResult);
+    data.append("svg_data", svg_data);
     try {
       const response = await axios.post(
         "http://127.0.0.1:8000/api/file-section/check_conflict",
@@ -159,6 +169,20 @@ function FilesContainer({ branche, file }) {
         setCompareResult(fullSvgData);
       }
     });
+    window.electron.on(channels.Compare_Main_Data_IsDone, (data) => {
+      setMainCompareSuccess(true);
+      if (!isDuplicate) {
+        accumulatedData.push(data);
+        if (data.includes(">")) {
+          accumulatedData.push("\n");
+        }
+      }
+      isDuplicate = !isDuplicate;
+      if (data.includes("</svg>")) {
+        const fullSvgData = accumulatedData.join("");
+        setMainCompareResult(fullSvgData);
+      }
+    });
     window.electron.on(channels.Get_Details_IsDone, (data) => {
       setDetailsSuccess(true);
       setFileDetails(data);
@@ -185,6 +209,7 @@ function FilesContainer({ branche, file }) {
                       setOpenedFileDetails(file);
                       getDxfData(file.path_dxf);
                       getfileCommit(file.id);
+                      getMainFilePath(file.name);
                     }}>
                     <div className="point"></div>
                     <div className="point"></div>
@@ -234,7 +259,12 @@ function FilesContainer({ branche, file }) {
                             type="button"
                             className="relative rounded-md text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
                             onClick={() => setOpen(false)}>
-                            <span className="absolute -inset-2.5" />
+                            <span
+                              className="absolute -inset-2.5"
+                              onClick={() => {
+                                setSelected(["commit message </> version"]);
+                              }}
+                            />
                             <span className="sr-only">Close panel</span>
                             <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                           </button>
@@ -250,7 +280,7 @@ function FilesContainer({ branche, file }) {
                             <div className="file-details-version">
                               version {openedfileDetails.version}
                             </div>
-                            <div className="file-details-user">{`${openedfileDetails.user.first_name} ${openedfileDetails.user.last_name}`}</div>
+                            {/* <div className="file-details-user">{`${openedfileDetails.user.first_name} ${openedfileDetails.user.last_name}`}</div> */}
                             <div className="hr-details"></div>
                           </div>
                           <div className="commit-field">
@@ -280,7 +310,7 @@ function FilesContainer({ branche, file }) {
                             <div
                               className="check-conflict btn"
                               onClick={() => {
-                                displayConflict();
+                                displayConflict(CompareResult);
                                 openModal();
                               }}>
                               check-conflict
@@ -289,30 +319,27 @@ function FilesContainer({ branche, file }) {
                             <button
                               className="btn"
                               onClick={() =>
-                                submitCommit(openedfileDetails.path_dxf)
+                                submitCommit(
+                                  openedfileDetails.path_dxf,
+                                  openedfileDetails.id
+                                )
                               }>
-                              update file
+                              Commit update
                             </button>
                           </div>
                           <div className="show-file-details">FileDetails</div>
                           <div className="commit-tracker">
-                            {" "}
                             <Listbox value={selected} onChange={setSelected}>
                               {({ open }) => (
                                 <>
                                   <Listbox.Label className="block text-sm font-medium leading-6 text-gray-900">
-                                    Assigned to
+                                    Commit History
                                   </Listbox.Label>
                                   <div className="relative mt-2">
                                     <Listbox.Button className="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6">
                                       <span className="flex items-center">
-                                        <img
-                                          src={selected.avatar}
-                                          alt=""
-                                          className="h-5 w-5 flex-shrink-0 rounded-full"
-                                        />
                                         <span className="ml-3 block truncate">
-                                          {selected.name}
+                                          {selected}
                                         </span>
                                       </span>
                                       <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
@@ -341,7 +368,11 @@ function FilesContainer({ branche, file }) {
                                                 "relative cursor-default select-none py-2 pl-3 pr-9"
                                               )
                                             }
-                                            value={commit.id}>
+                                            value={
+                                              commit.message +
+                                              " </> " +
+                                              commit.version
+                                            }>
                                             {({ selected, active }) => (
                                               <>
                                                 <div className="flex items-center">
@@ -352,10 +383,15 @@ function FilesContainer({ branche, file }) {
                                                         : "font-normal",
                                                       "ml-3 block truncate"
                                                     )}>
-                                                    {commit.message}
+                                                    {commit.message +
+                                                      " </> " +
+                                                      commit.version}
                                                   </span>
                                                 </div>
 
+                                                {setSeletedCommitSVG(
+                                                  commit.compare_path_svg
+                                                )}
                                                 {selected ? (
                                                   <span
                                                     className={classNames(
@@ -381,6 +417,28 @@ function FilesContainer({ branche, file }) {
                               )}
                             </Listbox>
                           </div>
+                          <button
+                            className="btn"
+                            onClick={() => {
+                              setOpen(!open);
+                              setSelected(["commit message </> version"]);
+                              openCommitModal();
+                            }}>
+                            Check Commit
+                          </button>
+                          {branche.team_id == null && (
+                            <>
+                              <button className="btn">commit to main </button>
+                              <div
+                                className="check-conflict btn"
+                                onClick={() => {
+                                  displayConflict(mainCompareResult);
+                                  openModal();
+                                }}>
+                                check-conflict
+                              </div>
+                            </>
+                          )}
 
                           <button className="btn delete">delete file</button>
                         </div>
@@ -405,6 +463,18 @@ function FilesContainer({ branche, file }) {
         <img src={conflictSvg} alt="SVG" srcset="" />
         <div className="btns">
           <button className="btn" onClick={closeModal}>
+            close
+          </button>
+        </div>
+      </Modal>
+      <Modal
+        isOpen={CheckCommitIsOpen}
+        onRequestClose={closeCheckCommit}
+        ariaHideApp={false}
+        className="check-conflict-model">
+        <img src={seletedCommitSVG} alt="SVG" srcset="" />
+        <div className="btns">
+          <button className="btn" onClick={closeCheckCommit}>
             close
           </button>
         </div>

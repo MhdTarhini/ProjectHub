@@ -85,4 +85,20 @@ class FileController extends Controller
             ], 404);
         }
 }
+
+function getFilePath($file_name){
+    $file = File::where("name",$file_name)->first();
+    if($file){
+        return response()->json([
+            'status' => 'success',
+            'data' => $file->path_dxf,
+            ]);
+
+    }else{
+        return response()->json([
+            'status' => 'failed',
+            'message' => "file not foud",
+        ]);
+    }
+}
 }

@@ -30,6 +30,7 @@ class BranchController extends Controller
             'name' => 'required|string|max:255',
             'project_id' => 'required|integer|exists:projects,id',
             'members' => 'required',
+            'team_id' => null,
         ]);
 
         // Create a new branch

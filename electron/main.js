@@ -67,14 +67,31 @@ ipcMain.on(channels.Extract_Data, (event, arg) => {
 
 ipcMain.on(channels.Compare_Data, (event, arg) => {
   const { new_version_data, old_version_path } = arg;
-  const tempFilePath = "tempfile.dxf"; // Replace with your preferred path
+  const tempFilePath = "tempfile.dxf";
   fs.writeFileSync(tempFilePath, new_version_data);
   let pyCompare = new PythonShell("./compare_data.py", {
-    args: [tempFilePath, old_version_path], // Pass command-line arguments here
+    args: [tempFilePath, old_version_path],
   });
-  // pyCompare.send(new_version_data, old_version_path);
   pyCompare.on("message", function (message) {
     mainWindow.webContents.send(channels.Compare_Data_IsDone, message);
+  });
+
+  pyCompare.end(function (err) {
+    if (err) {
+      throw err;
+    }
+    console.log("finished");
+  });
+});
+ipcMain.on(channels.Compare_Main_Data, (event, arg) => {
+  const { new_version_path, old_version_path } = arg;
+  // const tempFilePath = "tempfile.dxf";
+  // fs.writeFileSync(tempFilePath, new_version_data);
+  let pyCompare = new PythonShell("./compare_data.py", {
+    args: [new_version_path, old_version_path],
+  });
+  pyCompare.on("message", function (message) {
+    mainWindow.webContents.send(channels.Compare_Main_Data_IsDone, message);
   });
 
   pyCompare.end(function (err) {

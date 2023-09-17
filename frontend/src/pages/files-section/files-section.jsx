@@ -22,8 +22,18 @@ function FilesSection() {
   const [SvgSuccess, setSvgSuccess] = useState(false);
   const [dxfFile, setDxfFile] = useState(null);
   const [branche, setBranche] = useState("main");
-  const [branches, setBranches] = useState([]);
-  const [selectedBranche, setSelectedBranche] = useState(1);
+  const [branches, setBranches] = useState({
+    id: "",
+    team_id: "",
+    name: "",
+    members: [],
+  });
+  const [selectedBranche, setSelectedBranche] = useState({
+    id: "",
+    team_id: "",
+    name: "",
+    members: [],
+  });
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [modalBrancheOpen, setModalBrancheOpen] = React.useState(false);
   const [selected, setSelected] = useState([]);
@@ -87,8 +97,7 @@ function FilesSection() {
   }
   axios.defaults.headers.common[
     "Authorization"
-  ] = `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2d1ZXN0L2xvZ2luIiwiaWF0IjoxNjk0OTM1MjA1LCJleHAiOjE2OTQ5Mzg4MDUsIm5iZiI6MTY5NDkzNTIwNSwianRpIjoiQnBvSldKaXFjdFFRWE9KQiIsInN1YiI6IjMiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.yx30sHmRBsdKYASe3fFz91VCt2M_Vok_tRWR4rs4F28`;
-
+  ] = `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2d1ZXN0L2xvZ2luIiwiaWF0IjoxNjk0OTQ4MjIzLCJleHAiOjE2OTQ5NTE4MjMsIm5iZiI6MTY5NDk0ODIyMywianRpIjoiNnFxR3NKOW8ySnlsd3FITiIsInN1YiI6IjMiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.R_gzS2CSfk0krzp3qc1O6lHi4Zqv4SsdJ2tTFtG0vBk`;
   async function handleSubmitUpload() {
     const data = new FormData();
     data.append("name", fileName);
@@ -97,7 +106,7 @@ function FilesSection() {
     data.append("version", 1);
     data.append("project_id", 1);
     data.append("user_id", 3);
-    data.append("branche_id", selectedBranche);
+    data.append("branche_id", selectedBranche.id);
     try {
       const response = await axios.post(
         "http://127.0.0.1:8000/api/file-section/upload_file",
@@ -126,8 +135,6 @@ function FilesSection() {
   }
   let accumulatedData = [];
   let isDuplicate = false;
-
-  useEffect(() => {}, [selectedBranche]);
 
   useEffect(() => {
     getBranches();
@@ -189,7 +196,7 @@ function FilesSection() {
                 <Menu.Items className="absolute left-0 z-10 mt-2 w-60 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                   {branches.map((branche) => (
                     <div className="py-1" key={branche.id}>
-                      <Menu.Item onClick={() => setSelectedBranche(branche.id)}>
+                      <Menu.Item onClick={() => setSelectedBranche(branche)}>
                         {({ active }) => (
                           <a
                             href="#"

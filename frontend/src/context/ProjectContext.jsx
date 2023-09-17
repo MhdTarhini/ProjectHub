@@ -7,7 +7,7 @@ export const ProjectContextProvider = ({ children }) => {
 
   axios.defaults.headers.common[
     "Authorization"
-  ] = `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2d1ZXN0L2xvZ2luIiwiaWF0IjoxNjk0OTMyMTE2LCJleHAiOjE2OTQ5MzU3MTYsIm5iZiI6MTY5NDkzMjExNiwianRpIjoiYUFBZUVHSEVKYldMSXZkdCIsInN1YiI6IjMiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.Uxh13PFbGSVAd6Dpmhb3H_mrGimNQv__MoPj9ui0Xds`;
+  ] = `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2d1ZXN0L2xvZ2luIiwiaWF0IjoxNjk0OTQ4MjIzLCJleHAiOjE2OTQ5NTE4MjMsIm5iZiI6MTY5NDk0ODIyMywianRpIjoiNnFxR3NKOW8ySnlsd3FITiIsInN1YiI6IjMiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.R_gzS2CSfk0krzp3qc1O6lHi4Zqv4SsdJ2tTFtG0vBk`;
 
   const getTeamMember = async (data) => {
     const project_id = 1;
