@@ -92,7 +92,7 @@ function FilesSection() {
   }
   axios.defaults.headers.common[
     "Authorization"
-  ] = `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2d1ZXN0L2xvZ2luIiwiaWF0IjoxNjk0OTY0NDQ0LCJleHAiOjE2OTQ5NjgwNDQsIm5iZiI6MTY5NDk2NDQ0NCwianRpIjoiOVJiaVVQOG1GUzFLVnRjNCIsInN1YiI6IjMiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.fumZ5ytsfc0hZx4WBxt5WVVSnVeJgLkyZrJcQokCVHE`;
+  ] = `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2d1ZXN0L2xvZ2luIiwiaWF0IjoxNjk0OTgwODkxLCJleHAiOjE2OTQ5ODQ0OTEsIm5iZiI6MTY5NDk4MDg5MSwianRpIjoiemp0NTBISUNUVnZNblZZZyIsInN1YiI6IjMiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.2dYVw0Fznc6ztGmXmQdJxcdTb25GejLEgoqeD0-aP6o`;
   async function handleSubmitUpload() {
     const data = new FormData();
     data.append("name", fileName);

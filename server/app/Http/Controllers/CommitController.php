@@ -64,7 +64,6 @@ class CommitController extends Controller
         $commit->user_id = Auth::id();
         $commit->file_id =$request->file_id;
         $commit->save();
-        
         return response()->json([
             'status' => 'success',
             "data"=>$commit
@@ -121,4 +120,33 @@ class CommitController extends Controller
                     'message' => "commit not foud",
                 ]);
 }
+
+ function addMainCommit(Request $request){
+        $request->validate([
+            'message' => 'required|string|max:255',
+            'old_path_dxf' => 'required|string|max:255',
+            'new_path_dxf' => 'required|string|max:255',
+            'new_path_svg' => 'required|string',
+            'compare_path_svg' => 'required|string',
+            'version' => 'required|string|max:255',
+            'status' => 'required|integer',
+            'file_id' => 'required|integer', 
+        ]);
+
+
+        $commit=new Commit;
+        $commit->message=$request->message;
+        $commit->new_path_dxf = $request->new_path_dxf;
+        $commit->compare_path_svg = $request->compare_path_svg;
+        $commit->new_path_svg = $request->new_path_svg;
+        $commit->old_path_dxf = $request->old_path_dxf;
+        $commit->version = $request->version+1;
+        $commit->status = $request->status;
+        $commit->user_id = Auth::id();
+        $commit->file_id =$request->file_id;
+        $commit->save();
+        return response()->json([
+            'status' => 'success',
+        ]);
+    }
 }

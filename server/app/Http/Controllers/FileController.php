@@ -97,7 +97,9 @@ function getFilePath(Request $request){
     if($file){
         return response()->json([
             'status' => 'success',
-            'data' => $file->path_dxf,
+            'dxf_path' => $file->path_dxf,
+            'version' => $file->version,
+            'id' => $file->id,
             ]);
 
     }else{

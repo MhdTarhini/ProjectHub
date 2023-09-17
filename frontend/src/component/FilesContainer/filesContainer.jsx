@@ -8,6 +8,7 @@ import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Listbox } from "@headlessui/react";
+import base64 from "base-64";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 
 function classNames(...classes) {
@@ -37,10 +38,13 @@ function FilesContainer({ branche, file }) {
   const [allCommit, setAllCommit] = useState([]);
   const [seletedCommitSVG, setSeletedCommitSVG] = useState("");
   const [mainDxfPath, setMainDxfPath] = useState("");
+  const [mainDxfVersion, setMainDxfVersion] = useState("");
   const [getSvg, setGetSvg] = useState("");
   const [svgSuccess, setSvgSuccess] = useState(false);
   const [isPushed, setIsPushed] = useState(false);
   const [commitInfo, setCommitInfo] = useState([]);
+  const [mainCommitMessage, setMainCommitMessage] = useState("");
+  const [mainDxfId, setMainDxfId] = useState("");
 
   function openModal() {
     setIsOpen(true);
@@ -55,6 +59,35 @@ function FilesContainer({ branche, file }) {
 
   function closeCheckCommit() {
     setCheckCommitIsOpen(false);
+  }
+
+  async function handleCommitMain(
+    compare_Svg,
+    new_path_svg,
+    old_path_dxf,
+    new_path_dxf,
+    version,
+    status,
+    file_id
+  ) {
+    const data = new FormData();
+    data.append("message", mainCommitMessage);
+    data.append("file_id", mainDxfId);
+    data.append("new_path_svg", new_path_svg);
+    data.append("new_path_dxf", new_path_dxf);
+    data.append("old_path_dxf", old_path_dxf);
+    data.append("compare_path_svg", compare_Svg);
+    data.append("version", version);
+    data.append("status", status);
+    try {
+      const response = await axios.post(
+        `http://127.0.0.1:8000/api/file-section/main_commit`,
+        data
+      );
+      const commitData = await response.data;
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   async function getfileCommit(file_id) {
@@ -112,7 +145,9 @@ function FilesContainer({ branche, file }) {
         data
       );
       const dxf_path = await response.data;
-      setMainDxfPath(dxf_path.data);
+      setMainDxfPath(dxf_path.dxf_path);
+      setMainDxfVersion(dxf_path.version);
+      setMainDxfId(dxf_path.id);
     } catch (error) {
       console.error(error);
     }
@@ -120,6 +155,9 @@ function FilesContainer({ branche, file }) {
 
   function handleCommitMessage(e) {
     setCommitMessage(e.target.value);
+  }
+  function handleMainCommitMessage(e) {
+    setMainCommitMessage(e.target.value);
   }
 
   function CompareWithMain(main_file_path, local_file_path) {
@@ -133,7 +171,7 @@ function FilesContainer({ branche, file }) {
     window.electron.send(channels.Get_Details, { file_dxf });
   }
 
-  async function submitCommit(old_path_dxf, file_id, file_version) {
+  async function submitCommit(old_path_dxf, file_version, file_id) {
     const data = new FormData();
     data.append("message", commitMessage);
     data.append("compare_path_svg", CompareResult);
@@ -224,12 +262,17 @@ function FilesContainer({ branche, file }) {
     });
     window.electron.on(channels.Compare_Main_Data_IsDone, (data) => {
       setMainCompareSuccess(true);
-      accumulatedMainData.push(data);
-      if (data.includes("</svg>")) {
-        const fullSvgData = accumulatedMainData.join("");
-        setMainCompareResult(fullSvgData);
-        displayConflict(fullSvgData);
-      }
+      console.log("here");
+      const decodedData = base64.decode(data);
+      console.log(decodedData);
+      // accumulatedMainData.push(data);
+      // if (data.includes(">")) {
+      //   accumulatedMainData.push("\n");
+      // }
+      // if (data.includes("</svg>")) {
+      //   const fullSvgData = accumulatedMainData.join("");
+      setMainCompareResult(decodedData);
+      displayConflict(decodedData);
     });
     window.electron.on(channels.Get_Details_IsDone, (data) => {
       setDetailsSuccess(true);
@@ -386,9 +429,14 @@ function FilesContainer({ branche, file }) {
                               className="btn"
                               onClick={() =>
                                 submitCommit(
+                                  commitMessage,
+                                  CompareResult,
+                                  getSvg,
                                   openedfileDetails.path_dxf,
-                                  openedfileDetails.id,
-                                  openedfileDetails.version
+                                  update,
+                                  openedfileDetails.version,
+                                  1,
+                                  openedfileDetails.id
                                 )
                               }>
                               Commit update
@@ -498,7 +546,28 @@ function FilesContainer({ branche, file }) {
                           </button>
                           {branche.team_id == null && (
                             <>
-                              <button className="btn">commit to main </button>
+                              <Input
+                                label={"Commit message"}
+                                name={"Commit-message"}
+                                type={"text"}
+                                onchange={handleMainCommitMessage}
+                              />
+                              <button
+                                className="btn"
+                                onClick={() => {
+                                  handleCommitMain(
+                                    conflictSvg,
+                                    openedfileDetails.path_svg,
+                                    mainDxfPath,
+                                    openedfileDetails.path_dxf,
+                                    mainDxfVersion,
+                                    0,
+                                    openedfileDetails.id,
+                                    openedfileDetails.name
+                                  );
+                                }}>
+                                commit to main
+                              </button>
                               <div
                                 className="check-conflict btn"
                                 onClick={() => {
