@@ -22,12 +22,7 @@ function FilesSection() {
   const [SvgSuccess, setSvgSuccess] = useState(false);
   const [dxfFile, setDxfFile] = useState(null);
   const [branche, setBranche] = useState("main");
-  const [branches, setBranches] = useState({
-    id: "",
-    team_id: "",
-    name: "",
-    members: [],
-  });
+  const [branches, setBranches] = useState([]);
   const [selectedBranche, setSelectedBranche] = useState({
     id: "",
     team_id: "",
@@ -97,7 +92,7 @@ function FilesSection() {
   }
   axios.defaults.headers.common[
     "Authorization"
-  ] = `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2d1ZXN0L2xvZ2luIiwiaWF0IjoxNjk0OTQ4MjIzLCJleHAiOjE2OTQ5NTE4MjMsIm5iZiI6MTY5NDk0ODIyMywianRpIjoiNnFxR3NKOW8ySnlsd3FITiIsInN1YiI6IjMiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.R_gzS2CSfk0krzp3qc1O6lHi4Zqv4SsdJ2tTFtG0vBk`;
+  ] = `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2d1ZXN0L2xvZ2luIiwiaWF0IjoxNjk0OTU5MTg4LCJleHAiOjE2OTQ5NjI3ODgsIm5iZiI6MTY5NDk1OTE4OCwianRpIjoibFYzSVRZdFVtQmlVdm9McCIsInN1YiI6IjMiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.46_girTKnGTcnvnErhUc4aghRK7RpqEE7jI6hfShLbQ`;
   async function handleSubmitUpload() {
     const data = new FormData();
     data.append("name", fileName);

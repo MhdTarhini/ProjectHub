@@ -24,7 +24,7 @@ Route::group(["middleware" => "auth:api"], function(){
             Route::post("upload_file", [FileController::class, "uploadFile"]);
             Route::post("get_files", [FileController::class, "getFiles"]);
             Route::get("get_dxf_Data/{id?}", [FileController::class, "getdxfFileData"]);
-            Route::get("get_dxf_path/{file_name?}", [FileController::class, "getFilePath"]);
+            Route::post("get_dxf_path", [FileController::class, "getFilePath"]);
             Route::post("add_commit", [CommitController::class, "addCommit"]);
             Route::post("check_conflict", [CommitController::class, "checkConflict"]);
             Route::get("get_commits/{file_id?}", [CommitController::class, "getFileCommit"]);

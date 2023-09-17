@@ -35,8 +35,8 @@ class CommitController extends Controller
         $file_id = File::where('id', $request->file_id)->first(); 
         if ($file_id) {
             $file_name = $file_id->name;
-            $dxf = $file_name . "-" . $request->version . ".dxf";
-            $svg = $file_name . "-" . $request->version . ".svg";
+            $dxf = $file_name . "-" . $request->version+1 . ".dxf";
+            $svg = $file_name . "-" . $request->version+1 . ".svg";
 
         } else {
             return response()->json([

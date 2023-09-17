@@ -15,6 +15,8 @@ function classNames(...classes) {
 }
 
 function FilesContainer({ branche, file }) {
+  const project_id = 1;
+  const team_id = 1;
   const [open, setOpen] = useState(false);
   const [getFiles, setGetFiles] = useState([]);
   const [openedfileDetails, setOpenedFileDetails] = useState([]);
@@ -34,7 +36,9 @@ function FilesContainer({ branche, file }) {
   const [selected, setSelected] = useState(["commit message </> version"]);
   const [allCommit, setAllCommit] = useState([]);
   const [seletedCommitSVG, setSeletedCommitSVG] = useState("");
-  const [mainDxfPatch, setMainDxfPatch] = useState("");
+  const [mainDxfPath, setMainDxfPath] = useState("");
+  const [getSvg, setGetSvg] = useState("");
+  const [svgSuccess, setSvgSuccess] = useState(false);
 
   function openModal() {
     setIsOpen(true);
@@ -96,12 +100,17 @@ function FilesContainer({ branche, file }) {
   }
 
   async function getMainFilePath(file_name) {
+    const data = new FormData();
+    data.append("project_id", project_id);
+    data.append("team_id", team_id);
+    data.append("file_name", file_name);
     try {
-      const response = await axios.get(
-        `http://127.0.0.1:8000/api/file-section/get_dxf_path/${file_name}`
+      const response = await axios.post(
+        `http://127.0.0.1:8000/api/file-section/get_dxf_path`,
+        data
       );
       const dxf_path = await response.data;
-      setMainDxfPatch(dxf_path.data);
+      setMainDxfPath(dxf_path.data);
     } catch (error) {
       console.error(error);
     }
@@ -111,11 +120,18 @@ function FilesContainer({ branche, file }) {
     setCommitMessage(e.target.value);
   }
 
+  function CompareWithMain(main_file_path, local_file_path) {
+    window.electron.send(channels.Compare_Main_Data, {
+      main_file_path,
+      local_file_path,
+    });
+  }
+
   function getDxfData(file_dxf) {
     window.electron.send(channels.Get_Details, { file_dxf });
   }
+
   async function submitCommit(old_path_dxf, file_id) {
-    console.log(update);
     const data = new FormData();
     data.append("message", commitMessage);
     data.append("compare_path_svg", CompareResult);
@@ -142,10 +158,24 @@ function FilesContainer({ branche, file }) {
         "http://127.0.0.1:8000/api/file-section/check_conflict",
         data
       );
-      const conflictSVG = response.data;
+      const conflictSVG = await response.data;
       setConflitSvg(conflictSVG.data);
     } catch (error) {
       console.error(error);
+    }
+  }
+  function handleUpload(e) {
+    const file_uploaded = e.target.files[0];
+    if (file_uploaded) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const dxf_file = event.target.result;
+        // setDxfFile(dxf_file);
+        window.electron.send(channels.Covert_Data_to_svg, { dxf_file });
+      };
+      reader.readAsDataURL(file_uploaded);
+    } else {
+      console.log("No file uploaded");
     }
   }
   useEffect(() => {
@@ -153,6 +183,7 @@ function FilesContainer({ branche, file }) {
   }, [branche]);
 
   let accumulatedData = [];
+  let accumulatedMainData = [];
   let isDuplicate = false;
   useEffect(() => {
     window.electron.on(channels.Compare_Data_IsDone, (data) => {
@@ -171,21 +202,32 @@ function FilesContainer({ branche, file }) {
     });
     window.electron.on(channels.Compare_Main_Data_IsDone, (data) => {
       setMainCompareSuccess(true);
+      accumulatedMainData.push(data);
+      if (data.includes("</svg>")) {
+        const fullSvgData = accumulatedMainData.join("");
+        setMainCompareResult(fullSvgData);
+        displayConflict(fullSvgData);
+      }
+    });
+    window.electron.on(channels.Get_Details_IsDone, (data) => {
+      setDetailsSuccess(true);
+      setFileDetails(data);
+    });
+    window.electron.on(channels.Covert_Data_to_svg_IsDone, (data) => {
+      setSvgSuccess(true);
       if (!isDuplicate) {
         accumulatedData.push(data);
         if (data.includes(">")) {
           accumulatedData.push("\n");
         }
       }
+
       isDuplicate = !isDuplicate;
+
       if (data.includes("</svg>")) {
         const fullSvgData = accumulatedData.join("");
-        setMainCompareResult(fullSvgData);
+        setGetSvg(fullSvgData);
       }
-    });
-    window.electron.on(channels.Get_Details_IsDone, (data) => {
-      setDetailsSuccess(true);
-      setFileDetails(data);
     });
   }, []);
   return (
@@ -432,8 +474,12 @@ function FilesContainer({ branche, file }) {
                               <div
                                 className="check-conflict btn"
                                 onClick={() => {
-                                  displayConflict(mainCompareResult);
+                                  CompareWithMain(
+                                    mainDxfPath,
+                                    openedfileDetails.path_dxf
+                                  );
                                   openModal();
+                                  setOpen(!open);
                                 }}>
                                 check-conflict
                               </div>
@@ -450,10 +496,6 @@ function FilesContainer({ branche, file }) {
             </div>
           </Dialog>
         </Transition.Root>
-
-        {/* {openOption && (
-         
-        )} */}
       </div>
       <Modal
         isOpen={modalIsOpen}

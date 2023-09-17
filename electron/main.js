@@ -84,21 +84,22 @@ ipcMain.on(channels.Compare_Data, (event, arg) => {
   });
 });
 ipcMain.on(channels.Compare_Main_Data, (event, arg) => {
-  const { new_version_path, old_version_path } = arg;
-  // const tempFilePath = "tempfile.dxf";
-  // fs.writeFileSync(tempFilePath, new_version_data);
-  let pyCompare = new PythonShell("./compare_data.py", {
-    args: [new_version_path, old_version_path],
+  console.log("here");
+  const { main_file_path, local_file_path } = arg;
+  console.log(main_file_path);
+  console.log(local_file_path);
+  let pyCompareMain = new PythonShell("./compare_main.py", {
+    args: [local_file_path, main_file_path],
   });
-  pyCompare.on("message", function (message) {
+  pyCompareMain.on("message", function (message) {
     mainWindow.webContents.send(channels.Compare_Main_Data_IsDone, message);
   });
 
-  pyCompare.end(function (err) {
+  pyCompareMain.end(function (err) {
     if (err) {
       throw err;
     }
-    console.log("finished");
+    console.log("finished here");
   });
 });
 ipcMain.on(channels.Covert_Data_to_svg, (event, arg) => {
@@ -118,7 +119,6 @@ ipcMain.on(channels.Covert_Data_to_svg, (event, arg) => {
 });
 ipcMain.on(channels.Get_Details, (event, arg) => {
   const { file_dxf } = arg;
-  console.log(file_dxf);
   let pyDetails = new PythonShell("./get_details.py");
   pyDetails.send(file_dxf);
   pyDetails.on("message", function (message) {

@@ -186,7 +186,7 @@ def compareData(new_version_path,old_version_path):
 if __name__ == "__main__":
     # for line in sys.stdin:
     #     data = line.strip()
-    if len(sys.argv) < 3:
+    if len(sys.argv) < 1:
         print("Usage: compare_data.py new_version_data old_version_path")
         sys.exit(1)
 

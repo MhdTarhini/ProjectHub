@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Branch;
 use App\Models\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -86,8 +87,12 @@ class FileController extends Controller
         }
 }
 
-function getFilePath($file_name){
-    $file = File::where("name",$file_name)->first();
+function getFilePath(Request $request){
+    $user=Auth::user()->id;
+    $branch=Branch::where("project_id",$request->project_id)->where("team_id",$request->team_id)->first();
+
+
+    $file = File::where("name",$request->file_name)->where("branche_id",$branch->id)->first();
     if($file){
         return response()->json([
             'status' => 'success',
