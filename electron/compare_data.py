@@ -174,7 +174,10 @@ def compareData(new_version_data,old_version_path):
     svg_data = svg_output.getvalue().decode('utf-8')
 
 
-    print(svg_data)
+    encoded_data = base64.b64encode(svg_data.encode()).decode()
+
+
+    print(encoded_data)
 
 
     # print(results)

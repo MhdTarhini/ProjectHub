@@ -45,8 +45,10 @@ def convert_svg(data):
     
     svg_data = svg_output.getvalue().decode('utf-8')
 
+    encoded_data = base64.b64encode(svg_data.encode()).decode()
 
-    print(svg_data)
+
+    print(encoded_data)
 
 if __name__ == "__main__":
     for line in sys.stdin:

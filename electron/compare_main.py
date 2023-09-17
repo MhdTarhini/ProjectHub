@@ -33,42 +33,9 @@ def compareData(new_version_path,old_version_path):
     new_local_filename = "downloaded_new_file.dxf"
     download_file(new_file_url, new_local_filename)
 
-    # with open(new_version_data, 'r') as temp_file:
-    #     new_version_data = temp_file.read()
-        
-    # filename="new_version_data.dxf"
-    # _, new_version_data = new_version_data.split(',', 1)
-    
-    # dxf_content = base64.b64decode(new_version_data).decode('utf-8')
-    
-    # with open(filename, "w") as file:
-    #     file.write(dxf_content)
-    
-    # with open(filename, "r") as file:
-    #     lines = file.readlines()
-
-    # cleaned_lines = []
-    # i = 0
-    # while i < len(lines):
-    #     if not lines[i].strip() and (i == len(lines) - 1 or lines[i+1].strip()):
-    #         pass
-    #     elif not lines[i].strip() and not lines[i+1].strip():
-    #         cleaned_lines.append(lines[i])
-    #         i += 1
-    #     else:
-    #         cleaned_lines.append(lines[i])
-    #     i += 1
-
-    # with open(filename, "w") as file:
-    #     file.writelines(cleaned_lines)
 
     new_version = "downloaded_new_file.dxf"
     old_version ="downloaded_old_file.dxf"
-    # response = requests.get('API')
-    # if response.status_code == 200:
-    #     old_version= response.json()
-    # else:
-    #     print(f"Failed to fetch data. Status code: {response.status_code}")
 
     def extract_data_from_dxf(filepath):
         doc = ezdxf.readfile(filepath)
@@ -183,11 +150,8 @@ def compareData(new_version_path,old_version_path):
     print(encoded_data)
 
 
-    # print(results)
 
 if __name__ == "__main__":
-    # for line in sys.stdin:
-    #     data = line.strip()
     if len(sys.argv) < 1:
         print("Usage: compare_data.py new_version_data old_version_path")
         sys.exit(1)

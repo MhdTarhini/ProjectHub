@@ -8,8 +8,8 @@ import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Listbox } from "@headlessui/react";
-import base64 from "base-64";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
+import base64 from "base-64";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -21,7 +21,6 @@ function FilesContainer({ branche, file }) {
   const [open, setOpen] = useState(false);
   const [getFiles, setGetFiles] = useState([]);
   const [openedfileDetails, setOpenedFileDetails] = useState([]);
-  const [openOption, setOpenOption] = useState(false);
   const [update, setUpdate] = useState([]);
   const [compareSuccess, setCompareSuccess] = useState(false);
   const [CompareResult, setCompareResult] = useState("");
@@ -30,7 +29,6 @@ function FilesContainer({ branche, file }) {
   const [commitMessage, setCommitMessage] = useState("");
   const [FileDetails, setFileDetails] = useState("");
   const [detailsSuccess, setDetailsSuccess] = useState(false);
-  const [dxfData, setDxfData] = useState("");
   const [conflictSvg, setConflitSvg] = useState("");
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [CheckCommitIsOpen, setCheckCommitIsOpen] = React.useState(false);
@@ -45,6 +43,8 @@ function FilesContainer({ branche, file }) {
   const [commitInfo, setCommitInfo] = useState([]);
   const [mainCommitMessage, setMainCommitMessage] = useState("");
   const [mainDxfId, setMainDxfId] = useState("");
+  const [CheckFileIsOpen, setCheckFileIsOpen] = useState("");
+  const [seletedFile, setSeletedFile] = useState("");
 
   function openModal() {
     setIsOpen(true);
@@ -60,6 +60,13 @@ function FilesContainer({ branche, file }) {
   function closeCheckCommit() {
     setCheckCommitIsOpen(false);
   }
+  function openFileModal() {
+    setCheckFileIsOpen(true);
+  }
+
+  function closeCheckFile() {
+    setCheckFileIsOpen(false);
+  }
 
   async function handleCommitMain(
     compare_Svg,
@@ -67,8 +74,7 @@ function FilesContainer({ branche, file }) {
     old_path_dxf,
     new_path_dxf,
     version,
-    status,
-    file_id
+    status
   ) {
     const data = new FormData();
     data.append("message", mainCommitMessage);
@@ -241,59 +247,26 @@ function FilesContainer({ branche, file }) {
     handleGetFiles();
   }, [branche]);
 
-  let accumulatedData = [];
-  let accumulatedMainData = [];
-  let accumulatedSvgnData = [];
-  let isDuplicate = false;
   useEffect(() => {
     window.electron.on(channels.Compare_Data_IsDone, (data) => {
+      const decodedData = base64.decode(data);
+      setCompareResult(decodedData);
       setCompareSuccess(true);
-      if (!isDuplicate) {
-        accumulatedData.push(data);
-        if (data.includes(">")) {
-          accumulatedData.push("\n");
-        }
-      }
-      isDuplicate = !isDuplicate;
-      if (data.includes("</svg>")) {
-        const fullSvgData = accumulatedData.join("");
-        setCompareResult(fullSvgData);
-      }
     });
     window.electron.on(channels.Compare_Main_Data_IsDone, (data) => {
-      setMainCompareSuccess(true);
-      console.log("here");
       const decodedData = base64.decode(data);
-      console.log(decodedData);
-      // accumulatedMainData.push(data);
-      // if (data.includes(">")) {
-      //   accumulatedMainData.push("\n");
-      // }
-      // if (data.includes("</svg>")) {
-      //   const fullSvgData = accumulatedMainData.join("");
       setMainCompareResult(decodedData);
       displayConflict(decodedData);
+      setMainCompareSuccess(true);
     });
     window.electron.on(channels.Get_Details_IsDone, (data) => {
-      setDetailsSuccess(true);
       setFileDetails(data);
+      setDetailsSuccess(true);
     });
     window.electron.on(channels.Covert_Data_to_svg_IsDone, (data) => {
-      console.log("here");
+      const decodedData = base64.decode(data);
+      setGetSvg(decodedData);
       setSvgSuccess(true);
-      if (!isDuplicate) {
-        accumulatedSvgnData.push(data);
-        if (data.includes(">")) {
-          accumulatedSvgnData.push("\n");
-        }
-      }
-
-      isDuplicate = !isDuplicate;
-
-      if (data.includes("</svg>")) {
-        const fullSvgData = accumulatedSvgnData.join("");
-        setGetSvg(fullSvgData);
-      }
     });
   }, []);
   return (
@@ -302,7 +275,14 @@ function FilesContainer({ branche, file }) {
         <div className="card-container">
           {getFiles.map((file) => {
             return (
-              <div className="card" key={file.id}>
+              <div
+                className="card"
+                key={file.id}
+                onClick={() => {
+                  setSeletedFile(file.path_svg);
+                  openFileModal();
+                  setOpen(true);
+                }}>
                 <img
                   src={file.path_svg}
                   className="file-section-card-img"
@@ -313,7 +293,6 @@ function FilesContainer({ branche, file }) {
                   <div
                     className="card-option"
                     onClick={() => {
-                      setOpen(!open);
                       setOpenedFileDetails(file);
                       getDxfData(file.path_dxf);
                       getfileCommit(file.id);
@@ -339,7 +318,7 @@ function FilesContainer({ branche, file }) {
               leave="ease-in-out duration-500"
               leaveFrom="opacity-100"
               leaveTo="opacity-0">
-              <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+              <div className="fixed transition-opacity" />
             </Transition.Child>
 
             <div className="fixed inset-0 overflow-hidden">
@@ -365,8 +344,7 @@ function FilesContainer({ branche, file }) {
                         <div className="absolute left-0 top-0 -ml-8 flex pr-2 pt-4 sm:-ml-10 sm:pr-4">
                           <button
                             type="button"
-                            className="relative rounded-md text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
-                            onClick={() => setOpen(false)}>
+                            className="relative rounded-md text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white">
                             <span
                               className="absolute -inset-2.5"
                               onClick={() => {
@@ -390,60 +368,65 @@ function FilesContainer({ branche, file }) {
                             </div>
                             {/* <div className="file-details-user">{`${openedfileDetails.user.first_name} ${openedfileDetails.user.last_name}`}</div> */}
                             <div className="hr-details"></div>
-                          </div>
-                          <div className="commit-field">
-                            <Input
-                              label={"Commit message"}
-                              name={"Commit-message"}
-                              type={"text"}
-                              onchange={handleCommitMessage}
-                            />
-                            <div className="input-upload-file">
-                              <label className="btn" htmlFor="updated-file">
-                                Updated File
-                              </label>
-                              <input
-                                type="file"
-                                name="update file"
-                                id="updated-file"
-                                onChange={(e) => {
-                                  setUpdate(e.target.files[0]);
-                                  handleCompare(e, openedfileDetails.path_dxf);
-                                  handleUpload(e);
-                                }}
-                                className="none"
+                            <div className="commit-field">
+                              <div className="commit-field-title">
+                                Local Commit
+                              </div>
+                              <div className="hr-details"></div>
+
+                              <Input
+                                label={"Commit message"}
+                                name={"Commit-message"}
+                                type={"text"}
+                                onchange={handleCommitMessage}
                               />
-                              <div>{update.name}</div>
-                            </div>
+                              <div className="input-upload-file">
+                                <label
+                                  className="btn updated-file"
+                                  htmlFor="updated-file">
+                                  Updated File
+                                </label>
+                                <input
+                                  type="file"
+                                  name="update file"
+                                  id="updated-file"
+                                  onChange={(e) => {
+                                    setUpdate(e.target.files[0]);
+                                    handleCompare(
+                                      e,
+                                      openedfileDetails.path_dxf
+                                    );
+                                    handleUpload(e);
+                                  }}
+                                  className="none"
+                                />
+                                <div>{update.name}</div>
+                              </div>
 
-                            <div
-                              className="check-conflict btn"
-                              onClick={() => {
-                                displayConflict(CompareResult);
-                                openModal();
-                              }}>
-                              check-conflict
-                            </div>
+                              <div
+                                className={`check-conflict ${compareSuccess}btn`}
+                                onClick={() => {
+                                  displayConflict(CompareResult);
+                                  openModal();
+                                }}>
+                                check-conflict
+                              </div>
 
-                            <button
-                              className="btn"
-                              onClick={() =>
-                                submitCommit(
-                                  commitMessage,
-                                  CompareResult,
-                                  getSvg,
-                                  openedfileDetails.path_dxf,
-                                  update,
-                                  openedfileDetails.version,
-                                  1,
-                                  openedfileDetails.id
-                                )
-                              }>
-                              Commit update
-                            </button>
-                            <button className="btn" onClick={handleLocalPush}>
-                              push
-                            </button>
+                              <button
+                                className="btn"
+                                onClick={() =>
+                                  submitCommit(
+                                    openedfileDetails.path_dxf,
+                                    openedfileDetails.version,
+                                    openedfileDetails.id
+                                  )
+                                }>
+                                Commit update
+                              </button>
+                              <button className="btn" onClick={handleLocalPush}>
+                                push
+                              </button>
+                            </div>
                           </div>
                           <div className="show-file-details">FileDetails</div>
                           <div className="commit-tracker">
@@ -538,7 +521,6 @@ function FilesContainer({ branche, file }) {
                           <button
                             className="btn"
                             onClick={() => {
-                              setOpen(!open);
                               setSelected(["commit message </> version"]);
                               openCommitModal();
                             }}>
@@ -576,7 +558,7 @@ function FilesContainer({ branche, file }) {
                                     openedfileDetails.path_dxf
                                   );
                                   openModal();
-                                  setOpen(!open);
+                                  // setOpen(!open);
                                 }}>
                                 check-conflict
                               </div>
@@ -599,24 +581,54 @@ function FilesContainer({ branche, file }) {
         onRequestClose={closeModal}
         ariaHideApp={false}
         className="check-conflict-model">
-        <img src={conflictSvg} alt="SVG" srcset="" />
-        <div className="btns">
+        <div className="btns close">
           <button className="btn" onClick={closeModal}>
-            close
+            X
           </button>
         </div>
+        <img
+          src={conflictSvg}
+          style={{ height: 700 }}
+          alt="SVG"
+          srcset=""
+          className="svg-image"
+        />
       </Modal>
       <Modal
         isOpen={CheckCommitIsOpen}
         onRequestClose={closeCheckCommit}
         ariaHideApp={false}
         className="check-conflict-model">
-        <img src={seletedCommitSVG} alt="SVG" srcset="" />
-        <div className="btns">
+        <div className="btns close">
           <button className="btn" onClick={closeCheckCommit}>
-            close
+            X
           </button>
         </div>
+        <img
+          src={seletedCommitSVG}
+          style={{ height: 700 }}
+          alt="SVG"
+          srcset=""
+          className="svg-image"
+        />
+      </Modal>
+      <Modal
+        isOpen={CheckFileIsOpen}
+        onRequestClose={closeCheckFile}
+        ariaHideApp={false}
+        className="check-conflict-model">
+        <div className="btns close">
+          <button className="btn" onClick={closeCheckFile}>
+            X
+          </button>
+        </div>
+        <img
+          src={seletedFile}
+          style={{ height: 700 }}
+          alt="SVG"
+          srcset=""
+          className="svg-image"
+        />
       </Modal>
     </>
   );
