@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('message');
             $table->string('old_path_dxf');
             $table->string('new_path_dxf');
+            $table->string('new_path_svg');
             $table->string('compare_path_svg');
             $table->string('version');
             $table->string('status');

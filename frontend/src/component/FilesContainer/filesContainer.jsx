@@ -39,6 +39,8 @@ function FilesContainer({ branche, file }) {
   const [mainDxfPath, setMainDxfPath] = useState("");
   const [getSvg, setGetSvg] = useState("");
   const [svgSuccess, setSvgSuccess] = useState(false);
+  const [isPushed, setIsPushed] = useState(false);
+  const [commitInfo, setCommitInfo] = useState([]);
 
   function openModal() {
     setIsOpen(true);
@@ -131,13 +133,14 @@ function FilesContainer({ branche, file }) {
     window.electron.send(channels.Get_Details, { file_dxf });
   }
 
-  async function submitCommit(old_path_dxf, file_id) {
+  async function submitCommit(old_path_dxf, file_id, file_version) {
     const data = new FormData();
     data.append("message", commitMessage);
     data.append("compare_path_svg", CompareResult);
+    data.append("new_path_svg", getSvg);
     data.append("old_path_dxf", old_path_dxf);
     data.append("new_path_dxf", update);
-    data.append("version", 1);
+    data.append("version", file_version);
     data.append("status", 1);
     data.append("user_id", 3);
     data.append("file_id", file_id);
@@ -146,6 +149,8 @@ function FilesContainer({ branche, file }) {
         "http://127.0.0.1:8000/api/file-section/add_commit",
         data
       );
+      const commitInfo = await response.data;
+      setCommitInfo(commitInfo.data);
     } catch (error) {
       console.error(error);
     }
@@ -178,12 +183,29 @@ function FilesContainer({ branche, file }) {
       console.log("No file uploaded");
     }
   }
+  async function handleLocalPush() {
+    const data = new FormData();
+    data.append("commit_id", commitInfo.id);
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/file-section/push_local_commit",
+        data
+      );
+      const IsPushed = await response.data;
+      if (IsPushed.status === "success") {
+        setIsPushed(true);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
   useEffect(() => {
     handleGetFiles();
   }, [branche]);
 
   let accumulatedData = [];
   let accumulatedMainData = [];
+  let accumulatedSvgnData = [];
   let isDuplicate = false;
   useEffect(() => {
     window.electron.on(channels.Compare_Data_IsDone, (data) => {
@@ -214,18 +236,19 @@ function FilesContainer({ branche, file }) {
       setFileDetails(data);
     });
     window.electron.on(channels.Covert_Data_to_svg_IsDone, (data) => {
+      console.log("here");
       setSvgSuccess(true);
       if (!isDuplicate) {
-        accumulatedData.push(data);
+        accumulatedSvgnData.push(data);
         if (data.includes(">")) {
-          accumulatedData.push("\n");
+          accumulatedSvgnData.push("\n");
         }
       }
 
       isDuplicate = !isDuplicate;
 
       if (data.includes("</svg>")) {
-        const fullSvgData = accumulatedData.join("");
+        const fullSvgData = accumulatedSvgnData.join("");
         setGetSvg(fullSvgData);
       }
     });
@@ -343,6 +366,7 @@ function FilesContainer({ branche, file }) {
                                 onChange={(e) => {
                                   setUpdate(e.target.files[0]);
                                   handleCompare(e, openedfileDetails.path_dxf);
+                                  handleUpload(e);
                                 }}
                                 className="none"
                               />
@@ -363,10 +387,14 @@ function FilesContainer({ branche, file }) {
                               onClick={() =>
                                 submitCommit(
                                   openedfileDetails.path_dxf,
-                                  openedfileDetails.id
+                                  openedfileDetails.id,
+                                  openedfileDetails.version
                                 )
                               }>
                               Commit update
+                            </button>
+                            <button className="btn" onClick={handleLocalPush}>
+                              push
                             </button>
                           </div>
                           <div className="show-file-details">FileDetails</div>

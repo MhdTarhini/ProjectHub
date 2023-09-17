@@ -30,6 +30,7 @@ Route::group(["middleware" => "auth:api"], function(){
             Route::get("get_commits/{file_id?}", [CommitController::class, "getFileCommit"]);
             Route::get("get_branches/{project_id?}", [BranchController::class, "getBranches"]);
             Route::post("new_branch", [BranchController::class, "addBranch"]);
+            Route::post("push_local_commit", [CommitController::class, "pushlocalCommit"]);
         });
 
         Route::group(["prefix" => "common"], function(){

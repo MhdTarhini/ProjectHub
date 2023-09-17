@@ -15,6 +15,7 @@ class CommitController extends Controller
             'message' => 'required|string|max:255',
             'old_path_dxf' => 'required|string|max:255',
             'new_path_dxf' => 'required|file|mimes:txt,dxf',
+            'new_path_svg' => 'required|string',
             'compare_path_svg' => 'required|string',
             'version' => 'required|string|max:255',
             'status' => 'required|integer',
@@ -36,7 +37,9 @@ class CommitController extends Controller
         if ($file_id) {
             $file_name = $file_id->name;
             $dxf = $file_name . "-" . $request->version+1 . ".dxf";
+            $svg_compared = $file_name . "-" . $request->version+1 . "- compered" . ".svg";
             $svg = $file_name . "-" . $request->version+1 . ".svg";
+            
 
         } else {
             return response()->json([
@@ -46,22 +49,25 @@ class CommitController extends Controller
         }
 
         $path_dxf = Storage::disk('public')->put($dxf, $content);
-        $path_svg = Storage::disk('public')->put($svg, $request->compare_path_svg);
+        $path_svg = Storage::disk('public')->put($svg_compared, $request->compare_path_svg);
+        $new_path_svg = Storage::disk('public')->put($svg, $request->new_path_svg);
 
 
         $commit=new Commit;
         $commit->message=$request->message;
         $commit->new_path_dxf = "http://127.0.0.1:8000/storage/".$dxf;
-        $commit->compare_path_svg = "http://127.0.0.1:8000/storage/".$svg;
+        $commit->compare_path_svg = "http://127.0.0.1:8000/storage/".$svg_compared;
+        $commit->new_path_svg = "http://127.0.0.1:8000/storage/".$svg;
         $commit->old_path_dxf = $request->old_path_dxf;
-        $commit->version = $request->version;
+        $commit->version = $request->version+1;
         $commit->status = $request->status;
         $commit->user_id = Auth::id();
         $commit->file_id =$request->file_id;
-
         $commit->save();
+        
         return response()->json([
             'status' => 'success',
+            "data"=>$commit
         ]);
     }
 
@@ -87,4 +93,32 @@ class CommitController extends Controller
             'data'=>$commits
         ]);
     }
+
+    function pushlocalCommit(Request $request){
+    $commit_content=Commit::where("id",$request->commit_id)->first();
+    if($commit_content){
+        $file=File::where("id",$commit_content->file_id)->first();
+        if($file){
+            $file->path_dxf=$commit_content->new_path_dxf;
+            $file->path_svg=$commit_content->new_path_svg;
+            $file->user_id=$commit_content->user_id;
+            $file->version=$file->version+1;
+            $file->save();
+
+            return response()->json([
+                    'status' => 'success',
+                    'message' => "commited",
+                ]);
+        }else{
+            return response()->json([
+                    'status' => 'failed',
+                    'message' => "file not foud",
+                ]);
+        }
+
+    }return response()->json([
+                    'status' => 'failed',
+                    'message' => "commit not foud",
+                ]);
+}
 }
