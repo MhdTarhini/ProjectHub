@@ -27,6 +27,7 @@ Route::group(["middleware" => "auth:api"], function(){
             Route::post("add_commit", [CommitController::class, "addCommit"]);
             Route::post("check_conflict", [CommitController::class, "checkConflict"]);
             Route::get("get_branches/{project_id?}", [BranchController::class, "getBranches"]);
+            Route::post("new_branch", [BranchController::class, "store"]);
         });
 
         Route::group(["prefix" => "common"], function(){

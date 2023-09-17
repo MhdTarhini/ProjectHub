@@ -23,22 +23,47 @@ class BranchController extends Controller
 
     }
 
-    public function addBranch(Request $request)
+    // public function addBranch(Request $request)
+    // {
+    //     $data = $request->validate([
+    //         'name' => 'required|string|max:255',
+    //         'project_id' => 'required|integer|exists:projects,id', // assuming you have a projects table
+    //     ]);
+
+    //     $branch = Branch::create($data);
+
+    //     return response()->json([
+    //         'status' => 'success',
+    //         'message' => 'Branch created successfully!',
+    //         'data' => $branch
+    //     ]);
+    // }
+
+      public function store(Request $request)
     {
+        // Validate the request data
         $data = $request->validate([
             'name' => 'required|string|max:255',
-            'project_id' => 'required|integer|exists:projects,id', // assuming you have a projects table
-            // ... any other fields you want to validate
+            'project_id' => 'required|integer|exists:projects,id',
+            'members' => 'required',
         ]);
 
         // Create a new branch
-        $branch = Branch::create($data);
+        $branch = Branch::create([
+            'name' => $data['name'],
+            'project_id' => $data['project_id'],
+        ]);
+
+        $user_ids = explode(',', $request->members);
+
+        // Attach members to the branch
+        $branch->usermembers()->attach($user_ids);
 
         // Return success response
         return response()->json([
             'status' => 'success',
-            'message' => 'Branch created successfully!',
-            'data' => $branch
+            'message' => 'Branch created and members assigned successfully!',
+            'data' => $branch->load('members') // This will eager-load the members relationship to return with the branch
         ]);
     }
 }

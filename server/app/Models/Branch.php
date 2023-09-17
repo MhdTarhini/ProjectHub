@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Branch extends Model
 {
     use HasFactory;
+    protected $fillable = ['name', 'project_id'];
     protected $appends = ['members','project'];
 
        public function getMembersAttribute()
@@ -25,5 +26,10 @@ class Branch extends Model
        public function getProjectAttribute()
     {
         return $this->belongsTo(Project::class, 'project_id');
+    }
+        public function usermembers()
+    {
+        return $this->belongsToMany(User::class, 'branch_members', 'branche_id', 'user_id')
+            ->withTimestamps();
     }
 }

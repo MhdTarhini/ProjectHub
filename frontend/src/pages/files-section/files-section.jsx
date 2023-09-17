@@ -28,13 +28,6 @@ function FilesSection() {
   const [modalBrancheOpen, setModalBrancheOpen] = React.useState(false);
   const [selected, setSelected] = useState([]);
   const { teamMember } = useContext(ProjectContext);
-  console.log(teamMember);
-
-  const options = [
-    { label: "Grapes 🍇", value: "grapes" },
-    { label: "Mango 🥭", value: "mango" },
-    { label: "Strawberry 🍓", value: "strawberry", disabled: true },
-  ];
 
   const transformedData = teamMember.map((member) => ({
     label: `${member.user.first_name} ${member.user.last_name} - ${member.user.email}`,
@@ -71,9 +64,30 @@ function FilesSection() {
   function handleFileName(e) {
     setFileName(e.target.value);
   }
+
+  function newBranch() {
+    const data = new FormData();
+    let selected_users_id = [];
+    selected.map((select) => {
+      selected_users_id.push(select.value);
+    });
+    console.log(selected_users_id);
+    data.append("members", selected_users_id);
+    data.append("project_id", 1);
+    data.append("name", brancheName);
+
+    try {
+      const response = axios.post(
+        "http://127.0.0.1:8000/api/file-section/new_branch",
+        data
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  }
   axios.defaults.headers.common[
     "Authorization"
-  ] = `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2d1ZXN0L2xvZ2luIiwiaWF0IjoxNjk0OTMyMTE2LCJleHAiOjE2OTQ5MzU3MTYsIm5iZiI6MTY5NDkzMjExNiwianRpIjoiYUFBZUVHSEVKYldMSXZkdCIsInN1YiI6IjMiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.Uxh13PFbGSVAd6Dpmhb3H_mrGimNQv__MoPj9ui0Xds`;
+  ] = `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2d1ZXN0L2xvZ2luIiwiaWF0IjoxNjk0OTM1MjA1LCJleHAiOjE2OTQ5Mzg4MDUsIm5iZiI6MTY5NDkzNTIwNSwianRpIjoiQnBvSldKaXFjdFFRWE9KQiIsInN1YiI6IjMiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.yx30sHmRBsdKYASe3fFz91VCt2M_Vok_tRWR4rs4F28`;
 
   async function handleSubmitUpload() {
     const data = new FormData();
@@ -106,7 +120,6 @@ function FilesSection() {
       );
       const branchesData = await response.data;
       setBranches(branchesData.data);
-      console.log(branchesData.data);
     } catch (error) {
       console.log(error);
     }
@@ -284,6 +297,9 @@ function FilesSection() {
               labelledBy="Select"
             />
           </div>
+          <button className="btn" onClick={newBranch}>
+            Create
+          </button>
           <button className="btn" onClick={closeBrancheModal}>
             close
           </button>

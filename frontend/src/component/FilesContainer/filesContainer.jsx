@@ -4,8 +4,12 @@ import axios from "axios";
 import { channels } from "../../shared/constants";
 import Input from "../input/input";
 import Modal from "react-modal";
+import { Fragment } from "react";
+import { Dialog, Transition } from "@headlessui/react";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 
 function FilesContainer({ branche, file }) {
+  const [open, setOpen] = useState(false);
   const [getFiles, setGetFiles] = useState([]);
   const [openedfileDetails, setOpenedFileDetails] = useState([]);
   const [openOption, setOpenOption] = useState(false);
@@ -26,6 +30,8 @@ function FilesContainer({ branche, file }) {
   function closeModal() {
     setIsOpen(false);
   }
+
+  async function getfileCommit() {}
 
   async function handleGetFiles() {
     const data = new FormData();
@@ -143,7 +149,7 @@ function FilesContainer({ branche, file }) {
                   <div
                     className="card-option"
                     onClick={() => {
-                      setOpenOption(!openOption);
+                      setOpen(!open);
                       setOpenedFileDetails(file);
                       getDxfData(file.path_dxf);
                     }}>
@@ -157,61 +163,211 @@ function FilesContainer({ branche, file }) {
             );
           })}
         </div>
-        {openOption && (
-          <div className="file-details">
-            <div onClick={() => setOpenOption(!openOption)}>back</div>
-            <div className="side-details-file">
-              <div className="file-details-title">{openedfileDetails.name}</div>
-              <div className="file-details-version">
-                version {openedfileDetails.version}
+        <Transition.Root show={open} as={Fragment}>
+          <Dialog as="div" className="relative z-10" onClose={setOpen}>
+            <Transition.Child
+              as={Fragment}
+              enter="ease-in-out duration-500"
+              enterFrom="opacity-0"
+              enterTo="opacity-100"
+              leave="ease-in-out duration-500"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0">
+              <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+            </Transition.Child>
+
+            <div className="fixed inset-0 overflow-hidden">
+              <div className="absolute inset-0 overflow-hidden">
+                <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+                  <Transition.Child
+                    as={Fragment}
+                    enter="transform transition ease-in-out duration-500 sm:duration-700"
+                    enterFrom="translate-x-full"
+                    enterTo="translate-x-0"
+                    leave="transform transition ease-in-out duration-500 sm:duration-700"
+                    leaveFrom="translate-x-0"
+                    leaveTo="translate-x-full">
+                    <Dialog.Panel className="pointer-events-auto relative w-screen max-w-md">
+                      <Transition.Child
+                        as={Fragment}
+                        enter="ease-in-out duration-500"
+                        enterFrom="opacity-0"
+                        enterTo="opacity-100"
+                        leave="ease-in-out duration-500"
+                        leaveFrom="opacity-100"
+                        leaveTo="opacity-0">
+                        <div className="absolute left-0 top-0 -ml-8 flex pr-2 pt-4 sm:-ml-10 sm:pr-4">
+                          <button
+                            type="button"
+                            className="relative rounded-md text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
+                            onClick={() => setOpen(false)}>
+                            <span className="absolute -inset-2.5" />
+                            <span className="sr-only">Close panel</span>
+                            <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                          </button>
+                        </div>
+                      </Transition.Child>
+                      <div className="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl">
+                        <div className="px-4 sm:px-6"></div>
+                        <div className="relative mt-6 flex-1 px-4 sm:px-6">
+                          <div className="side-details-file">
+                            <div className="file-details-title">
+                              {openedfileDetails.name}
+                            </div>
+                            <div className="file-details-version">
+                              version {openedfileDetails.version}
+                            </div>
+                            <div className="file-details-user">{`${openedfileDetails.user.first_name} ${openedfileDetails.user.last_name}`}</div>
+                            <div className="hr-details"></div>
+                          </div>
+                          <div className="commit-field">
+                            <Input
+                              label={"Commit message"}
+                              name={"Commit-message"}
+                              type={"text"}
+                              onchange={handleCommitMessage}
+                            />
+                            <div className="input-upload-file">
+                              <label className="btn" htmlFor="updated-file">
+                                Updated File
+                              </label>
+                              <input
+                                type="file"
+                                name="update file"
+                                id="updated-file"
+                                onChange={(e) => {
+                                  setUpdate(e.target.files[0]);
+                                  handleCompare(e, openedfileDetails.path_dxf);
+                                }}
+                                className="none"
+                              />
+                              <div>{update.name}</div>
+                            </div>
+
+                            <div
+                              className="check-conflict btn"
+                              onClick={() => {
+                                displayConflict();
+                                openModal();
+                              }}>
+                              check-conflict
+                            </div>
+
+                            <button
+                              className="btn"
+                              onClick={() =>
+                                submitCommit(openedfileDetails.path_dxf)
+                              }>
+                              update file
+                            </button>
+                          </div>
+                          <div className="show-file-details">FileDetails</div>
+                          <div className="commit-tracker">
+                            {" "}
+                            <Listbox value={selected} onChange={setSelected}>
+                              {({ open }) => (
+                                <>
+                                  <Listbox.Label className="block text-sm font-medium leading-6 text-gray-900">
+                                    Assigned to
+                                  </Listbox.Label>
+                                  <div className="relative mt-2">
+                                    <Listbox.Button className="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6">
+                                      <span className="flex items-center">
+                                        <img
+                                          src={selected.avatar}
+                                          alt=""
+                                          className="h-5 w-5 flex-shrink-0 rounded-full"
+                                        />
+                                        <span className="ml-3 block truncate">
+                                          {selected.name}
+                                        </span>
+                                      </span>
+                                      <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
+                                        <ChevronUpDownIcon
+                                          className="h-5 w-5 text-gray-400"
+                                          aria-hidden="true"
+                                        />
+                                      </span>
+                                    </Listbox.Button>
+
+                                    <Transition
+                                      show={open}
+                                      as={Fragment}
+                                      leave="transition ease-in duration-100"
+                                      leaveFrom="opacity-100"
+                                      leaveTo="opacity-0">
+                                      <Listbox.Options className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                        {people.map((person) => (
+                                          <Listbox.Option
+                                            key={person.id}
+                                            className={({ active }) =>
+                                              classNames(
+                                                active
+                                                  ? "bg-indigo-600 text-white"
+                                                  : "text-gray-900",
+                                                "relative cursor-default select-none py-2 pl-3 pr-9"
+                                              )
+                                            }
+                                            value={person}>
+                                            {({ selected, active }) => (
+                                              <>
+                                                <div className="flex items-center">
+                                                  <img
+                                                    src={person.avatar}
+                                                    alt=""
+                                                    className="h-5 w-5 flex-shrink-0 rounded-full"
+                                                  />
+                                                  <span
+                                                    className={classNames(
+                                                      selected
+                                                        ? "font-semibold"
+                                                        : "font-normal",
+                                                      "ml-3 block truncate"
+                                                    )}>
+                                                    {person.name}
+                                                  </span>
+                                                </div>
+
+                                                {selected ? (
+                                                  <span
+                                                    className={classNames(
+                                                      active
+                                                        ? "text-white"
+                                                        : "text-indigo-600",
+                                                      "absolute inset-y-0 right-0 flex items-center pr-4"
+                                                    )}>
+                                                    <CheckIcon
+                                                      className="h-5 w-5"
+                                                      aria-hidden="true"
+                                                    />
+                                                  </span>
+                                                ) : null}
+                                              </>
+                                            )}
+                                          </Listbox.Option>
+                                        ))}
+                                      </Listbox.Options>
+                                    </Transition>
+                                  </div>
+                                </>
+                              )}
+                            </Listbox>
+                          </div>
+
+                          <button className="btn delete">delete file</button>
+                        </div>
+                      </div>
+                    </Dialog.Panel>
+                  </Transition.Child>
+                </div>
               </div>
-              <div className="file-details-user">{`${openedfileDetails.user.first_name} ${openedfileDetails.user.last_name}`}</div>
-              <div className="hr-details"></div>
             </div>
-            <div className="commit-field">
-              <Input
-                label={"Commit message"}
-                name={"Commit-message"}
-                type={"text"}
-                onchange={handleCommitMessage}
-              />
-              <div className="input-upload-file">
-                <label className="btn" htmlFor="updated-file">
-                  Updated File
-                </label>
-                <input
-                  type="file"
-                  name="update file"
-                  id="updated-file"
-                  onChange={(e) => {
-                    setUpdate(e.target.files[0]);
-                    handleCompare(e, openedfileDetails.path_dxf);
-                  }}
-                  className="none"
-                />
-                <div>{update.name}</div>
-              </div>
+          </Dialog>
+        </Transition.Root>
 
-              <div
-                className="check-conflict btn"
-                onClick={() => {
-                  displayConflict();
-                  openModal();
-                }}>
-                check-conflict
-              </div>
-
-              <button
-                className="btn"
-                onClick={() => submitCommit(openedfileDetails.path_dxf)}>
-                update file
-              </button>
-            </div>
-            <div className="show-file-details">{FileDetails}</div>
-
-            <button className="btn delete">delete file</button>
-          </div>
-        )}
+        {/* {openOption && (
+         
+        )} */}
       </div>
       <Modal
         isOpen={modalIsOpen}
