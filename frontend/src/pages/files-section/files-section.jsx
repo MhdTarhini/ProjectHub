@@ -4,7 +4,9 @@ import "./files-section.css";
 import Modal from "react-modal";
 import Input from "../../component/input/input";
 import axios from "axios";
+
 import FilesContainer from "../../component/FilesContainer/filesContainer";
+import Branches from "../../component/branches/branches";
 
 function FilesSection() {
   const [file, setfile] = useState([]);
@@ -19,11 +21,9 @@ function FilesSection() {
   function openModal() {
     setIsOpen(true);
   }
-
   function closeModal() {
     setIsOpen(false);
   }
-
   function handleUpload(e) {
     const file_uploaded = e.target.files[0];
     if (file_uploaded) {
@@ -44,7 +44,7 @@ function FilesSection() {
   }
   axios.defaults.headers.common[
     "Authorization"
-  ] = `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2d1ZXN0L2xvZ2luIiwiaWF0IjoxNjk0OTAxNzczLCJleHAiOjE2OTQ5MDUzNzMsIm5iZiI6MTY5NDkwMTc3MywianRpIjoiZkdFbHcweUJDcHF0STFZYSIsInN1YiI6IjMiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.wxEFWcPntHwA1dgNjK-EqLc0fB8SmIeO_6eDaOiQ7J8`;
+  ] = `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2d1ZXN0L2xvZ2luIiwiaWF0IjoxNjk0OTI0NzQyLCJleHAiOjE2OTQ5MjgzNDIsIm5iZiI6MTY5NDkyNDc0MiwianRpIjoiTm1BQXRxbWZDYlJTUXEwVCIsInN1YiI6IjMiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.7jBIfUC0pPLEfebyFcc5YjIiKQa7GPKJNp40-GhyNpI`;
   async function handleSubmitUpload() {
     const data = new FormData();
     data.append("name", fileName);
@@ -101,7 +101,9 @@ function FilesSection() {
         </div>
         <div className="hr"></div>
         <div className="branches-filter">
-          <div>branches</div>
+          <div className="branches">
+            <Branches />
+          </div>
           <div>Fileter</div>
         </div>
         <div className="hr"></div>

@@ -12,14 +12,14 @@ class CommitController extends Controller
 {
     function addCommit(Request $request){
         $request->validate([
-        'message' => 'required|string|max:255',
-        'old_path_dxf' => 'required|string|max:255',
-        'new_path_dxf' => 'required|file|mimes:txt,dxf',
-        'compare_path_svg' => 'required|string',
-        'version' => 'required|string|max:255',
-        'status' => 'required|integer',
-        'user_id' => 'required|integer', 
-        'file_id' => 'required|integer', 
+            'message' => 'required|string|max:255',
+            'old_path_dxf' => 'required|string|max:255',
+            'new_path_dxf' => 'required|file|mimes:txt,dxf',
+            'compare_path_svg' => 'required|string',
+            'version' => 'required|string|max:255',
+            'status' => 'required|integer',
+            'user_id' => 'required|integer', 
+            'file_id' => 'required|integer', 
         ]);
 
         $file = $request->file('new_path_dxf');
