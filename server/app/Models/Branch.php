@@ -5,18 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Branche extends Model
+class Branch extends Model
 {
     use HasFactory;
     protected $appends = ['members','project'];
 
        public function getMembersAttribute()
     {
-        return $this->hasMany(BrancheMember::class, 'branche_id');
+        return $this->hasMany(BranchMember::class, 'branche_id');
     }
        public function members()
     {
-        return $this->hasMany(BrancheMember::class, 'branche_id');
+        return $this->hasMany(BranchMember::class, 'branche_id');
     }
        public function project()
     {

@@ -6,20 +6,25 @@ import Register from "./pages/register/register";
 import Login from "./pages/login/login";
 import FilesSection from "./pages/files-section/files-section";
 import "./utilities.css";
-
+import { AuthContextProvider } from "./context/authContext";
+import { ProjectContextProvider } from "./context/ProjectContext";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<OutletPage />}>
-          {/* <Route index element={<Dashboard />} /> */}
-          <Route index element={<FilesSection />} />
-        </Route>
-        {/* <Route path="/register" element={<Register />} /> */}
-        {/* <Route path="/" element={<Login />} /> */}
-      </Routes>
-    </BrowserRouter>
+    <AuthContextProvider>
+      <ProjectContextProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<OutletPage />}>
+              {/* <Route index element={<Dashboard />} /> */}
+              <Route index element={<FilesSection />} />
+            </Route>
+            {/* <Route path="/register" element={<Register />} /> */}
+            {/* <Route path="/" element={<Login />} /> */}
+          </Routes>
+        </BrowserRouter>
+      </ProjectContextProvider>
+    </AuthContextProvider>
   );
 }
 

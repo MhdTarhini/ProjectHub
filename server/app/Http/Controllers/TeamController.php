@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class BrancheMemberController extends Controller
+class TeamController extends Controller
 {
     //
 }

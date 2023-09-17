@@ -97,3 +97,6 @@
 .branches {
     width: 150px;
 }
+.menu {
+    z-index: 1;
+}

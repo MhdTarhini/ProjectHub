@@ -29,7 +29,7 @@ function FilesContainer({ branche, file }) {
 
   async function handleGetFiles() {
     const data = new FormData();
-    data.append("branche_id", 1);
+    data.append("branche_id", branche);
     data.append("project_id", 1);
     try {
       const response = await axios.post(
@@ -100,10 +100,13 @@ function FilesContainer({ branche, file }) {
       console.error(error);
     }
   }
+  useEffect(() => {
+    handleGetFiles();
+  }, [branche]);
+
   let accumulatedData = [];
   let isDuplicate = false;
   useEffect(() => {
-    handleGetFiles();
     window.electron.on(channels.Compare_Data_IsDone, (data) => {
       setCompareSuccess(true);
       if (!isDuplicate) {

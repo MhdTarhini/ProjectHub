@@ -1,9 +1,10 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\BrancheController;
+use App\Http\Controllers\BranchController;
 use App\Http\Controllers\CommitController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\MemberController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,7 +26,11 @@ Route::group(["middleware" => "auth:api"], function(){
             Route::get("get_dxf_Data/{id?}", [FileController::class, "getdxfFileData"]);
             Route::post("add_commit", [CommitController::class, "addCommit"]);
             Route::post("check_conflict", [CommitController::class, "checkConflict"]);
-            Route::get("get_branches/{project_id?}", [BrancheController::class, "getBranches"]);
+            Route::get("get_branches/{project_id?}", [BranchController::class, "getBranches"]);
+        });
 
+        Route::group(["prefix" => "common"], function(){
+            Route::get("get_project_Member/{project_id?}", [MemberController::class, "getProjectMember"]);
+          
         });
 });

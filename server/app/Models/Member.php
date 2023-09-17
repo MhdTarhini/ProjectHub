@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class BrancheMember extends Model
+class Member extends Model
 {
     use HasFactory;
-    protected $appends = ['users','branch'];
-        public function getBranchAttribute()
+    protected $appends = ['users'];
+        public function team()
     {
-        return $this->belongsTo(Branche::class, 'branche_id');
-    }
+        return $this->belongsTo(Team::class);
+    }   
         public function getUsersAttribute()
     {
         return $this->belongsTo(User::class , "user_id");
