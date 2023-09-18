@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('compare_path_svg');
             $table->string('version');
             $table->string('status');
-            $table->unsignedBigInteger('file_id');
+            $table->unsignedBigInteger('file_id')->nullable();
             $table->foreign('file_id')->references('id')->on('files');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');

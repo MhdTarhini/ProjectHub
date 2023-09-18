@@ -158,7 +158,6 @@
     justify-content: space-between;
     align-items: center;
     padding: 0px 10px;
-    cursor: pointer;
     border: 1px solid var(--stroke, #E8E8E8);
     background: #f3f3f3;
     border-radius: 10px;
@@ -204,6 +203,7 @@
 
 .show-file-details {
     padding: 10px;
+    width: 100%;
     border: 1px solid var(--stroke, #E8E8E8);
 }
 .check-conflict-model {
@@ -216,12 +216,15 @@
     left: 20%;
     border: 1px solid var(--stroke, #E8E8E8);
     background: #FFF;
-    transition: opacity 0.3s ease-in-out; /* Add a smooth opacity transition */
-    z-index: 1000; /* Adjust the z-index as needed */
+    transition: opacity 0.3s ease-in-out;
+        z-index: 1000;
 }
 .close {
     align-self: flex-end;
     position: absolute;
+}
+.svg-image {
+    z-index: 1000;
 }
 
 .commit-field-title {
@@ -231,73 +234,94 @@
 
 .input-upload-file {
     display: flex;
-    align-items: center;
-        margin-left: 5px;
+        gap: 10px;
+            margin: 0px 10px;
+            align-self: center;
         width: 100%;
+        margin-left: 20px;
 }
 
 .updated-file {
     background-color: #07a6f0;
     align-self: flex-start;
     width: 180px;
-        display: flex;
+    display: flex;
         justify-content: center;
         align-items: center;
     }
     
-    .updated-file:hover {
-        background-color: #21b4f8;
+.updated-file:hover {
+    background-color: #21b4f8;
+}
+    
+.zindex {
+    z-index: 9999;
+}
+.loading-green{
+    background-color: rgb(159, 254, 17) !important;
+}
+    
+.on-procress {
+    cursor: not-allowed;
+    background: #73bff5fa;
+    padding: 10px 20px;
+    gap: 10px;
+    align-self: center;
+    color: #FFF;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 8px;
+}
+
+.on-procress:hover {
+    background: #73bff5fa;
+}
+    
+.number-of-letter {
+    font-size: 13px;
+    align-self: flex-end;
+    margin-right: 5px;
+}
+.download-icon {
+    display: flex;
+    gap: 10px;
+}
+
+.view-svg {
+    cursor: pointer;
+}
+
+.download-dxf-file {
+    cursor: pointer;
+}
+.check-commit {
+    display: flex;
+    gap: 10px;
+    margin: 10px;
+    align-self: center;
+    width: 100%;
+    margin-left: 20px;
     }
     
-    .zindex {
-        z-index: 9999;
-    }
+.btn-commit {
+    width: 180px;
+    text-align: center;
+}
     
-    .on-procress {
-        cursor: none;
-        background: #73bff5fa;
-        padding: 10px 20px;
-        gap: 10px;
-        align-self: center;
-        color: #FFF;
-        font-size: 16px;
-        font-weight: 700;
-        border-radius: 8px;
+.btn-check {
+    width: 180px;
+    text-align: center;
+}
+    .color-btn-check {
+background-color: rgb(5, 255, 5);
+}
     
-    }
+.color-btn-check:hover {
+    background-color: rgb(70, 253, 70);
     
-    .number-of-letter {
-        font-size: 13px;
-        align-self: flex-end;
-        margin-right: 5px;
-    }
+}
     
-    .check-commit {
-        display: flex;
-        gap: 10px;
-        margin: 10px;
-        align-self: center;
-        width: 100%;
-        margin-left: 20px;
-    }
-    
-    .btn-commit {
-        width: 180px;
-        text-align: center;
-    }
-    
-    .btn-check {
-        width: 180px;
-        text-align: center;
-        background-color: rgb(5, 255, 5);
-    }
-    
-    .btn-check:hover {
-        background-color: rgb(70, 253, 70);
-    
-    }
-    
-    .push {
+.push {
     margin: 10px;
     width: 93%;
 }
@@ -305,4 +329,13 @@
 .top-side-details {
     font-weight: 700;
     font-size: 20px;
+}
+.btn-delete-file {
+    margin-top: 10px;
+    width: 90%;
+}
+
+.btn-commit-check {
+    margin-top: 10px;
+    width: 100%;
 }

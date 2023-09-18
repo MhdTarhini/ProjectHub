@@ -111,9 +111,23 @@
 }
 .branches {
     width: 150px;
+    display: flex;
+        align-items: center;
+        gap: 10px;
 }
-.menu-items {
-    z-index: 188
+
+.branche-naming{
+    margin-left: 30px;
+}
+    
+    
+.menu {
+    position: absolute;
+        z-index: 1;
+
+}
+.menu-items{
+    z-index: 1;
 }
 .branche-model{
     justify-content: space-around;

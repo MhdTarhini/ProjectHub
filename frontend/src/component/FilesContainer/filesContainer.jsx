@@ -11,6 +11,7 @@ import { Listbox } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import base64 from "base-64";
 import Loading from "../common/loading";
+import Message from "../common/Message/message";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -46,27 +47,42 @@ function FilesContainer({ branche, file, updateFile }) {
   const [mainDxfId, setMainDxfId] = useState("");
   const [CheckFileIsOpen, setCheckFileIsOpen] = useState(false);
   const [seletedFile, setSeletedFile] = useState("");
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [errorLocal, setLocalError] = useState(false);
+  const [errorLocalMessage, setLocalErrorMessage] = useState("");
+  const [errorMain, setMainError] = useState(false);
+  const [errorMainMessage, setMainErrorMessage] = useState("");
+  const [isLoading, setIsloading] = useState(false);
+  const [isDone, setIsDone] = useState(false);
+  const [noMainMatch, setNoMainMatch] = useState(false);
 
   function openModal() {
+    setIsloading(false);
     setIsOpen(true);
   }
 
   function closeModal() {
     setIsOpen(false);
+    setIsloading(false);
   }
   function openCommitModal() {
     setCheckCommitIsOpen(true);
+    setIsloading(false);
   }
 
   function closeCheckCommit() {
     setCheckCommitIsOpen(false);
+    setIsloading(false);
   }
   function openFileModal() {
     setCheckFileIsOpen(true);
+    setIsloading(false);
   }
 
   function closeCheckFile() {
     setCheckFileIsOpen(false);
+    setIsloading(false);
   }
 
   async function handleCommitMain(
@@ -79,7 +95,7 @@ function FilesContainer({ branche, file, updateFile }) {
   ) {
     const data = new FormData();
     data.append("message", mainCommitMessage);
-    data.append("file_id", mainDxfId);
+    data.append("file_id", mainDxfId.length > 0 ? mainDxfId : null);
     data.append("new_path_svg", new_path_svg);
     data.append("new_path_dxf", new_path_dxf);
     data.append("old_path_dxf", old_path_dxf);
@@ -92,8 +108,10 @@ function FilesContainer({ branche, file, updateFile }) {
         data
       );
       const commitData = await response.data;
+      setIsloading(false);
     } catch (error) {
-      console.error(error);
+      setMainError(true);
+      setMainErrorMessage(error.response.data.message);
     }
   }
 
@@ -105,7 +123,8 @@ function FilesContainer({ branche, file, updateFile }) {
       const commitData = await response.data;
       setAllCommit(commitData.data);
     } catch (error) {
-      console.error(error);
+      setError(true);
+      setErrorMessage(error.response.data.message);
     }
   }
 
@@ -121,7 +140,8 @@ function FilesContainer({ branche, file, updateFile }) {
       const files = await response.data;
       setGetFiles(files.data);
     } catch (error) {
-      console.error(error);
+      setError(true);
+      setErrorMessage(error.response.data.message);
     }
   }
   function handleCompare(e, old_version_path) {
@@ -152,11 +172,16 @@ function FilesContainer({ branche, file, updateFile }) {
         data
       );
       const dxf_path = await response.data;
-      setMainDxfPath(dxf_path.dxf_path);
-      setMainDxfVersion(dxf_path.version);
-      setMainDxfId(dxf_path.id);
+      if (response.data.status === "success") {
+        setMainDxfPath(dxf_path.dxf_path);
+        setMainDxfVersion(dxf_path.version);
+        setMainDxfId(dxf_path.id);
+      } else {
+        setNoMainMatch(true);
+      }
     } catch (error) {
-      console.error(error);
+      setMainError(true);
+      setMainErrorMessage(error.response.data.message);
     }
   }
 
@@ -168,6 +193,7 @@ function FilesContainer({ branche, file, updateFile }) {
   }
 
   function CompareWithMain(main_file_path, local_file_path) {
+    setCompareSuccess(false);
     window.electron.send(channels.Compare_Main_Data, {
       main_file_path,
       local_file_path,
@@ -175,6 +201,7 @@ function FilesContainer({ branche, file, updateFile }) {
   }
 
   function getDxfData(file_dxf) {
+    setDetailsSuccess(false);
     window.electron.send(channels.Get_Details, { file_dxf });
   }
 
@@ -196,8 +223,10 @@ function FilesContainer({ branche, file, updateFile }) {
       );
       const commitInfo = await response.data;
       setCommitInfo(commitInfo.data);
+      setIsloading(false);
     } catch (error) {
-      console.error(error);
+      setLocalError(true);
+      setLocalErrorMessage(error.response.data.message);
     }
   }
   async function displayConflict(svg_data) {
@@ -210,11 +239,14 @@ function FilesContainer({ branche, file, updateFile }) {
       );
       const conflictSVG = await response.data;
       setConflitSvg(conflictSVG.data);
+      setIsloading(false);
     } catch (error) {
-      console.error(error);
+      setMainError(true);
+      setMainErrorMessage(error.response.data.message);
     }
   }
   function handleUpload(e) {
+    setSvgSuccess(false);
     const file_uploaded = e.target.files[0];
     if (file_uploaded) {
       const reader = new FileReader();
@@ -225,7 +257,8 @@ function FilesContainer({ branche, file, updateFile }) {
       };
       reader.readAsDataURL(file_uploaded);
     } else {
-      console.log("No file uploaded");
+      setLocalError(true);
+      setLocalErrorMessage("No file uploaded");
     }
   }
   async function handleLocalPush() {
@@ -239,9 +272,12 @@ function FilesContainer({ branche, file, updateFile }) {
       const IsPushed = await response.data;
       if (IsPushed.status === "success") {
         setIsPushed(true);
+        setIsloading(false);
+        setIsDone(true);
       }
     } catch (error) {
-      console.error(error);
+      setLocalError(true);
+      setLocalErrorMessage(error.response.data.message);
     }
   }
   useEffect(() => {
@@ -253,26 +289,32 @@ function FilesContainer({ branche, file, updateFile }) {
       const decodedData = base64.decode(data);
       setCompareResult(decodedData);
       setCompareSuccess(true);
+      setIsloading(false);
     });
     window.electron.on(channels.Compare_Main_Data_IsDone, (data) => {
       const decodedData = base64.decode(data);
       setMainCompareResult(decodedData);
       displayConflict(decodedData);
       setMainCompareSuccess(true);
+      setIsloading(false);
     });
     window.electron.on(channels.Get_Details_IsDone, (data) => {
       setFileDetails(data);
       setDetailsSuccess(true);
+      setIsloading(false);
     });
     window.electron.on(channels.Covert_Data_to_svg_IsDone, (data) => {
       const decodedData = base64.decode(data);
       setGetSvg(decodedData);
       setSvgSuccess(true);
+      setIsloading(false);
     });
   }, []);
   return (
     <>
       <div className="files-controller">
+        {isDone && <Message text={"File Is Pushed To Main Branch"} />}
+
         <div className="card-container">
           {getFiles.map((file) => {
             return (
@@ -313,6 +355,10 @@ function FilesContainer({ branche, file, updateFile }) {
             onClose={() => {
               setOpen(false);
               closeCheckFile();
+              setUpdate([]);
+              setCompareResult([]);
+              closeCheckCommit();
+              closeModal();
             }}>
             <Transition.Child
               as={Fragment}
@@ -367,10 +413,7 @@ function FilesContainer({ branche, file, updateFile }) {
                         <div className="relative mt-6 flex-1 px-4 sm:px-6">
                           <div className="file-details-title">
                             <div className="square"></div>
-                            <div>
-                              {openedfileDetails.name.charAt(0).toUpperCase() +
-                                openedfileDetails.name.slice(1)}
-                            </div>
+                            <div>{openedfileDetails.name}</div>
                           </div>
                           <div className="download-dxf">
                             <div>
@@ -389,23 +432,55 @@ function FilesContainer({ branche, file, updateFile }) {
                               </div>
                             </div>
                             <div className="download-icon">
-                              <svg
-                                width="30px"
-                                height="30px"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <g id="Interface / Download">
-                                  <path
-                                    id="Vector"
-                                    d="M6 21H18M12 3V17M12 17L17 12M12 17L7 12"
-                                    stroke="#000000"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                  />
-                                </g>
-                              </svg>
+                              <div className="view-svg" onClick={openFileModal}>
+                                <svg
+                                  width="30px"
+                                  height="30px"
+                                  viewBox="0 -4 20 20"
+                                  version="1.1"
+                                  className="view_svg">
+                                  <defs></defs>
+                                  <g
+                                    id="Page-1"
+                                    stroke="none"
+                                    stroke-width="1"
+                                    fill="none"
+                                    fill-rule="evenodd">
+                                    <g
+                                      id="Dribbble-Light-Preview"
+                                      transform="translate(-260.000000, -4563.000000)"
+                                      fill="#000000">
+                                      <g
+                                        id="icons"
+                                        transform="translate(56.000000, 160.000000)">
+                                        <path
+                                          d="M216,4409.00052 C216,4410.14768 215.105,4411.07682 214,4411.07682 C212.895,4411.07682 212,4410.14768 212,4409.00052 C212,4407.85336 212.895,4406.92421 214,4406.92421 C215.105,4406.92421 216,4407.85336 216,4409.00052 M214,4412.9237 C211.011,4412.9237 208.195,4411.44744 206.399,4409.00052 C208.195,4406.55359 211.011,4405.0763 214,4405.0763 C216.989,4405.0763 219.805,4406.55359 221.601,4409.00052 C219.805,4411.44744 216.989,4412.9237 214,4412.9237 M214,4403 C209.724,4403 205.999,4405.41682 204,4409.00052 C205.999,4412.58422 209.724,4415 214,4415 C218.276,4415 222.001,4412.58422 224,4409.00052 C222.001,4405.41682 218.276,4403 214,4403"
+                                          id="view_simple-[#815]"></path>
+                                      </g>
+                                    </g>
+                                  </g>
+                                </svg>
+                              </div>
+                              <div className="download-dxf-file">
+                                <svg
+                                  width="30px"
+                                  height="30px"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="download-dxf-file">
+                                  <g id="Interface / Download">
+                                    <path
+                                      id="Vector"
+                                      d="M6 21H18M12 3V17M12 17L17 12M12 17L7 12"
+                                      stroke="#000000"
+                                      stroke-width="2"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                    />
+                                  </g>
+                                </svg>
+                              </div>
                             </div>
                           </div>
                           <div className="side-details-file">
@@ -435,6 +510,10 @@ function FilesContainer({ branche, file, updateFile }) {
                               </div>
                             </div>
                             <div className="hr-details"></div>
+                            <div className="show-file-details">
+                              {FileDetails}
+                            </div>
+                            <div className="hr-details"></div>
                             <div className="commit-field">
                               <div className="commit-field-title">
                                 Local Commit
@@ -448,9 +527,12 @@ function FilesContainer({ branche, file, updateFile }) {
                               <div className="number-of-letter">
                                 {commitMessage.length}/50
                               </div>
+
                               <div className="input-upload-file">
                                 <label
-                                  className="btn updated-file"
+                                  className={`btn updated-file ${
+                                    isLoading ? "loading-green" : "n"
+                                  }`}
                                   htmlFor="updated-file">
                                   <div className="download-icon">
                                     <svg
@@ -472,7 +554,7 @@ function FilesContainer({ branche, file, updateFile }) {
                                       </g>
                                     </svg>
                                   </div>
-                                  File
+                                  {isLoading ? <Loading /> : <div>File</div>}
                                 </label>
                                 <input
                                   type="file"
@@ -480,6 +562,7 @@ function FilesContainer({ branche, file, updateFile }) {
                                   name="update file"
                                   id="updated-file"
                                   onChange={(e) => {
+                                    setIsloading(true);
                                     setUpdate(e.target.files[0]);
                                     handleCompare(
                                       e,
@@ -491,7 +574,9 @@ function FilesContainer({ branche, file, updateFile }) {
                                 />
                                 <div
                                   className={` btn-check ${
-                                    compareSuccess ? "btn" : "on-procress"
+                                    compareSuccess
+                                      ? "btn color-btn-check"
+                                      : "on-procress"
                                   }`}
                                   onClick={() => {
                                     displayConflict(CompareResult);
@@ -505,26 +590,34 @@ function FilesContainer({ branche, file, updateFile }) {
                                 <button
                                   className={` btn-commit ${
                                     compareSuccess ? "btn" : "on-procress"
-                                  }`}
-                                  onClick={() =>
+                                  } ${isLoading ? "loading-green" : "n"}`}
+                                  onClick={() => {
+                                    setIsloading(true);
                                     submitCommit(
                                       openedfileDetails.path_dxf,
                                       openedfileDetails.version,
                                       openedfileDetails.id
-                                    )
-                                  }>
+                                    );
+                                  }}>
                                   Commit
                                 </button>
                                 <button
-                                  className="btn btn-commit"
-                                  onClick={handleLocalPush}>
+                                  className={` btn-commit ${
+                                    compareSuccess ? "btn" : "on-procress"
+                                  }`}
+                                  onClick={()=>{
+                                    setOpen(false);
+                                    handleLocalPush()}}>
                                   Push
                                 </button>
                               </div>
+                              {errorLocal && (
+                                <div className="error">{errorLocalMessage}</div>
+                              )}
                               <div className="hr-details"></div>
                             </div>
                           </div>
-                          <div className="show-file-details">FileDetails</div>
+
                           <div className="commit-tracker">
                             <Listbox value={selected} onChange={setSelected}>
                               {({ open }) => (
@@ -615,13 +708,16 @@ function FilesContainer({ branche, file, updateFile }) {
                             </Listbox>
                           </div>
                           <button
-                            className="btn"
+                            className="btn btn-commit-check"
                             onClick={() => {
                               setSelected(["commit message </> version"]);
+                              closeCheckFile();
                               openCommitModal();
                             }}>
                             Check Commit
                           </button>
+                          <div className="hr-details"></div>
+
                           {branche.team_id == null && (
                             <>
                               <Input
@@ -633,16 +729,25 @@ function FilesContainer({ branche, file, updateFile }) {
                               <button
                                 className="btn"
                                 onClick={() => {
-                                  handleCommitMain(
-                                    conflictSvg,
-                                    openedfileDetails.path_svg,
-                                    mainDxfPath,
-                                    openedfileDetails.path_dxf,
-                                    mainDxfVersion,
-                                    0,
-                                    openedfileDetails.id,
-                                    openedfileDetails.name
-                                  );
+                                  if (noMainMatch) {
+                                    handleCommitMain(
+                                      null,
+                                      openedfileDetails.path_svg,
+                                      null,
+                                      openedfileDetails.path_dxf,
+                                      null,
+                                      0
+                                    );
+                                  } else {
+                                    handleCommitMain(
+                                      conflictSvg,
+                                      openedfileDetails.path_svg,
+                                      mainDxfPath,
+                                      openedfileDetails.path_dxf,
+                                      mainDxfVersion,
+                                      0
+                                    );
+                                  }
                                 }}>
                                 commit to main
                               </button>
@@ -653,15 +758,20 @@ function FilesContainer({ branche, file, updateFile }) {
                                     mainDxfPath,
                                     openedfileDetails.path_dxf
                                   );
+                                  closeCheckFile();
                                   openModal();
                                 }}>
-                                check-conflict
+                                Check
                               </div>
+                              {errorMain && (
+                                <div className="error">{errorMainMessage}</div>
+                              )}
                             </>
                           )}
-
-                          <button className="btn delete">delete file</button>
                         </div>
+                        <button className="btn delete btn-delete-file">
+                          delete file
+                        </button>
                       </div>
                     </Dialog.Panel>
                   </Transition.Child>
@@ -676,11 +786,11 @@ function FilesContainer({ branche, file, updateFile }) {
         onRequestClose={closeModal}
         ariaHideApp={false}
         className="check-conflict-model">
-        <div className="btns close">
+        {/* <div className="btns close">
           <button className="btn" onClick={closeModal}>
             X
           </button>
-        </div>
+        </div> */}
         <img
           src={conflictSvg}
           style={{ height: 700 }}
@@ -694,11 +804,11 @@ function FilesContainer({ branche, file, updateFile }) {
         onRequestClose={closeCheckCommit}
         ariaHideApp={false}
         className="check-conflict-model zindex">
-        <div className="btns close">
+        {/* <div className="btns close">
           <button className="btn" onClick={closeCheckCommit}>
             X
           </button>
-        </div>
+        </div> */}
         <img
           src={seletedCommitSVG}
           style={{ height: 700 }}

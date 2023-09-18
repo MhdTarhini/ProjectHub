@@ -124,14 +124,20 @@ class CommitController extends Controller
  function addMainCommit(Request $request){
         $request->validate([
             'message' => 'required|string|max:255',
-            'old_path_dxf' => 'required|string|max:255',
+            'old_path_dxf' => 'required|string|max:255|null',
             'new_path_dxf' => 'required|string|max:255',
             'new_path_svg' => 'required|string',
-            'compare_path_svg' => 'required|string',
-            'version' => 'required|string|max:255',
+            'compare_path_svg' => 'required|string|null',
+            'version' => 'required|string|max:255|null',
             'status' => 'required|integer',
-            'file_id' => 'required|integer', 
+            'file_id' => 'required|integer|null', 
         ]);
+
+        if($request->version==null){
+            $fileVersion=1;
+        }else{
+            $fileVersion=$request->version+1;
+        }
 
 
         $commit=new Commit;
@@ -140,7 +146,7 @@ class CommitController extends Controller
         $commit->compare_path_svg = $request->compare_path_svg;
         $commit->new_path_svg = $request->new_path_svg;
         $commit->old_path_dxf = $request->old_path_dxf;
-        $commit->version = $request->version+1;
+        $commit->version = $fileVersion;
         $commit->status = $request->status;
         $commit->user_id = Auth::id();
         $commit->file_id =$request->file_id;

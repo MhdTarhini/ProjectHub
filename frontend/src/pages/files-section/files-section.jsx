@@ -79,11 +79,11 @@ function FilesSection() {
     setError(false);
     setFileName(e.target.value);
   }
-
+  let selected_users_id = [3, 4];
   function newBranch() {
     const data = new FormData();
-    let selected_users_id = [];
     selected.map((select) => {
+      console.log(select);
       selected_users_id.push(select.value);
     });
     data.append("members", selected_users_id);
@@ -101,7 +101,7 @@ function FilesSection() {
   }
   axios.defaults.headers.common[
     "Authorization"
-  ] = `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2d1ZXN0L2xvZ2luIiwiaWF0IjoxNjk1MDI3ODM3LCJleHAiOjE2OTUwMzE0MzcsIm5iZiI6MTY5NTAyNzgzNywianRpIjoiYW9Mbk05Rm5PRHpJSGpXVSIsInN1YiI6IjMiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.xdj0wUQ7tpKH2SmuS5QFGR9J3mmRYr10A6mnoFY_0eQ`;
+  ] = `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2d1ZXN0L2xvZ2luIiwiaWF0IjoxNjk1MDQ4NjAxLCJleHAiOjE2OTUwNTIyMDEsIm5iZiI6MTY5NTA0ODYwMSwianRpIjoieHZ0Nm9HZXdydFFKanhXRiIsInN1YiI6IjMiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.KHUlMkX97j1R4Cc76OqMQrJ51fSdUg4Q78UuzXzMBnA`;
   async function handleSubmitUpload() {
     const data = new FormData();
     data.append("name", fileName);
@@ -178,8 +178,20 @@ function FilesSection() {
               as="div"
               className="relative inline-block text-left w-100 menu">
               <div>
-                <Menu.Button className="inline-flex items-center w-full justify-center gap-x-1.5 rounded-md bg-white px-20 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-                  Branches
+                <Menu.Button
+                  style={{
+                    justifyContent: "space-between",
+                    width: "200px",
+                    padding: "10px 15px",
+                  }}
+                  className="inline-flex items-center w-full justify-center gap-x-1.5 rounded-md bg-white px-20 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                  <div className="branch-naming">
+                    {selectedBranche.name ? (
+                      <div>{selectedBranche.name}</div>
+                    ) : (
+                      <div>Branches</div>
+                    )}
+                  </div>
                   <ChevronDownIcon
                     className="-mr-1 h-5 w-5 text-gray-400"
                     aria-hidden="true"
