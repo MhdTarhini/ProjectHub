@@ -110,5 +110,10 @@ function getFilePath(Request $request){
     }
 }
 
+function downloadFile($file_name){
+    $path = public_path('storage/'.$file_name);
+    return response()->download($path);
+}
+
 
 }

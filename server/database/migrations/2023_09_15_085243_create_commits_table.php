@@ -18,13 +18,13 @@ return new class extends Migration
             $table->string('new_path_dxf');
             $table->string('new_path_svg');
             $table->string('compare_path_svg')->nullable();
-            $table->string('status');
+            $table->string('commit_unique_id');
             $table->string('status');
             $table->unsignedBigInteger('file_id')->nullable();
             $table->foreign('file_id')->references('id')->on('files');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-
+            
             $table->timestamps();
         });
     }

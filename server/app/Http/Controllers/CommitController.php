@@ -7,6 +7,8 @@ use App\Models\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Nette\Utils\Random;
+use Illuminate\Support\Str;
 
 class CommitController extends Controller
 {
@@ -17,11 +19,12 @@ class CommitController extends Controller
             'new_path_dxf' => 'required|file|mimes:txt,dxf',
             'new_path_svg' => 'required|string',
             'compare_path_svg' => 'required|string',
-            'version' => 'required|string|max:255',
             'status' => 'required|integer',
             'user_id' => 'required|integer', 
-            'file_id' => 'required|integer', 
+            'file_id' => 'required|integer',
+            $commit_unique_id = Str::random()
         ]);
+
 
         $file = $request->file('new_path_dxf');
         if ($file) {
@@ -35,10 +38,9 @@ class CommitController extends Controller
 
         $file_id = File::where('id', $request->file_id)->first(); 
         if ($file_id) {
-            $file_name = $file_id->name;
-            $dxf = $file_name . "-" . $request->version+1 . ".dxf";
-            $svg_compared = $file_name . "-" . $request->version+1 . "- compered" . ".svg";
-            $svg = $file_name . "-" . $request->version+1 . ".svg";
+            $dxf = $commit_unique_id.".dxf";
+            $svg_compared = $commit_unique_id . "- compered" . ".svg";
+            $svg = $commit_unique_id. ".svg";
             
 
         } else {
@@ -59,10 +61,10 @@ class CommitController extends Controller
         $commit->compare_path_svg = "http://127.0.0.1:8000/storage/".$svg_compared;
         $commit->new_path_svg = "http://127.0.0.1:8000/storage/".$svg;
         $commit->old_path_dxf = $request->old_path_dxf;
-        $commit->version = $request->version+1;
         $commit->status = $request->status;
         $commit->user_id = Auth::id();
         $commit->file_id =$request->file_id;
+        $commit->commit_unique_id =$commit_unique_id;
         $commit->save();
         return response()->json([
             'status' => 'success',
@@ -128,33 +130,47 @@ class CommitController extends Controller
             'new_path_dxf' => 'required|string|max:255',
             'new_path_svg' => 'required|string|max:255',
             'compare_path_svg' => 'string|nullable',
-            'version' => 'string|max:255|',
             'status' => 'required|integer|max:10',
             'file_id' => 'string|nullable|max:255', 
         ]);
 
-        if($request->version==-1){
-            $fileVersion=1;
-        }else{
-            $fileVersion=$request->version+1;
-        }
+
+        $commit_unique_id = Str::random();
+        
         if($request->file_id == "null"){
             $fileId=null;
         }else{
             $fileId=$request->file_id;
         }
 
+        if($request->compare_path_svg == "null"){
+            $compare_path_svg=null;
+        }else{
+            $svg_compared = $commit_unique_id . "- compered" . ".svg";
+            $path_dxf = Storage::disk('public')->put($svg_compared, $request->compare_path_svg);
+            $compare_path_svg="http://127.0.0.1:8000/storage/".$svg_compared;
+        }
+
+        $new_path_svg = $commit_unique_id. ".svg";
+        $path_svg = Storage::disk('public')->put($new_path_svg, $request->new_path_svg);
+
+        $dxf = $commit_unique_id.".dxf";
+        $path_dxf = Storage::disk('public')->put($dxf, $request->new_path_dxf);
+
+
 
         $commit=new Commit;
         $commit->message=$request->message;
-        $commit->new_path_dxf = $request->new_path_dxf;
-        $commit->compare_path_svg = $request->compare_path_svg;
-        $commit->new_path_svg = $request->new_path_svg;
+        $commit->new_path_dxf ="http://127.0.0.1:8000/storage/".$dxf ;
+        $commit->compare_path_svg = $compare_path_svg;
+        $commit->new_path_svg = "http://127.0.0.1:8000/storage/".$new_path_svg;
         $commit->old_path_dxf = $request->old_path_dxf;
-        $commit->version = $fileVersion;
         $commit->status = $request->status;
         $commit->user_id = Auth::id();
         $commit->file_id =$fileId;
+        $commit->commit_unique_id =$commit_unique_id;
+
+        
         $commit->save();
         return response()->json([
             'status' => 'success',

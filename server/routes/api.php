@@ -15,7 +15,7 @@ Route::group(["prefix" => "guest"], function(){
 });
 
 
-Route::group(["middleware" => "auth:api"], function(){
+Route::group(["middleware" => ["auth:api", 'cors']], function(){
         Route::post("logout", [AuthController::class, "logout"]);
         Route::post("refresh", [AuthController::class, "refresh"]);
         Route::get("profile", [AuthController::class, "profile"]);
@@ -32,6 +32,8 @@ Route::group(["middleware" => "auth:api"], function(){
             Route::post("new_branch", [BranchController::class, "addBranch"]);
             Route::post("push_local_commit", [CommitController::class, "pushlocalCommit"]);
             Route::post("main_commit", [CommitController::class, "addMainCommit"]);
+            Route::get('download_file/{file_name?}', [FileController::class, "downloadFile"]);
+            
         });
 
         Route::group(["prefix" => "common"], function(){
