@@ -23,7 +23,7 @@
 .top-file-section {
     display: flex;
     justify-content: space-between;
-    padding: 20px 60px 20px 60px;
+    padding: 20px 60px 20px 30px;
     align-items: center;
 }
 
@@ -49,7 +49,7 @@
 .branches-filter {
     display: flex;
     justify-content: space-between;
-    padding: 20px 60px 20px 60px;
+    padding: 20px 60px 20px 30px;
 }
 
 .file-section-card {
@@ -71,9 +71,15 @@
 .model-title {
     display: flex;
     justify-content: center;
+    font-size: 20px;
+    font-weight: 700;
 }
 
-.new-file-model {}
+.new-file-model {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
 
 .upload-file-form {
     padding: 20px;
@@ -94,11 +100,26 @@
     justify-content: space-between;
     align-items: center;
 }
+.btns-new-file {
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+    align-items: center;
+}
+.close-btn{
+    background-color: red;
+}
 .branches {
     width: 150px;
 }
-/* .menu {
-    z-index: 1
+.menu-items {
+    z-index: 188
+}
+.branche-model{
+    justify-content: space-around;
+}
+.filter-file{
+    margin-right: 10px;
+    cursor: pointer;
 }
 
-*/

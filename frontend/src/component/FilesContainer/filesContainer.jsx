@@ -10,12 +10,13 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Listbox } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import base64 from "base-64";
+import Loading from "../common/loading";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-function FilesContainer({ branche, file }) {
+function FilesContainer({ branche, file, updateFile }) {
   const project_id = 1;
   const team_id = 1;
   const [open, setOpen] = useState(false);
@@ -43,7 +44,7 @@ function FilesContainer({ branche, file }) {
   const [commitInfo, setCommitInfo] = useState([]);
   const [mainCommitMessage, setMainCommitMessage] = useState("");
   const [mainDxfId, setMainDxfId] = useState("");
-  const [CheckFileIsOpen, setCheckFileIsOpen] = useState("");
+  const [CheckFileIsOpen, setCheckFileIsOpen] = useState(false);
   const [seletedFile, setSeletedFile] = useState("");
 
   function openModal() {
@@ -245,7 +246,7 @@ function FilesContainer({ branche, file }) {
   }
   useEffect(() => {
     handleGetFiles();
-  }, [branche]);
+  }, [branche, updateFile]);
 
   useEffect(() => {
     window.electron.on(channels.Compare_Data_IsDone, (data) => {
@@ -279,9 +280,13 @@ function FilesContainer({ branche, file }) {
                 className="card"
                 key={file.id}
                 onClick={() => {
+                  setOpenedFileDetails(file);
                   setSeletedFile(file.path_svg);
                   openFileModal();
                   setOpen(true);
+                  getDxfData(file.path_dxf);
+                  getfileCommit(file.id);
+                  getMainFilePath(file.name);
                 }}>
                 <img
                   src={file.path_svg}
@@ -290,14 +295,7 @@ function FilesContainer({ branche, file }) {
                 />
                 <div className="middle-card">
                   <div className="file-name">{file.name}</div>
-                  <div
-                    className="card-option"
-                    onClick={() => {
-                      setOpenedFileDetails(file);
-                      getDxfData(file.path_dxf);
-                      getfileCommit(file.id);
-                      getMainFilePath(file.name);
-                    }}>
+                  <div className="card-option" onClick={() => {}}>
                     <div className="point"></div>
                     <div className="point"></div>
                     <div className="point"></div>
@@ -309,10 +307,16 @@ function FilesContainer({ branche, file }) {
           })}
         </div>
         <Transition.Root show={open} as={Fragment}>
-          <Dialog as="div" className="relative z-10" onClose={setOpen}>
+          <Dialog
+            as="div"
+            className="relative z-10"
+            onClose={() => {
+              setOpen(false);
+              closeCheckFile();
+            }}>
             <Transition.Child
               as={Fragment}
-              enter="ease-in-out duration-500"
+              enter="ease-in-out duration-300"
               enterFrom="opacity-0"
               enterTo="opacity-100"
               leave="ease-in-out duration-500"
@@ -357,37 +361,122 @@ function FilesContainer({ branche, file }) {
                         </div>
                       </Transition.Child>
                       <div className="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl">
-                        <div className="px-4 sm:px-6"></div>
+                        <div className="px-4 sm:px-6 top-side-details">
+                          Details
+                        </div>
                         <div className="relative mt-6 flex-1 px-4 sm:px-6">
+                          <div className="file-details-title">
+                            <div className="square"></div>
+                            <div>
+                              {openedfileDetails.name.charAt(0).toUpperCase() +
+                                openedfileDetails.name.slice(1)}
+                            </div>
+                          </div>
+                          <div className="download-dxf">
+                            <div>
+                              <div className="file-dxf">
+                                <img
+                                  src="dxf-icon.png"
+                                  alt=""
+                                  className="dxf-icon"
+                                />
+                                <div className="file-dxf-details">
+                                  <div className="name-file-dxf">
+                                    {openedfileDetails.name}
+                                  </div>
+                                  <div className="type-file-dxf">DXF File</div>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="download-icon">
+                              <svg
+                                width="30px"
+                                height="30px"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <g id="Interface / Download">
+                                  <path
+                                    id="Vector"
+                                    d="M6 21H18M12 3V17M12 17L17 12M12 17L7 12"
+                                    stroke="#000000"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  />
+                                </g>
+                              </svg>
+                            </div>
+                          </div>
                           <div className="side-details-file">
-                            <div className="file-details-title">
-                              {openedfileDetails.name}
+                            <div className="property">Property</div>
+                            <div className="details-of-file">
+                              <div className="file-details-version">
+                                <div>Version</div>
+                                <div>{openedfileDetails.version}</div>
+                              </div>
                             </div>
-                            <div className="file-details-version">
-                              version {openedfileDetails.version}
+                            <div className="details-of-file">
+                              <div className="file-details-version">
+                                <div>Created by</div>
+                                {openedfileDetails.user && (
+                                  <div className="file-details-user">{`${openedfileDetails.user.first_name} ${openedfileDetails.user.last_name}`}</div>
+                                )}
+                              </div>
                             </div>
-                            {/* <div className="file-details-user">{`${openedfileDetails.user.first_name} ${openedfileDetails.user.last_name}`}</div> */}
+                            <div className="details-of-file">
+                              <div className="file-details-version">
+                                <div>Created Date</div>
+                                {openedfileDetails.user && (
+                                  <div className="file-details-user">{`${
+                                    openedfileDetails.created_at.split("T")[0]
+                                  }`}</div>
+                                )}
+                              </div>
+                            </div>
                             <div className="hr-details"></div>
                             <div className="commit-field">
                               <div className="commit-field-title">
                                 Local Commit
                               </div>
-                              <div className="hr-details"></div>
-
                               <Input
                                 label={"Commit message"}
                                 name={"Commit-message"}
                                 type={"text"}
                                 onchange={handleCommitMessage}
                               />
+                              <div className="number-of-letter">
+                                {commitMessage.length}/50
+                              </div>
                               <div className="input-upload-file">
                                 <label
                                   className="btn updated-file"
                                   htmlFor="updated-file">
-                                  Updated File
+                                  <div className="download-icon">
+                                    <svg
+                                      width="20px"
+                                      height="20px"
+                                      viewBox="0 0 24 24"
+                                      fill="fffff"
+                                      xmlns="http://www.w3.org/2000/svg">
+                                      <g id="Interface / Download">
+                                        <path
+                                          id="Vector"
+                                          d="M6 21H18M12 3V17M12 17L17 12M12 17L7 12"
+                                          stroke="#000000"
+                                          troke-width="2"
+                                          stroke-linecap="round"
+                                          stroke-linejoin="round"
+                                          fill="fffff"
+                                        />
+                                      </g>
+                                    </svg>
+                                  </div>
+                                  File
                                 </label>
                                 <input
                                   type="file"
+                                  s
                                   name="update file"
                                   id="updated-file"
                                   onChange={(e) => {
@@ -400,32 +489,39 @@ function FilesContainer({ branche, file }) {
                                   }}
                                   className="none"
                                 />
-                                <div>{update.name}</div>
+                                <div
+                                  className={` btn-check ${
+                                    compareSuccess ? "btn" : "on-procress"
+                                  }`}
+                                  onClick={() => {
+                                    displayConflict(CompareResult);
+                                    closeCheckFile();
+                                    openModal();
+                                  }}>
+                                  Check
+                                </div>
                               </div>
-
-                              <div
-                                className={`check-conflict ${compareSuccess}btn`}
-                                onClick={() => {
-                                  displayConflict(CompareResult);
-                                  openModal();
-                                }}>
-                                check-conflict
+                              <div className="check-commit">
+                                <button
+                                  className={` btn-commit ${
+                                    compareSuccess ? "btn" : "on-procress"
+                                  }`}
+                                  onClick={() =>
+                                    submitCommit(
+                                      openedfileDetails.path_dxf,
+                                      openedfileDetails.version,
+                                      openedfileDetails.id
+                                    )
+                                  }>
+                                  Commit
+                                </button>
+                                <button
+                                  className="btn btn-commit"
+                                  onClick={handleLocalPush}>
+                                  Push
+                                </button>
                               </div>
-
-                              <button
-                                className="btn"
-                                onClick={() =>
-                                  submitCommit(
-                                    openedfileDetails.path_dxf,
-                                    openedfileDetails.version,
-                                    openedfileDetails.id
-                                  )
-                                }>
-                                Commit update
-                              </button>
-                              <button className="btn" onClick={handleLocalPush}>
-                                push
-                              </button>
+                              <div className="hr-details"></div>
                             </div>
                           </div>
                           <div className="show-file-details">FileDetails</div>
@@ -558,7 +654,6 @@ function FilesContainer({ branche, file }) {
                                     openedfileDetails.path_dxf
                                   );
                                   openModal();
-                                  // setOpen(!open);
                                 }}>
                                 check-conflict
                               </div>
@@ -598,7 +693,7 @@ function FilesContainer({ branche, file }) {
         isOpen={CheckCommitIsOpen}
         onRequestClose={closeCheckCommit}
         ariaHideApp={false}
-        className="check-conflict-model">
+        className="check-conflict-model zindex">
         <div className="btns close">
           <button className="btn" onClick={closeCheckCommit}>
             X
@@ -617,11 +712,11 @@ function FilesContainer({ branche, file }) {
         onRequestClose={closeCheckFile}
         ariaHideApp={false}
         className="check-conflict-model">
-        <div className="btns close">
+        {/* <div className="btns close">
           <button className="btn" onClick={closeCheckFile}>
             X
           </button>
-        </div>
+        </div> */}
         <img
           src={seletedFile}
           style={{ height: 700 }}

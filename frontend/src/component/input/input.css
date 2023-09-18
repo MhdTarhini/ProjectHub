@@ -14,11 +14,12 @@ input {
 }
 
 .label {
-    font-size: 12px;
-    margin-left: 10px;
+    font-size: 15px;
+        margin-left: 15px;
     opacity: 0.5;
     pointer-events: none;
     transition: opacity 0.3s ease;
+    color: rgba(55, 90, 247, 0.877);
 }
 
 .label-class {
