@@ -217,14 +217,14 @@
     border: 1px solid var(--stroke, #E8E8E8);
     background: #FFF;
     transition: opacity 0.3s ease-in-out;
-        z-index: 1000;
+    z-index: 99999999;
 }
 .close {
     align-self: flex-end;
     position: absolute;
 }
 .svg-image {
-    z-index: 1000;
+    z-index: 999999;
 }
 
 .commit-field-title {
@@ -271,6 +271,7 @@
     font-size: 16px;
     font-weight: 700;
     border-radius: 8px;
+    text-align: center;
 }
 
 .on-procress:hover {
@@ -320,6 +321,9 @@ background-color: rgb(5, 255, 5);
     background-color: rgb(70, 253, 70);
     
 }
+.success {
+    color: greenyellow;
+}
     
 .push {
     margin: 10px;
@@ -338,4 +342,19 @@ background-color: rgb(5, 255, 5);
 .btn-commit-check {
     margin-top: 10px;
     width: 100%;
+}
+.btn-main-commit {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.check-main {
+    flex: 1;
+}
+
+.commit-main {
+    flex: 1;
 }

@@ -54,8 +54,13 @@ function FilesContainer({ branche, file, updateFile }) {
   const [errorMain, setMainError] = useState(false);
   const [errorMainMessage, setMainErrorMessage] = useState("");
   const [isLoading, setIsloading] = useState(false);
+  const [isLocalFileLoading, setIsLocalFileLoading] = useState(false);
+  const [isLocalCommitLoading, setIsLocalCommitLoading] = useState(false);
   const [isDone, setIsDone] = useState(false);
   const [noMainMatch, setNoMainMatch] = useState(false);
+  const [isCommited, setIsCommited] = useState(false);
+  const [updateFiles, setUpdateFiles] = useState(false);
+  const [isDoneCommitMain, setIsDoneCommitMain] = useState(false);
 
   function openModal() {
     setIsloading(false);
@@ -69,6 +74,7 @@ function FilesContainer({ branche, file, updateFile }) {
   function openCommitModal() {
     setCheckCommitIsOpen(true);
     setIsloading(false);
+    setIsCommited(false);
   }
 
   function closeCheckCommit() {
@@ -95,7 +101,7 @@ function FilesContainer({ branche, file, updateFile }) {
   ) {
     const data = new FormData();
     data.append("message", mainCommitMessage);
-    data.append("file_id", mainDxfId.length > 0 ? mainDxfId : null);
+    data.append("file_id", noMainMatch ? null : mainDxfId);
     data.append("new_path_svg", new_path_svg);
     data.append("new_path_dxf", new_path_dxf);
     data.append("old_path_dxf", old_path_dxf);
@@ -109,6 +115,8 @@ function FilesContainer({ branche, file, updateFile }) {
       );
       const commitData = await response.data;
       setIsloading(false);
+      setMainError(false);
+      setIsDoneCommitMain(true);
     } catch (error) {
       setMainError(true);
       setMainErrorMessage(error.response.data.message);
@@ -187,6 +195,7 @@ function FilesContainer({ branche, file, updateFile }) {
 
   function handleCommitMessage(e) {
     setCommitMessage(e.target.value);
+    setLocalError(false);
   }
   function handleMainCommitMessage(e) {
     setMainCommitMessage(e.target.value);
@@ -223,8 +232,10 @@ function FilesContainer({ branche, file, updateFile }) {
       );
       const commitInfo = await response.data;
       setCommitInfo(commitInfo.data);
-      setIsloading(false);
+      setIsCommited(true);
+      setIsLocalCommitLoading(false);
     } catch (error) {
+      setIsLocalCommitLoading(false);
       setLocalError(true);
       setLocalErrorMessage(error.response.data.message);
     }
@@ -282,7 +293,7 @@ function FilesContainer({ branche, file, updateFile }) {
   }
   useEffect(() => {
     handleGetFiles();
-  }, [branche, updateFile]);
+  }, [branche, updateFile, updateFiles]);
 
   useEffect(() => {
     window.electron.on(channels.Compare_Data_IsDone, (data) => {
@@ -307,13 +318,17 @@ function FilesContainer({ branche, file, updateFile }) {
       const decodedData = base64.decode(data);
       setGetSvg(decodedData);
       setSvgSuccess(true);
-      setIsloading(false);
+      setIsLocalFileLoading(false);
     });
   }, []);
   return (
     <>
       <div className="files-controller">
-        {isDone && <Message text={"File Is Pushed To Main Branch"} />}
+        {isDone && <Message text={"File Is Pushed To Branch"} />}
+
+        {isDoneCommitMain && (
+          <Message text={"File Is Commited To Main Branch"} />
+        )}
 
         <div className="card-container">
           {getFiles.map((file) => {
@@ -329,6 +344,7 @@ function FilesContainer({ branche, file, updateFile }) {
                   getDxfData(file.path_dxf);
                   getfileCommit(file.id);
                   getMainFilePath(file.name);
+                  setIsDoneCommitMain(false);
                 }}>
                 <img
                   src={file.path_svg}
@@ -531,7 +547,7 @@ function FilesContainer({ branche, file, updateFile }) {
                               <div className="input-upload-file">
                                 <label
                                   className={`btn updated-file ${
-                                    isLoading ? "loading-green" : "n"
+                                    isLocalFileLoading ? "loading-green" : "n"
                                   }`}
                                   htmlFor="updated-file">
                                   <div className="download-icon">
@@ -554,7 +570,11 @@ function FilesContainer({ branche, file, updateFile }) {
                                       </g>
                                     </svg>
                                   </div>
-                                  {isLoading ? <Loading /> : <div>File</div>}
+                                  {isLocalFileLoading ? (
+                                    <Loading />
+                                  ) : (
+                                    <div>File</div>
+                                  )}
                                 </label>
                                 <input
                                   type="file"
@@ -562,7 +582,7 @@ function FilesContainer({ branche, file, updateFile }) {
                                   name="update file"
                                   id="updated-file"
                                   onChange={(e) => {
-                                    setIsloading(true);
+                                    setIsLocalFileLoading(true);
                                     setUpdate(e.target.files[0]);
                                     handleCompare(
                                       e,
@@ -590,29 +610,46 @@ function FilesContainer({ branche, file, updateFile }) {
                                 <button
                                   className={` btn-commit ${
                                     compareSuccess ? "btn" : "on-procress"
-                                  } ${isLoading ? "loading-green" : "n"}`}
+                                  } ${
+                                    isLocalCommitLoading ? "loading-green" : "n"
+                                  }`}
                                   onClick={() => {
-                                    setIsloading(true);
+                                    setIsLocalCommitLoading(true);
                                     submitCommit(
                                       openedfileDetails.path_dxf,
                                       openedfileDetails.version,
                                       openedfileDetails.id
                                     );
                                   }}>
-                                  Commit
+                                  {isLocalCommitLoading ? (
+                                    <Loading />
+                                  ) : (
+                                    <div>Commit</div>
+                                  )}
                                 </button>
                                 <button
                                   className={` btn-commit ${
-                                    compareSuccess ? "btn" : "on-procress"
+                                    compareSuccess && isCommited
+                                      ? "btn"
+                                      : "on-procress"
                                   }`}
-                                  onClick={()=>{
+                                  onClick={() => {
                                     setOpen(false);
-                                    handleLocalPush()}}>
+                                    handleLocalPush();
+                                    setCompareSuccess(false);
+                                    setCommitMessage("");
+                                    closeModal();
+                                  }}>
                                   Push
                                 </button>
                               </div>
                               {errorLocal && (
                                 <div className="error">{errorLocalMessage}</div>
+                              )}
+                              {isCommited && (
+                                <div className="success">
+                                  Commit Successfully !
+                                </div>
                               )}
                               <div className="hr-details"></div>
                             </div>
@@ -720,48 +757,61 @@ function FilesContainer({ branche, file, updateFile }) {
 
                           {branche.team_id == null && (
                             <>
+                              <div className="commit-field-title">
+                                Main commit
+                              </div>
                               <Input
                                 label={"Commit message"}
                                 name={"Commit-message"}
                                 type={"text"}
                                 onchange={handleMainCommitMessage}
                               />
-                              <button
-                                className="btn"
-                                onClick={() => {
-                                  if (noMainMatch) {
-                                    handleCommitMain(
-                                      null,
-                                      openedfileDetails.path_svg,
-                                      null,
-                                      openedfileDetails.path_dxf,
-                                      null,
-                                      0
-                                    );
-                                  } else {
-                                    handleCommitMain(
-                                      conflictSvg,
-                                      openedfileDetails.path_svg,
+                              <div className="btn-main-commit">
+                                <button
+                                  className={`commit-main ${
+                                    mainCompareSuccess || noMainMatch
+                                      ? "btn"
+                                      : "on-procress"
+                                  }`}
+                                  onClick={() => {
+                                    if (noMainMatch) {
+                                      handleCommitMain(
+                                        null,
+                                        openedfileDetails.path_svg,
+                                        null,
+                                        openedfileDetails.path_dxf,
+                                        "-1",
+                                        0
+                                      );
+                                    } else {
+                                      handleCommitMain(
+                                        conflictSvg,
+                                        openedfileDetails.path_svg,
+                                        mainDxfPath,
+                                        openedfileDetails.path_dxf,
+                                        mainDxfVersion,
+                                        0
+                                      );
+                                    }
+                                    setOpen(false);
+                                    closeCheckFile();
+                                  }}>
+                                  Commit To Main
+                                </button>
+                                <div
+                                  className={`check-main ${
+                                    noMainMatch ? "on-procress" : "btn"
+                                  }`}
+                                  onClick={() => {
+                                    CompareWithMain(
                                       mainDxfPath,
-                                      openedfileDetails.path_dxf,
-                                      mainDxfVersion,
-                                      0
+                                      openedfileDetails.path_dxf
                                     );
-                                  }
-                                }}>
-                                commit to main
-                              </button>
-                              <div
-                                className="check-conflict btn"
-                                onClick={() => {
-                                  CompareWithMain(
-                                    mainDxfPath,
-                                    openedfileDetails.path_dxf
-                                  );
-                                  closeCheckFile();
-                                  openModal();
-                                }}>
-                                Check
+                                    closeCheckFile();
+                                    openModal();
+                                  }}>
+                                  Check
+                                </div>
                               </div>
                               {errorMain && (
                                 <div className="error">{errorMainMessage}</div>
@@ -791,13 +841,17 @@ function FilesContainer({ branche, file, updateFile }) {
             X
           </button>
         </div> */}
-        <img
-          src={conflictSvg}
-          style={{ height: 700 }}
-          alt="SVG"
-          srcset=""
-          className="svg-image"
-        />
+        {conflictSvg ? (
+          <img
+            src={conflictSvg}
+            style={{ height: 700 }}
+            alt="SVG"
+            srcset=""
+            className="svg-image"
+          />
+        ) : (
+          <Loading />
+        )}
       </Modal>
       <Modal
         isOpen={CheckCommitIsOpen}
@@ -809,13 +863,17 @@ function FilesContainer({ branche, file, updateFile }) {
             X
           </button>
         </div> */}
-        <img
-          src={seletedCommitSVG}
-          style={{ height: 700 }}
-          alt="SVG"
-          srcset=""
-          className="svg-image"
-        />
+        {seletedCommitSVG ? (
+          <img
+            src={seletedCommitSVG}
+            style={{ height: 700 }}
+            alt="SVG"
+            srcset=""
+            className="svg-image"
+          />
+        ) : (
+          <Loading />
+        )}
       </Modal>
       <Modal
         isOpen={CheckFileIsOpen}
@@ -827,13 +885,17 @@ function FilesContainer({ branche, file, updateFile }) {
             X
           </button>
         </div> */}
-        <img
-          src={seletedFile}
-          style={{ height: 700 }}
-          alt="SVG"
-          srcset=""
-          className="svg-image"
-        />
+        {seletedFile ? (
+          <img
+            src={seletedFile}
+            style={{ height: 700 }}
+            alt="SVG"
+            srcset=""
+            className="svg-image"
+          />
+        ) : (
+          <Loading />
+        )}
       </Modal>
     </>
   );
