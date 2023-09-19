@@ -136,4 +136,13 @@
     margin-right: 10px;
     cursor: pointer;
 }
+.right-side-file-section {
+    display: flex;
+}
+
+.option-menu {
+    position: relative;
+    z-index: 1;
+    right: 10px;
+}
 

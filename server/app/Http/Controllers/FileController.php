@@ -115,5 +115,44 @@ function downloadFile($file_name){
     return response()->download($path);
 }
 
+function pullFromMain(Request $request)
+{
+    $branch = Branch::where("team_id", $request->team_id)->first();
+    $files = File::where("branche_id", $branch->id)->get();
+    $branch_files = File::where("branche_id", $request->branch_id)->pluck('name')->toArray();
 
+    $matching_files = [];
+    $new_Files = [];
+    $add_counter = 0;
+    $conflict_counter = 0;
+
+    foreach ($files as $file) {
+        if (in_array($file->name, $branch_files)) {
+            $matching_files[] = $file;
+            $conflict_counter += 1;
+        } else {
+            $new_Files[] = $file;
+            $add_counter += 1;
+        }
+    }
+
+    foreach ($new_Files as $file) {
+        $add_files = new File;
+        $add_files->name = $file->name;
+        $add_files->path_dxf = $file->path_dxf;
+        $add_files->path_svg = $file->path_svg;
+        $add_files->version = 0;
+        $add_files->project_id = $file->project_id;
+        $add_files->branche_id = $request->branch_id;
+        $add_files->user_id = Auth::id();  
+        $add_files->save();
+    }
+
+    return response()->json([
+        'status' => 'success',
+        'added' => $add_counter . " Were Added",
+        'conflict' => "There are conflicts in " . $conflict_counter . " files",
+        'data' => $matching_files,
+    ]);
+}
 }

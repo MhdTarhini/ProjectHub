@@ -33,6 +33,7 @@ Route::group(["middleware" => ["auth:api", 'cors']], function(){
             Route::post("push_local_commit", [CommitController::class, "pushlocalCommit"]);
             Route::post("main_commit", [CommitController::class, "addMainCommit"]);
             Route::get('download_file/{file_name?}', [FileController::class, "downloadFile"]);
+            Route::post('pull_main', [FileController::class, "pullFromMain"]);
             
         });
 
