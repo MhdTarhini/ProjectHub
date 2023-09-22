@@ -39,10 +39,10 @@
     border-radius: 8px;
     background: #0F8EEA;
     cursor: pointer;
-    }
-    
-    .delete {
-        background-color: red;
+}
+
+.delete {
+    background-color: red;
 }
 
 .branches-filter {
@@ -78,7 +78,7 @@
     display: flex;
     flex-direction: column;
     padding: 20px;
-    
+
 }
 
 .upload-file-form {
@@ -100,42 +100,49 @@
     justify-content: space-between;
     align-items: center;
 }
+
 .btns-new-file {
     display: flex;
     justify-content: flex-end;
     gap: 20px;
     align-items: center;
 }
-.close-btn{
+
+.close-btn {
     background-color: red;
 }
+
 .branches {
     width: 150px;
     display: flex;
-        align-items: center;
-        gap: 10px;
+    align-items: center;
+    gap: 10px;
 }
 
-.branche-naming{
+.branche-naming {
     margin-left: 30px;
 }
-    
-    
+
+
 .menu {
     position: absolute;
-        z-index: 1;
+    z-index: 1;
 
 }
-.menu-items{
+
+.menu-items {
     z-index: 1;
 }
-.branche-model{
+
+.branche-model {
     justify-content: space-around;
 }
-.filter-file{
+
+.filter-file {
     margin-right: 10px;
     cursor: pointer;
 }
+
 .right-side-file-section {
     display: flex;
 }
@@ -145,6 +152,7 @@
     z-index: 1;
     right: 10px;
 }
+
 /*  */
 .input-container,
 .text-input,
@@ -161,31 +169,31 @@
         padding: 0 20px;
     }
 
-        .hr {
-            width: 95%;
-        }
-    
-        .text-input,
-        .select-container select,
-        .textarea-container textarea {
-            font-size: 16px;
-        }
-    
-        }
-    
-        @media (min-width: 1024px) {
-            .files-section {
-                padding: 0 40px;
-            }
-    
-            .hr {
-                width: 85%;
-            }
-    
-            .text-input,
-            .select-container select,
-            .textarea-container textarea {
-                font-size: 18px;
-            }
-    
-        }
+    .hr {
+        width: 95%;
+    }
+
+    .text-input,
+    .select-container select,
+    .textarea-container textarea {
+        font-size: 16px;
+    }
+
+}
+
+@media (min-width: 1024px) {
+    .files-section {
+        padding: 0 40px;
+    }
+
+    .hr {
+        width: 85%;
+    }
+
+    .text-input,
+    .select-container select,
+    .textarea-container textarea {
+        font-size: 18px;
+    }
+
+}

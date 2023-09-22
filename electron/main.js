@@ -16,7 +16,7 @@ function createMainWindow() {
     title: "ProjectHub",
     width: width,
     height: height,
-    icon: path.join(__dirname, './logos/logo.ico'),
+    icon: path.join(__dirname, "./logos/logo.ico"),
     webPreferences: {
       contextIsolation: true,
       nodeIntegrationL: true,

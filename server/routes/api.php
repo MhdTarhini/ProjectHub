@@ -18,7 +18,7 @@ Route::group(["prefix" => "guest"], function(){
 });
 
 
-Route::group(["middleware" => "auth:api"], function(){
+Route::group(["middleware" => ["auth:api", 'cors']], function(){
         Route::post("logout", [AuthController::class, "logout"]);
         Route::post("refresh", [AuthController::class, "refresh"]);
         Route::get("profile", [AuthController::class, "profile"]);
@@ -48,6 +48,7 @@ Route::group(["middleware" => "auth:api"], function(){
         Route::group(["prefix" => "issue-section"], function(){
             Route::post("add_edit_issue",[IssueController::class,"newIssue"]);
             Route::get("get_issues_posts/{project_id?}",[IssueController::class,"getIssuesPosts"]);
+            
         });
 
         Route::group(["prefix" => "common"], function(){
