@@ -1,5 +1,5 @@
 .files-section {
-    padding: 0 10px;
+    padding: 90px 10px;
     background: #FAFAFA;
     width: 1450px;
 }
@@ -183,7 +183,7 @@
 
 @media (min-width: 1024px) {
     .files-section {
-        padding: 0 40px;
+            padding: 90px 20px 0px 7px;
     }
 
     .hr {

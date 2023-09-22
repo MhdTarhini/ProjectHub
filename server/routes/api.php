@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\CommitController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\IssueContentController;
 use App\Http\Controllers\IssueController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ProjectController;
@@ -48,6 +49,7 @@ Route::group(["middleware" => ["auth:api", 'cors']], function(){
         Route::group(["prefix" => "issue-section"], function(){
             Route::post("add_edit_issue",[IssueController::class,"newIssue"]);
             Route::get("get_issues_posts/{project_id?}",[IssueController::class,"getIssuesPosts"]);
+            Route::post("add_comment",[IssueController::class,"addComment"]);
             
         });
 

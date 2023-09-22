@@ -3,11 +3,14 @@
     padding: 20px;
     justify-content: space-between;
     gap: 20px;
-    width: 1410px
+    width: 1418px
 }
 .issues-section {
-    padding: 0 20px 0px 7px;
+    padding: 0px 0px 0px 0px;
     background: #FAFAFA;
+}
+.top-file-section {
+    margin-left: 20px
 }
 .issue-section-title {
     color: #000;
@@ -16,6 +19,7 @@
     font-weight: 800;
     line-height: normal;
     padding-left: 20px;
+    
 }
 
 
@@ -24,7 +28,7 @@
 }
 
 .issues-container .issue-post {
-    flex: 2;
+    flex: 3;
 }
 
 .issues-container .issue-media {
@@ -37,6 +41,9 @@
     flex-direction: column;
     border: 1px solid var(--stroke, #E8E8E8);
     background: #FFF;
+    height: 72vh;
+        width: 400px;
+        border-radius: 10px;
 }
 
 .user-issues-titles {
@@ -45,10 +52,18 @@
         gap: 20px;
     flex-direction: column;
     align-items: flex-start;
+    cursor: pointer;
+    }
+    
+    .selected {
+        background-color: #f0f0f088;
 }
 
 .user-issues-titles:hover {
     background: #EBEBEB;
+}
+.first-title {
+    border-radius: 10px 10px 0px 0px;
 }
 
 .issue-name {
@@ -133,24 +148,37 @@
 
 .issue-description {
     color: #000;
-    font-size: 12px;
+    font-size: 14px;
     font-style: normal;
     font-weight: 400;
     line-height: 20px;
+    white-space: wrap;
+        text-overflow: ellipsis;
+        width: 500px;
 }
 
 .issue-post-img {
     display: flex;
-    width: 348px;
-    padding: 20px;
     align-items: flex-start;
     gap: 10px;
+border: 1px solid var(--stroke, #E8E8E8);
+    border-radius: 10px;
+
+}
+
+.post-image {
+    width: 200px;
+    border-radius: 10px;
+}
+
+.points {
+    align-self: flex-start;
 }
 
 .img-post-details {
     display: flex;
     width: 112px;
-    padding: 0px 10px;
+    padding: 20px 10px;
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
@@ -175,12 +203,8 @@
 
 .points {
     display: flex;
-    width: 27px;
-    height: 8px;
-    transform: rotate(-90deg);
-    align-items: flex-start;
     gap: 2px;
-    flex-shrink: 0;
+    padding: 10px;
 }
 
 .issue-post-comments {
@@ -211,6 +235,7 @@
 .user-info-comment {
     display: flex;
     justify-content: flex-start;
+    gap: 5px;
 }
 
 .content-comment {
@@ -300,4 +325,113 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     width: 300px;
+}
+#user-comment {
+    width: 500px;
+}
+
+
+.svg-comment {
+    z-index: 15;
+}
+
+.add-comment {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.issue-media {
+    background-color: #FFF;
+    border: 1px solid var(--stroke, #E8E8E8);
+    padding: 20px;
+    border-radius: 10px;
+
+}
+
+.media-content {
+    display: flex;
+    gap: 40px;
+    flex-direction: column;
+}
+
+.members-tag {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.top-member-tag {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.title-members {
+    color: #212121;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.media-content-display {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.top-media-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.title-media {
+    color: #212121;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.issue-post-img-content {
+    display: flex;
+    align-items: flex-start;
+    border: 1px solid var(--stroke, #E8E8E8);
+    border-radius: 10px;
+}
+
+.user-media-upload {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 7px 5px;
+}
+
+.user-img-media {
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+}
+
+.media-card {
+    border: 1px solid var(--stroke, #E8E8E8);
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.media-card:hover {
+    background-color: #fafafa;
+}
+
+.issue-post-img-media {
+    display: flex;
+    align-items: flex-start;
+
 }

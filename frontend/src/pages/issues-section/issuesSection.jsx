@@ -22,9 +22,12 @@ function IssuesSection() {
   const [issueImageDescription, setIssueImageDescription] = useState("");
   const [newIssueImage, setNewIssueImage] = useState([]);
   const [allIssuesPosts, setAllIssuesPosts] = useState([]);
+  const [selectedPost, setSelectedPost] = useState([]);
   const [imageIsUploaded, setImageIsUploaded] = useState(false);
   const [isDoneCreateNewIssue, setIsDoneCreateNewIssue] = useState(false);
+  const [isSelected, setIsSelected] = useState(false);
   const [imageSrc, setImageSrc] = useState(null);
+  const [selectedPostId, setSelectedPostId] = useState(null);
 
   const handleImageChange = (e) => {
     setNewIssueImage(e.target.files[0]);
@@ -121,17 +124,29 @@ function IssuesSection() {
         <div className="user-issues-container">
           {allIssuesPosts.map((IssuePost) => {
             return (
-              <>
-                <div className="user-issues-titles" key={IssuePost.id}>
+              <div key={IssuePost.id}>
+                <div
+                  className={`user-issues-titles ${
+                    selectedPostId === IssuePost.id ? "selected" : ""
+                  }`}
+                  onClick={() => {
+                    setSelectedPost(IssuePost);
+                    setIsSelected(!isSelected);
+                    if (selectedPostId === IssuePost.id) {
+                      setSelectedPostId(null);
+                    } else {
+                      setSelectedPostId(IssuePost.id);
+                    }
+                  }}>
                   <div className="issue-name">{IssuePost.title}</div>
                   <div className="issue-sub-title">{IssuePost.description}</div>
                 </div>
                 <div className="line-space-title"></div>
-              </>
+              </div>
             );
           })}
         </div>
-        <IssuePost />
+        <IssuePost selectedPost={selectedPost} isSeleted={isSelected} />
       </div>
       <Modal
         isOpen={modalIsOpen}

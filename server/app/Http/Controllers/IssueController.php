@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use App\Models\Issue;
 use App\Models\IssueContent;
 use App\Models\IssueMembers;
@@ -66,7 +67,7 @@ class IssueController extends Controller
         $member_in=IssueMembers::Where("user_id",$user->id)->pluck("issues_id");
 
 
-        $AllIssuesPosts=Issue::whereIn("id",$member_in)->where("project_id",$project_id)->with("contents.users")->with("members.users")->with("comments.users")->get();
+        $AllIssuesPosts=Issue::whereIn("id",$member_in)->where("project_id",$project_id)->with("user")->with("contents.users")->with("members.users")->with("comments.users")->get();
 
 
         return response()->json([
@@ -75,4 +76,21 @@ class IssueController extends Controller
         ]);
 
     }
+     function addComment(Request $request){
+    $user=Auth::user();
+    $add_comment=new Comment();
+    $add_comment->content = $request->content;
+    $add_comment->issue_id = $request->issue_id;
+    $add_comment->user_id = $user->id;
+
+    $add_comment->save();
+
+    $added_comment=$add_comment->with('users')->first();
+
+       return response()->json([
+            'status' => 'success',
+            'data'=>$added_comment,
+        ]);
+
+   }
 }
