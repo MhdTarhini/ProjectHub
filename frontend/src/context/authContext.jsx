@@ -4,25 +4,22 @@ export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
   const [userData, setUserData] = useState(
-    JSON.parse(localStorage.getItem("user")) || null
+    JSON.parse(localStorage.getItem("user"))
   );
 
-  const login = async (data) => {
-    const response = await axios.post(
-      "http://127.0.0.1:8000/api/guest/login",
-      data,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    const userdata = await response.data.data;
-    setUserData(userdata);
-    localStorage.setItem("user", JSON.stringify(userData));
-  };
+  // const login = async (data) => {
+  //    const response = await axios.post(
+  //      "http://127.0.0.1:8000/api/guest/login",
+  //      data
+  //    );
+  //    const userdata = await response.data.data;
+  //    setUserData(userdata);
+  //    localStorage.setItem("user", JSON.stringify(userData));
+  // };
   const logout = async () => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${userData.token}`;
+    axios.defaults.headers.common[
+      "Authorization"
+    ] = `Bearer ${userData.user.token}`;
     await axios.post("http://127.0.0.1:8000/api/logout");
     localStorage.clear();
     setUserData(null);
@@ -33,7 +30,7 @@ export const AuthContextProvider = ({ children }) => {
   }, [userData]);
 
   return (
-    <AuthContext.Provider value={{ userData, login, logout }}>
+    <AuthContext.Provider value={{ userData, logout }}>
       {children}
     </AuthContext.Provider>
   );

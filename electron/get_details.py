@@ -3,9 +3,11 @@ import math
 import sys
 import base64
 import requests
+import os
 
 
 def getDataDetails(data):
+    file_path="data"
     def download_file(file_url, local_filename):
         try:
             response = requests.get(file_url, stream=True)
@@ -22,7 +24,9 @@ def getDataDetails(data):
             print(f"An error occurred: {e}")
 
     file_url = data  
-    local_filename = "downloaded_file.dxf"
+    # local_filename = "downloaded_file.dxf"
+    local_filename = os.path.join(file_path, "downloaded_file.dxf")
+
     download_file(file_url, local_filename)
 
     doc = ezdxf.readfile(local_filename)

@@ -1,0 +1,287 @@
+.login-page {
+    width: 100%;
+    display: flex;
+    height: 100vh;
+    background: #FAFAFA;
+
+}
+
+.first-side {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.login-side {
+    width: 100%;
+        padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    flex-shrink: 0;
+}
+
+.display-side {
+    display: none;
+    flex: 1;
+    background-color: #0F8EEA;
+}
+@media (min-width: 768px) {
+    .login-side {
+        width: 70%;
+        padding: 30px 40px;
+    }
+
+    .display-side {
+        display: block;
+    }
+}
+
+@media (min-width: 1024px) {
+    .login-side {
+        width: 559px;
+    }
+}
+
+.logo-login {
+    margin-bottom: 30px;
+}
+
+.login-title {
+    width: 77px;
+    height: 50px;
+    flex-shrink: 0;
+    color: #000;
+    text-align: center;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-transform: capitalize;
+}
+
+.login-description {
+    color: rgba(26, 26, 26, 0.75);
+    text-align: center;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-transform: capitalize;
+}
+
+.google {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 471px;
+    height: 56px;
+    flex-shrink: 0;
+    border-radius: 20px;
+    border: 1px solid var(--stroke, #E8E8E8);
+    background: #FFF;
+    color: rgba(26, 26, 26, 0.75);
+    text-align: center;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    padding: 18px;
+    cursor: pointer;
+}
+
+.email-label {
+    color: #000;
+    text-align: center;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-transform: capitalize;
+}
+
+#email {
+    width: 471px;
+    height: 56px;
+    flex-shrink: 0;
+    border-radius: 20px;
+    border: 1px solid var(--stroke, #E8E8E8);
+    background: #FFF;
+}
+
+#email::placeholder {
+    color: rgba(26, 26, 26, 0.75);
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-transform: lowercase;
+}
+
+.password-label {
+    color: #000;
+    text-align: center;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-transform: capitalize;
+}
+
+#password {
+    width: 471px;
+    height: 56px;
+    flex-shrink: 0;
+    border-radius: 20px;
+    border: 1px solid var(--stroke, #E8E8E8);
+    background: #FFF;
+
+}
+
+#password::placeholder {
+    color: rgba(26, 26, 26, 0.75);
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-transform: capitalize;
+}
+
+.bottom {
+    display: flex;
+    width: 471px;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.remember-me {
+    display: flex;
+    gap: 5px;
+}
+
+#remember {
+    background: #FAFAFA;
+}
+
+.remember-label {
+    color: #000;
+    text-align: center;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-transform: capitalize;
+}
+
+.forget-pass {
+    color: #124b7a;
+    text-align: center;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    cursor: pointer;
+}
+
+.login-btn {
+    width: 471px;
+    height: 56px;
+    flex-shrink: 0;
+    border-radius: 20px;
+    border: 1px solid var(--stroke, #E8E8E8);
+    background: #0F8EEA;
+    color: #FFF;
+    text-align: center;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-transform: capitalize;
+    padding: 18px;
+    cursor: pointer;
+}
+
+.display-side {
+    flex-direction: column;
+}
+
+.display-side div {
+    flex: 1;
+}
+
+.top-svg {
+    position: absolute;
+    width: 300px;
+    height: 400px;
+    top: -70px;
+}
+
+.mid-svg {
+    position: absolute;
+    width: 600px;
+    height: 500px;
+    top: 170px;
+    left: 800px;
+}
+
+.bottom-svg {
+    position: absolute;
+    width: 280px;
+    height: 250px;
+    bottom: 0px;
+    right: 0;
+}
+
+.project-name {
+    position: absolute;
+    top: 80px;
+    right: 100px;
+}
+
+.project {
+    color: #FFF;
+    text-align: center;
+    font-family: Kanit;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+    text-transform: capitalize;
+}
+
+.hub {
+    color: #FFF;
+    font-family: Kanit;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-transform: capitalize;
+}
+
+.to-register {
+    color: #000;
+    text-align: center;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-transform: capitalize;
+}
+
+.to-sign-up {
+    color: #7928FC;
+    text-align: center;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-transform: capitalize;
+        margin-left: 6px;
+    cursor: pointer;
+}

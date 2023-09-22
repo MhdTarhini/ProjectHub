@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('location');
             $table->string('description');
             $table->string('status');
+            $table->unsignedBigInteger('created_by');
+            $table->foreign('created_by')->references('id')->on('users');
             $table->date('finished_at')->nullable();
             $table->timestamps();
         });

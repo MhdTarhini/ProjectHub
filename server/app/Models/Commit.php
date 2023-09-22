@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Commit extends Model
 {
     use HasFactory;
-     protected $appends = ['user','file'];
+    //  protected $appends = ['user','file'];
         public function user()
     {
         return $this->belongsTo(User::class);

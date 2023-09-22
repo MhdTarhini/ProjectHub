@@ -1,6 +1,144 @@
+body {
+    background: #FAFAFA;
+}
 .sidebar-side {
-    padding: 10px;
-    width: 100px;
+    width: 209.5px;
     height: 90vh;
-    border: 1px solid black;
+    border: 1.5px solid #E8E8E8;
+    background: #FFF;
+    position: fixed;
+    margin-top: 89px;
+    transition: width 0.4s ease-in-out;
+    }
+    
+    .sidebar-side.minimized {
+        width: 70px;
+    }
+    
+    .name-item.minimized {
+        display: none
+    }
+    
+    .item.minimized {
+        width: 70px;
+}
+    
+.sidebar-options {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+
+}
+    
+.item{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    padding: 20px;
+    width: 208px;
+    transition: width 0.4s ease-in-out;
+
+}
+.sidebar-options .item:hover{
+    background-color: #F0EFEF;
+
+}
+.name-item{
+    flex: 1 0 0;
+    color: #000;
+    font-size: 14px;
+    font-style: normal; 
+    font-weight: 700; 
+    line-height: normal;
+    transition: opacity 2s ease-in-out;
+}
+.line-space{
+    width: 208px;
+    height: 1.5px;
+    background: #E8E8E8;
+    transition: width 0.4s ease-in-out;
+
+}
+.item-images {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 20px 20px 20px;
+}
+.team-member-images{
+    display: flex;
+    width: 40px;
+    height: 27px;
+    padding-top: 16px;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+    position: relative;
+}
+.member-image{
+    position: absolute;
+    width: 36px;
+    height: 41px;    
+    flex-shrink: 0;
+    border-radius: 50px;
+    transition: width 0.8s ease-in-out;
+
+}
+.member-image.minimized{
+    width: 70px;
+
+}
+.sidebar-side.minimized .team-member-images .member-image {
+    transform: scale(0.5);
+}
+.team-member-images .member-image {
+    transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+    transform: scale(1);
+    opacity: 1;
+}
+.image-1{
+    left: 0px;
+}
+    
+.image-1.minimized {
+    left: -20px;
+}
+.image-2{
+
+    left: 20px;
+}
+    
+.image-2.minimized {
+    left: -10px;
+}
+.image-3{
+
+    left: 40px;
+}
+    
+.image-3.minimized {
+    left: 0px;
+}
+.image-4{
+
+    left: 60px;
+}
+    
+.image-4.minimized {
+    left: 10px;
+}
+.image-5{
+
+    left: 80px;
+}
+    
+.image-5.minimized {
+    display: none;
+}
+    
+.line-space.minimized {
+    width: 70px;
 }

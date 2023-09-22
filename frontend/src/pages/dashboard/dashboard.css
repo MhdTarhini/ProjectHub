@@ -1,0 +1,32 @@
+.dashboard-section {
+    background: #FAFAFA;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px
+}
+
+.dashboard-title {
+    color: #000;
+    font-family: Inter;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+}
+
+.dashboard-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+}
+
+.dashboard-card {
+    width: 350px;
+    height: 280px;
+    flex-shrink: 0;
+    border-radius: 5px;
+    border: 1.5px solid var(--stroke, #E8E8E8);
+    background: #FFF;
+}

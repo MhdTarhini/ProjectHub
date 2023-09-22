@@ -61,4 +61,10 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
+        public function branches()
+    {
+        return $this->belongsToMany(Branche::class, 'branch_members', 'user_id', 'branche_id')
+            ->withTimestamps();
+    }
+
 }

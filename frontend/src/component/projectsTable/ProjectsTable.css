@@ -1,0 +1,91 @@
+.name-edit {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.edit-btn {
+    cursor: pointer;
+}
+
+.edit-project-model {
+    padding-top: 20px;
+}
+
+.first-inputs {
+    display: flex;
+    gap: 50px;
+}
+
+.first-inputs input {
+    width: 500px;
+}
+
+.second-inputs {
+    display: flex;
+    flex-direction: column;
+}
+
+#description {
+    width: 800px;
+    border: 1px solid var(--stroke, #E8E8E8);
+    border-radius: 20px;
+    padding-left: 10px;
+    padding-top: 10px;
+}
+
+.edit-project-coonatiner {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+#description::placeholder {
+    padding-left: 10px;
+    padding-top: 10px;
+}
+
+.update-project-btn {
+    align-self: flex-start;
+    margin: 20px 0px 10px 0;
+}
+
+.line-edit {
+    background: #E8E8E8;
+    width: 1200px;
+    height: 1px;
+}
+.add-team-member {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-top: 20px;
+}
+
+.add-team-member-title {
+    color: #000;
+    font-family: Inter;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal
+}
+
+.seleted-add-members {
+    display: flex;
+    margin-top: 20px;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.btn-create-team {
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.create-team-loading {
+    display: flex;
+    align-items: center;
+    gap: 10px
+}

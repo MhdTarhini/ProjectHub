@@ -8,8 +8,10 @@ import ezdxf
 from ezdxf.addons.drawing import RenderContext, Frontend 
 from ezdxf.addons.drawing.matplotlib import MatplotlibBackend
 import io
+import os
 
 def compareData(new_version_data,old_version_path):
+    file_path="data"
     def download_file(file_url, local_filename):
         try:
             response = requests.get(file_url, stream=True)
@@ -19,20 +21,21 @@ def compareData(new_version_data,old_version_path):
                     for chunk in response.iter_content(chunk_size=1024):
                         if chunk:
                             local_file.write(chunk)
-                # print(f"File downloaded as {local_filename}")
             else:
                 print(f"Error with status code: {response.status_code}")
         except Exception as e:
             print(f"An error occurred: {e}")
 
     file_url = old_version_path  
-    local_filename = "downloaded_file.dxf"
+    # local_filename = "downloaded_file.dxf"
+    local_filename = os.path.join(file_path, "downloaded_file.dxf")
+
     download_file(file_url, local_filename)
 
     with open(new_version_data, 'r') as temp_file:
         new_version_data = temp_file.read()
         
-    filename="new_version_data.dxf"
+    filename="data/new_version_data.dxf"
     _, new_version_data = new_version_data.split(',', 1)
     
     dxf_content = base64.b64decode(new_version_data).decode('utf-8')
@@ -59,12 +62,9 @@ def compareData(new_version_data,old_version_path):
         file.writelines(cleaned_lines)
 
     new_version = filename
-    old_version="downloaded_file.dxf"
-    # response = requests.get('API')
-    # if response.status_code == 200:
-    #     old_version= response.json()
-    # else:
-    #     print(f"Failed to fetch data. Status code: {response.status_code}")
+    # old_version="downloaded_file.dxf"
+    old_version = os.path.join(file_path, "downloaded_file.dxf")
+
 
     def extract_data_from_dxf(filepath):
         doc = ezdxf.readfile(filepath)
@@ -159,6 +159,8 @@ def compareData(new_version_data,old_version_path):
     results_dict = json.loads(results)
 
     output_path_json = "output_dxf.dxf"
+    output_path_json = os.path.join(file_path, "output_dxf.dxf")
+
 
     create_dxf_from_json_data(results_dict, output_path_json)
 
@@ -174,14 +176,13 @@ def compareData(new_version_data,old_version_path):
     svg_data = svg_output.getvalue().decode('utf-8')
 
 
-    print(svg_data)
+    encoded_data = base64.b64encode(svg_data.encode()).decode()
 
 
-    # print(results)
+    print(encoded_data)
+
 
 if __name__ == "__main__":
-    # for line in sys.stdin:
-    #     data = line.strip()
     if len(sys.argv) < 3:
         print("Usage: compare_data.py new_version_data old_version_path")
         sys.exit(1)

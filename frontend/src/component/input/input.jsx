@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./input.css";
 
-function Input({ onchange, label, name, type }) {
+function Input({ onchange, label, name, type, value }) {
   const [showLabel, setShowLabel] = useState(false);
 
   const isEmpty = (e) => {
@@ -16,14 +16,16 @@ function Input({ onchange, label, name, type }) {
     <div className="flex column input ">
       <label
         htmlFor={name}
-        className={showLabel ? " label label-class" : " label none-opacity"}>
+        className={
+          showLabel || value ? " label label-class" : " label none-opacity"
+        }>
         {label}
       </label>
       <input
         type={type}
         name={name}
         id={name}
-        placeholder={label}
+        placeholder={value ? value : label}
         onChange={(e) => {
           onchange(e);
           isEmpty(e);

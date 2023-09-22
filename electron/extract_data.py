@@ -1,9 +1,13 @@
 import sys
 import ezdxf
 import base64
+import os
 
 def extractData(data):
-    filename="decoded_data.dxf"
+    # filename="decoded_data.dxf"
+    file_path="data"
+    filename = os.path.join(file_path, "decoded_data.dxf")
+
     _, data = data.split(',', 1)
     
     dxf_content = base64.b64decode(data).decode('utf-8')
@@ -33,7 +37,9 @@ def extractData(data):
 
     msp = docdxf.modelspace()
 
-    with open("results.txt", "w") as f:
+    result_file = os.path.join(file_path, "results.txt")
+
+    with open(result_file, "w") as f:
         for entity in msp:
             etype = entity.dxftype()
             f.write(f"Entity Type: {etype}\n")
@@ -54,7 +60,6 @@ def extractData(data):
                     f.write(f"Is Closed: {'Yes' if entity.is_closed else 'No'}\n")
     print("is done")
 
-# Read data sent from Electron
 if __name__ == "__main__":
     for line in sys.stdin:
         data = line.strip()

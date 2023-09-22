@@ -1,6 +1,125 @@
 .navbar {
     display: flex;
     justify-content: space-between;
+    border: 1.5px solid var(--stroke, #E8E8E8);
+    background: #FFF;
+    width: 100%;
+    position:fixed;
+}
+    
+.logo-navbar {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    border-right: 1.5px solid #E8E8E8;
+    background: #FFF;
     padding: 20px;
-    border: 1px solid black;
+    gap: 20px;
+}
+
+.logo-navbar-icon {
+    width: 48.627px;
+    height: 47.974px;
+    flex-shrink: 0;
+}
+
+.logo-name-navbar {
+    color: #000;
+    text-align: center;
+    font-family: Kanit;
+    font-size: 20.98px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+    text-transform: capitalize;
+}
+
+.hub-navbar {
+    color: #000;
+    font-family: Kanit;
+    font-size: 20.98px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-transform: capitalize;
+}
+
+.navbar-element {
+    flex:2;
+    display: flex;
+    align-items: center;
+    padding: 0px 20px;
+    justify-content: space-between;
+}
+.project-name-navbar{
+    color: #000;
+    text-align: right;
+    font-family: Inter;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+.team-name-navbar{
+    color: rgba(26, 26, 26, 0.75);
+    text-align: right;
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+.search-input-lebel{
+    display: flex;
+    align-items: center;
+    width: 323px;
+    height: 45px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    border: 1.378px solid var(--stroke, #E8E8E8);
+    background: #FAFAFA;
+    padding: 10px;
+}
+.search-input-lebel svg{
+    flex: 1;
+}
+#search{
+    flex: 9;
+    border: hidden;
+    background: #FAFAFA;
+}
+.user-info{
+    display: flex;
+    align-items: center;
+    gap:20px;
+}
+.user-name-job{
+    display: flex;
+    flex-direction: column;
+}
+.user-name{
+    color: #000;
+    text-align: right;
+    font-family: Inter;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+.user-job{
+    color: rgba(26, 26, 26, 0.75);
+    text-align: right;
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+.profile-img-navbar{
+   width: 50px;
+    height: 50px; 
 }

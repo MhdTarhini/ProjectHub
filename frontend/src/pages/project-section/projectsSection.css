@@ -1,0 +1,166 @@
+.project-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: #FAFAFA;
+    width: 1410px;
+}
+
+.project-file-section {
+    padding: 0 10px;
+    background: #FAFAFA;
+}
+.project-section-title {
+    color: #000;
+    font-family: Inter;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    padding: 40px;
+}
+
+.project-section-table {
+    width: 100%;
+}
+
+.project-section-table table {
+    width: 100%;
+}
+
+.project-section-table thead tr {
+    color: #000;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    text-transform: capitalize;
+}
+
+.line-table {
+    position: absolute;
+    background: #E8E8E8;
+    width: 1200px;
+    height: 1px;
+    margin-left: 100px;
+}
+
+.project-section-table tbody tr {
+    height: 50px;
+    color: rgba(26, 26, 26, 0.75);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    text-transform: capitalize;
+}
+
+
+.project-section-table tr {
+    text-align: center;
+}
+
+.new-project {
+    padding: 10px 40px;
+    margin-right: 50px;
+    color: rgb(147, 147, 255);
+    border: 3px dashed rgba(147, 147, 255, 0.774);
+    cursor: pointer;
+}
+
+.new-project:hover {
+    background-color: rgb(147, 147, 255);
+    color: rgb(249, 249, 253);
+}
+
+.btns-new-project {
+    padding: 20pxs
+}
+
+.project-model {
+    padding-top: 50px;
+    height: 450px !important;
+        padding-top: 10px;
+    }
+    
+    .loading-new-project {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    
+    .new-project-model-title {
+        margin-bottom: 20px;
+    }
+    
+    .top-projects-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .members-img {
+        width: 50px;
+        height: 50px;
+}
+.members-images {
+    position: relative;
+}
+.members-img{
+    position: absolute;
+     width: 36px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 50px;
+}
+.img-1 {
+    left: 40px;
+    bottom: 1px;
+}
+
+.img-2 {
+    left: 60px;
+    bottom: 1px;
+}
+
+.img-3 {
+    left: 80px;
+    bottom: 1px;
+}
+
+.img-4 {
+    left: 100px;
+    bottom: 1px;
+}
+
+.img-5 {
+    left: 120px;
+    bottom: 1px;
+}
+
+
+.row-project:hover {
+    width: 5;
+    background-color: aliceblue;
+}
+
+.team-name-member {
+    color: rgba(26, 26, 26, 0.75);
+    font-family: Inter;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.memebers-details {
+    padding-top: 0 !important;
+}
+.member-remove {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+.remove-member {
+    cursor: pointer;
+}

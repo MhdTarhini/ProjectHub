@@ -29,5 +29,9 @@ class File extends Model
     {
         return $this->belongsTo(Project::class)->first();
     }
+        public function commits()
+    {
+        return $this->hasMany(Commit::class, 'file_id', 'id');
+    }
     
 }
