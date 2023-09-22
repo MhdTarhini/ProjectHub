@@ -18,10 +18,10 @@
     border-radius: 10px;
     z-index: 0;
 }
-        
+
 .card:hover {
     transform: translateY(-1px);
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
 }
 
 .file-section-card-img {
@@ -103,7 +103,7 @@
     justify-content: center;
     align-items: center;
     padding: 10px;
-        width: 100%;
+    width: 100%;
 }
 
 .file-details-title {
@@ -115,10 +115,11 @@
     background-color: #fffcfc;
     padding: 10px;
     border-radius: 20px;
-    border: 3px solid #e6e6e6;;
+    border: 3px solid #e6e6e6;
+    ;
     color: #000;
-    }
-    
+}
+
 .square {
     background-color: rgb(146, 250, 146);
     width: 8px;
@@ -126,14 +127,14 @@
     margin-top: 6px;
     margin-left: 70px;
 }
-    
+
 .property {
     margin-top: 10px;
     align-self: flex-start;
     font-weight: 600;
     color: #222222;
 }
-    
+
 .details-of-file {
     width: 100%;
     margin-top: 5px;
@@ -154,6 +155,7 @@
     font-weight: 500;
     color: rgba(159, 159, 159, 0.875);
 }
+
 .download-dxf {
     margin-top: 10px;
     display: flex;
@@ -172,6 +174,7 @@
     padding: 10px;
 
 }
+
 .file-name-details {}
 
 .dxf-icon {
@@ -201,7 +204,7 @@
     display: flex;
     flex-direction: column;
     width: 99%;
-        justify-content: flex-start;
+    justify-content: flex-start;
 }
 
 .show-file-details {
@@ -209,6 +212,7 @@
     width: 100%;
     border: 1px solid var(--stroke, #E8E8E8);
 }
+
 .check-conflict-model {
     display: flex;
     flex-direction: column;
@@ -222,10 +226,12 @@
     transition: opacity 0.3s ease-in-out;
     z-index: 99999999;
 }
+
 .close {
     align-self: flex-end;
     position: absolute;
 }
+
 .svg-image {
     z-index: 999999;
 }
@@ -237,11 +243,11 @@
 
 .input-upload-file {
     display: flex;
-        gap: 10px;
-            margin: 0px 10px;
-            align-self: center;
-        width: 100%;
-        margin-left: 20px;
+    gap: 10px;
+    margin: 0px 10px;
+    align-self: center;
+    width: 100%;
+    margin-left: 20px;
 }
 
 .updated-file {
@@ -249,21 +255,22 @@
     align-self: flex-start;
     width: 180px;
     display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    
+    justify-content: center;
+    align-items: center;
+}
+
 .updated-file:hover {
     background-color: #21b4f8;
 }
-    
+
 .zindex {
     z-index: 9999;
 }
-.loading-green{
+
+.loading-green {
     background-color: rgb(159, 254, 17) !important;
 }
-    
+
 .on-procress {
     cursor: default;
     background: #73bff5fa;
@@ -280,12 +287,13 @@
 .on-procress:hover {
     background: #73bff5fa;
 }
-    
+
 .number-of-letter {
     font-size: 13px;
     align-self: flex-end;
     margin-right: 5px;
 }
+
 .download-icon {
     display: flex;
     gap: 10px;
@@ -298,6 +306,7 @@
 .download-dxf-file {
     cursor: pointer;
 }
+
 .check-commit {
     display: flex;
     gap: 10px;
@@ -305,29 +314,31 @@
     align-self: center;
     width: 100%;
     margin-left: 20px;
-    }
-    
+}
+
 .btn-commit {
     width: 180px;
     text-align: center;
 }
-    
+
 .btn-check {
     width: 180px;
     text-align: center;
 }
-    .color-btn-check {
-background-color: rgb(5, 255, 5);
+
+.color-btn-check {
+    background-color: rgb(5, 255, 5);
 }
-    
+
 .color-btn-check:hover {
     background-color: rgb(70, 253, 70);
-    
+
 }
+
 .success {
     color: greenyellow;
 }
-    
+
 .push {
     margin: 10px;
     width: 93%;
@@ -337,6 +348,7 @@ background-color: rgb(5, 255, 5);
     font-weight: 700;
     font-size: 20px;
 }
+
 .btn-delete-file {
     margin-top: 10px;
     width: 90%;
@@ -346,6 +358,7 @@ background-color: rgb(5, 255, 5);
     margin-top: 10px;
     width: 100%;
 }
+
 .btn-main-commit {
     display: flex;
     align-items: center;

@@ -168,23 +168,6 @@ function FilesContainer({ branche, file, updateFile }) {
       setErrorMessage(error.response.data.message);
     }
   }
-  function handleCompare(e, old_version_path) {
-    const file_update = e.target.files[0];
-    if (file_update) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const new_version_data = event.target.result;
-        window.electron.send(channels.Compare_Data, {
-          new_version_data,
-          old_version_path,
-        });
-      };
-      reader.readAsDataURL(file_update);
-    } else {
-      console.log("No file uploaded");
-    }
-  }
-
   async function getMainFilePath(file_name) {
     // downloadFile();
     const data = new FormData();
@@ -379,10 +362,11 @@ function FilesContainer({ branche, file, updateFile }) {
                     <div className="point"></div>
                   </div>
                 </div>
-                <div className="uploaded-by">{`${file.user.first_name} ${file.user.last_name}`}</div>
               </div>
             );
           })}
+          {/* </Dialog>
+          </Transition.Root> */}
         </div>
         <Transition.Root show={open} as={Fragment}>
           <Dialog

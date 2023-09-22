@@ -94,11 +94,70 @@ function FilesSection() {
     data.append("project_id", user.active);
     data.append("name", brancheName);
 
+    // let selected_users_id = [3, 4];
+    // function newBranch() {
+    //   const data = new FormData();
+    //   selected.map((select) => {
+    //     console.log(select);
+    //     selected_users_id.push(select.value);
+    //   });
+    //   data.append("members", selected_users_id);
+    //   data.append("project_id", 1);
+    //   data.append("name", brancheName);
+
     try {
       const response = axios.post(
         "http://127.0.0.1:8000/api/file-section/new_branch",
         data
       );
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  // axios.defaults.headers.common[
+  //   "Authorization"
+  // ] = `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2d1ZXN0L2xvZ2luIiwiaWF0IjoxNjk1MDc3NTc4LCJleHAiOjE2OTUwODExNzgsIm5iZiI6MTY5NTA3NzU3OCwianRpIjoiTkVQdEh2S2pXM0tja3FBZCIsInN1YiI6IjMiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.eRiJHa4Od9CRuyyGnIry-WtA3xaUYpcGkfvDUUOwIw0`;
+
+  async function handleSubmitUpload() {
+    const data = new FormData();
+    data.append("name", fileName);
+    data.append("path_svg", getSvg);
+    data.append("path_dxf", file);
+    data.append("version", 1);
+    data.append("project_id", 1);
+    data.append("user_id", 3);
+    data.append("branche_id", selectedBranche.id);
+    try {
+      const response = axios.post(
+        "http://127.0.0.1:8000/api/file-section/new_branch",
+        data
+      );
+      const get_files = await response.data;
+      if (get_files.status === "success") {
+        setUpdateFile(!updateFile);
+        closeModal();
+        setfile([]);
+        setIsloading(false);
+      }
+    } catch (error) {
+      console.error(error);
+      setError(true);
+      setErrorMessage(error.response.data.message);
+    }
+  }
+
+  async function PullFromMain() {
+    const data = new FormData();
+    data.append("team_id", 1);
+    data.append("branch_id", selectedBranche.id);
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/file-section/pull_main",
+        data
+      );
+      const pull_files = await response.data;
+      if (pull_files.status === "success") {
+      }
     } catch (error) {
       console.error(error);
     }
