@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./issuesSection.css";
 import IssuePost from "../../component/issue-post/IssuePost";
 import Modal from "react-modal";
@@ -21,6 +21,7 @@ function IssuesSection() {
   const [isNewError, setIsNewError] = useState(false);
   const [issueImageDescription, setIssueImageDescription] = useState("");
   const [newIssueImage, setNewIssueImage] = useState([]);
+  const [allIssuesPosts, setAllIssuesPosts] = useState([]);
   const [imageIsUploaded, setImageIsUploaded] = useState(false);
   const [isDoneCreateNewIssue, setIsDoneCreateNewIssue] = useState(false);
   const [imageSrc, setImageSrc] = useState(null);
@@ -88,10 +89,19 @@ function IssuesSection() {
   }
   async function getIssuesPosts() {
     try {
+      const response = await axios.get(
+        `http://127.0.0.1:8000/api/issue-section/get_issues_posts/${userData.active}`
+      );
+      const allIssuesPosts = await response.data;
+      console.log(allIssuesPosts);
+      setAllIssuesPosts(allIssuesPosts.data);
     } catch (error) {
       console.log(error);
     }
   }
+  useEffect(() => {
+    getIssuesPosts();
+  }, [isDoneCreateNewIssue]);
 
   return (
     <div className="issues-section">
@@ -109,30 +119,20 @@ function IssuesSection() {
       <div className="hr"></div>
       <div className="issues-container">
         <div className="user-issues-container">
-          <div className="user-issues-titles">
-            <div className="issue-name">name</div>
-            <div className="issue-sub-title">sub-title</div>
-          </div>
-          <div className="user-issues-titles">
-            <div className="issue-name">name</div>
-            <div className="issue-sub-title">sub-title</div>
-          </div>
-          <div className="user-issues-titles">
-            <div className="issue-name">name</div>
-            <div className="issue-sub-title">sub-title</div>
-          </div>
-          <div className="user-issues-titles">
-            <div className="issue-name">name</div>
-            <div className="issue-sub-title">sub-title</div>
-          </div>
-          <div className="user-issues-titles">
-            <div className="issue-name">name</div>
-            <div className="issue-sub-title">sub-title</div>
-          </div>
+          {allIssuesPosts.map((IssuePost) => {
+            return (
+              <>
+                <div className="user-issues-titles" key={IssuePost.id}>
+                  <div className="issue-name">{IssuePost.title}</div>
+                  <div className="issue-sub-title">{IssuePost.description}</div>
+                </div>
+                <div className="line-space-title"></div>
+              </>
+            );
+          })}
         </div>
         <IssuePost />
       </div>
-
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}

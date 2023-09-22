@@ -18,9 +18,6 @@
     padding-left: 20px;
 }
 
-.issues-container div {
-    flex: 1;
-}
 
 .issues-container .user-issues-container {
     flex: 1;
@@ -44,10 +41,10 @@
 
 .user-issues-titles {
     display: flex;
-    padding: 20px;
+    padding: 20px 20px 0px 20px;
+        gap: 20px;
     flex-direction: column;
     align-items: flex-start;
-    gap: 10px;
 }
 
 .user-issues-titles:hover {
@@ -55,6 +52,7 @@
 }
 
 .issue-name {
+    height: 10px;
     color: #000;
     font-size: 16px;
     font-style: normal;
@@ -104,6 +102,12 @@
     width: 50px;
     height: 50px;
     flex-shrink: 0;
+}
+.line-space-title {
+    height: 1px;
+    width: 400px;
+    background-color: #E8E8E8;
+
 }
 
 .user-details {
@@ -288,4 +292,12 @@
 
 .input-new-image:hover {
     background: #fdfdfd;
+}
+.issue-sub-title {
+    overflow: hidden;
+    height: 40px;
+    text-align: start;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 300px;
 }
