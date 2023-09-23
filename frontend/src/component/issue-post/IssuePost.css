@@ -1,0 +1,23 @@
+.add-icon {
+    cursor: pointer;
+}
+
+.reupload-image {
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px
+}
+
+.reupload-icon {
+    cursor: pointer;
+}
+
+.reupload-icon:hover {
+    background-color: aliceblue;
+}
+
+.new-member-model {
+    display: flex;
+    flex-direction: column;
+    gap: 20px
+}

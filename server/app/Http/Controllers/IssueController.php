@@ -67,7 +67,7 @@ class IssueController extends Controller
         $member_in=IssueMembers::Where("user_id",$user->id)->pluck("issues_id");
 
 
-        $AllIssuesPosts=Issue::whereIn("id",$member_in)->where("project_id",$project_id)->with("user")->with("contents.users")->with("members.users")->with("comments.users")->get();
+        $AllIssuesPosts=Issue::whereIn("id",$member_in)->where("project_id",$project_id)->with("user")->with("contents.users")->with("members.users")->with("comments.users")->orderBy('created_at', 'desc')->get();
 
 
         return response()->json([
@@ -85,12 +85,60 @@ class IssueController extends Controller
 
     $add_comment->save();
 
-    $added_comment=$add_comment->with('users')->first();
+    $added_comment=Comment::where("id",$add_comment->id)->with('users')->first();
 
        return response()->json([
             'status' => 'success',
             'data'=>$added_comment,
         ]);
+
+   }
+   function addMedia(Request $request){
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'content_image' => 'required|image',
+        ]);
+    $user=Auth::user();
+     if ($request->hasFile('content_image')) {
+            $image = $request->file('content_image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('uploads/issues_image'), $imageName);
+        }
+    $new_media=new IssueContent;
+    $new_media->user_id=$user->id;
+    $new_media->svg_path="http://127.0.0.1:8000/uploads/issues_image/".$imageName;
+    $new_media->issues_id=$request->issue_id;
+    $new_media->description=$request->title;
+    $new_media->save();
+
+    
+    $media=IssueContent::where("id",$new_media->id)->with('users')->first();
+
+    return response()->json([
+            'status' => 'success',
+            'data'=>$media,
+        ]);
+   }
+   function addMembers(Request $request){
+    $request->validate([
+        'members' => 'required',
+    ]);
+
+    $newMembers = [];
+    foreach($request->members as $member){
+        $add_member = new IssueMembers;
+        $add_member->issues_id = $request->issue_id;
+        $add_member->user_id = $member;
+        $add_member->save();
+
+        $newMember = IssueMembers::where('id', $add_member->id)->with('users')->first();
+        $newMembers[] = $newMember;
+    }
+
+    return response()->json([
+        'status' => 'success',
+        'data' => $newMembers
+    ]);
 
    }
 }

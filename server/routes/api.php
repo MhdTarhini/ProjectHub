@@ -50,6 +50,8 @@ Route::group(["middleware" => ["auth:api", 'cors']], function(){
             Route::post("add_edit_issue",[IssueController::class,"newIssue"]);
             Route::get("get_issues_posts/{project_id?}",[IssueController::class,"getIssuesPosts"]);
             Route::post("add_comment",[IssueController::class,"addComment"]);
+            Route::post("add_media",[IssueController::class,"addMedia"]);
+            Route::post("add_members",[IssueController::class,"addMembers"]);
             
         });
 

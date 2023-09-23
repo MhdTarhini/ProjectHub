@@ -131,7 +131,7 @@ function IssuesSection() {
                   }`}
                   onClick={() => {
                     setSelectedPost(IssuePost);
-                    setIsSelected(!isSelected);
+                    setIsSelected(true);
                     if (selectedPostId === IssuePost.id) {
                       setSelectedPostId(null);
                     } else {

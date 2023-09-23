@@ -1,11 +1,115 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./IssuePost.css";
-import Input from "../input/input";
 import axios from "axios";
+import Input from "../input/input";
+import Loading from "../common/loading";
+import Modal from "react-modal";
+import { MultiSelect } from "react-multi-select-component";
+import { ProjectContext } from "../../context/ProjectContext";
 
-function IssuePost({ selectedPost }) {
+function IssuePost({ selectedPost, isSeleted }) {
   const [matchedContent, setMatchedContent] = useState(null);
   const [userComment, setUserComment] = useState("");
+  const [newContentTitle, setNewContentTitle] = useState("");
+  const [AddContentIsOpen, setAddContentIsOpen] = React.useState(false);
+  const [imagedIsUpload, setImageIsUploaded] = React.useState(false);
+  const [isloading, setIsloading] = React.useState(false);
+  const [newContentImage, setNewContentImage] = useState([]);
+  const [imageSrc, setImageSrc] = useState([]);
+  const [newContetError, setNewContentError] = useState(true);
+  const [newContentTitleError, setnewContentTitleError] = useState("");
+  const [newContentImageError, setnewContentImageError] = useState("");
+  const [newComment, setNewComment] = useState([]);
+  const [selected, setSelected] = useState([]);
+  const [openNewMemberModel, setOpenNewMemberModel] = useState(false);
+  const [newMemberError, setNewMemberError] = useState(false);
+  const [newMemberErrorMessage, setnewMemberErrorMessage] = useState("");
+  const { teamMember } = useContext(ProjectContext);
+
+  const transformedData = teamMember.map((team) => ({
+    label: `${team.user.first_name} ${team.user.last_name} - ${team.user.email}`,
+    value: team.user.id,
+  }));
+
+  function closeAddContentModal() {
+    setAddContentIsOpen(false);
+    setImageSrc([]);
+    setImageIsUploaded(false);
+  }
+  function closeNewMemberModal() {
+    setOpenNewMemberModel(false);
+  }
+
+  function handleContentTitle(e) {
+    setNewContentTitle(e.target.value);
+  }
+  const handleImageChange = (e) => {
+    setNewContentImage(e.target.files[0]);
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImageSrc(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  let user_seleted_id = [];
+
+  async function handleAddNewMember() {
+    selected.map((user) => {
+      user_seleted_id.push(user.value);
+    });
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/issue-section/add_members",
+        {
+          members: user_seleted_id,
+          issue_id: selectedPost.id,
+        }
+      );
+      const new_members = await response.data;
+      if (new_members.status === "success") {
+        selectedPost.members.push(...new_members.data);
+        setIsloading(false);
+        closeNewMemberModal();
+        console.log(selectedPost);
+      }
+    } catch (error) {
+      setNewMemberError(true);
+      setnewMemberErrorMessage(error.response.data.errors.members);
+      setIsloading(false);
+    }
+    setNewContentError([]);
+    setNewContentTitle("");
+  }
+
+  async function handleAddNewContent() {
+    const data = new FormData();
+    data.append("content_image", newContentImage);
+    data.append("title", newContentTitle);
+    data.append("issue_id", selectedPost.id);
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/issue-section/add_media",
+        data
+      );
+      const new_content = await response.data;
+      if (new_content.status === "success") {
+        selectedPost.contents.unshift(new_content.data);
+        setIsloading(false);
+        closeAddContentModal();
+      }
+    } catch (error) {
+      setNewContentError(true);
+      setnewContentTitleError(error.response.data.errors.title);
+      setnewContentImageError(error.response.data.errors.content_image);
+      setIsloading(false);
+    }
+    setNewContentError([]);
+    setNewContentTitle("");
+  }
 
   async function addComment() {
     const data = new FormData();
@@ -17,12 +121,14 @@ function IssuePost({ selectedPost }) {
         data
       );
       const add_comment = await response.data;
-      if ((add_comment.status = "success")) {
-        selectedPost.comments.push(add_comment.data);
+      setNewComment(add_comment.data);
+      if (add_comment.status === "success") {
+        selectedPost.comments.unshift(add_comment.data);
         setUserComment("");
       }
     } catch (error) {
       console.log(error);
+      setUserComment("");
     }
   }
 
@@ -35,7 +141,7 @@ function IssuePost({ selectedPost }) {
     }
   }, [selectedPost]);
 
-  if (!selectedPost) {
+  if (!selectedPost || !isSeleted) {
     return (
       <>
         <div className="issue-post">no selected post</div>
@@ -97,38 +203,37 @@ function IssuePost({ selectedPost }) {
                     {comment.users?.email}
                   </div>
                 </div>
-                <div className="content-comment">{comment.content}</div>
+                <div className="content-comment">{comment?.content}</div>
               </div>
             </div>
           </div>
         ))}
-        <div className="add-comment">
-          <input
-            type="text"
-            name="user-cpmment"
-            id="user-comment"
-            placeholder="Write your Comment..."
-            value={userComment}
-            onChange={(e) => setUserComment(e.target.value)}
-          />
-          <div className="issue-post-comment">
-            <svg
-              width="35px"
-              height="35px"
-              viewBox="0 0 24 24"
-              fill="#ffffff"
-              className="svg-comment"
-              xmlns="http://www.w3.org/2000/svg"
-              onClick={addComment}>
-              <path
-                d="M11.5003 12H5.41872M5.24634 12.7972L4.24158 15.7986C3.69128 17.4424 3.41613 18.2643 3.61359 18.7704C3.78506 19.21 4.15335 19.5432 4.6078 19.6701C5.13111 19.8161 5.92151 19.4604 7.50231 18.7491L17.6367 14.1886C19.1797 13.4942 19.9512 13.1471 20.1896 12.6648C20.3968 12.2458 20.3968 11.7541 20.1896 11.3351C19.9512 10.8529 19.1797 10.5057 17.6367 9.81135L7.48483 5.24303C5.90879 4.53382 5.12078 4.17921 4.59799 4.32468C4.14397 4.45101 3.77572 4.78336 3.60365 5.22209C3.40551 5.72728 3.67772 6.54741 4.22215 8.18767L5.24829 11.2793C5.34179 11.561 5.38855 11.7019 5.407 11.8459C5.42338 11.9738 5.42321 12.1032 5.40651 12.231C5.38768 12.375 5.34057 12.5157 5.24634 12.7972Z"
-                stroke="#000000"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </div>
+      </div>
+      <div className="add-comment">
+        <input
+          type="text"
+          name="user-cpmment"
+          id="user-comment"
+          placeholder="Write your Comment..."
+          onChange={(e) => setUserComment(e.target.value)}
+        />
+        <div className="issue-post-comment">
+          <svg
+            width="35px"
+            height="35px"
+            viewBox="0 0 24 24"
+            fill="#ffffff"
+            className="svg-comment"
+            xmlns="http://www.w3.org/2000/svg"
+            onClick={addComment}>
+            <path
+              d="M11.5003 12H5.41872M5.24634 12.7972L4.24158 15.7986C3.69128 17.4424 3.41613 18.2643 3.61359 18.7704C3.78506 19.21 4.15335 19.5432 4.6078 19.6701C5.13111 19.8161 5.92151 19.4604 7.50231 18.7491L17.6367 14.1886C19.1797 13.4942 19.9512 13.1471 20.1896 12.6648C20.3968 12.2458 20.3968 11.7541 20.1896 11.3351C19.9512 10.8529 19.1797 10.5057 17.6367 9.81135L7.48483 5.24303C5.90879 4.53382 5.12078 4.17921 4.59799 4.32468C4.14397 4.45101 3.77572 4.78336 3.60365 5.22209C3.40551 5.72728 3.67772 6.54741 4.22215 8.18767L5.24829 11.2793C5.34179 11.561 5.38855 11.7019 5.407 11.8459C5.42338 11.9738 5.42321 12.1032 5.40651 12.231C5.38768 12.375 5.34057 12.5157 5.24634 12.7972Z"
+              stroke="#000000"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
         </div>
       </div>
       <div className="issue-media">
@@ -136,7 +241,11 @@ function IssuePost({ selectedPost }) {
           <div className="members-tag">
             <div className="top-member-tag">
               <div className="title-members">Members</div>
-              <div className="add-icon">
+              <div
+                className="add-icon"
+                onClick={() => {
+                  setOpenNewMemberModel(true);
+                }}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -164,11 +273,11 @@ function IssuePost({ selectedPost }) {
             <div className="member-imgs">
               {" "}
               <div className="team-member-images">
-                {selectedPost.members.map((member, index) => {
+                {selectedPost.members?.map((member, index) => {
                   return (
                     <img
-                      src={member.users.profile_img}
-                      alt={member.users.first_name}
+                      src={member?.users?.profile_img}
+                      alt={member.users?.first_name}
                       srcSet=""
                       className={`member-image image-${index + 1} `}
                     />
@@ -186,7 +295,10 @@ function IssuePost({ selectedPost }) {
                 width="31"
                 height="24"
                 viewBox="0 0 31 24"
-                fill="none">
+                fill="none"
+                onClick={() => {
+                  setAddContentIsOpen(true);
+                }}>
                 <mask
                   id="mask0_118_839"
                   maskUnits="userSpaceOnUse"
@@ -204,12 +316,13 @@ function IssuePost({ selectedPost }) {
                 </g>
               </svg>{" "}
             </div>
-            {selectedPost.contents.map((item) => (
+            <div className="media-list">
+            {selectedPost.contents?.map((item) => (
               <div className="media-card">
                 <div className="issue-post-img-media">
-                  <img src={item.svg_path} alt="" className="post-image" />
+                  <img src={item?.svg_path} alt="" className="post-image" />
                   <div className="img-post-details">
-                    <div className="img-description">{item.description}</div>
+                    <div className="img-description">{item?.description}</div>
                   </div>
                   <div className="points">
                     <div className="point"></div>
@@ -234,9 +347,158 @@ function IssuePost({ selectedPost }) {
                 </div>
               </div>
             ))}
+
+            </div>
           </div>
         </div>
       </div>
+      <Modal
+        isOpen={AddContentIsOpen}
+        onRequestClose={closeAddContentModal}
+        ariaHideApp={false}
+        className={`new-issue-model noImage`}
+        style={{ overlay: { background: "rgb(0 0 0 / 15%)" } }}>
+        <h2 className="model-title">Upload New Media</h2>
+        <div className="upload-file-form">
+          {imagedIsUpload ? (
+            <div>
+              <div className="reupload-image">
+                <img
+                  src={imageSrc}
+                  alt="Uploaded Preview"
+                  style={{ maxWidth: "300px", maxHeight: "300px" }}
+                />
+                <svg
+                  className="reupload-icon"
+                  width="30px"
+                  height="30px"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  onClick={() => {
+                    setImageSrc([]);
+                    setImageIsUploaded(false);
+                  }}>
+                  <g clip-path="url(#clip0_1276_7761)">
+                    <path
+                      d="M19.7285 10.9288C20.4413 13.5978 19.7507 16.5635 17.6569 18.6573C15.1798 21.1344 11.4826 21.6475 8.5 20.1966M18.364 8.05071L17.6569 7.3436C14.5327 4.21941 9.46736 4.21941 6.34316 7.3436C3.42964 10.2571 3.23318 14.8588 5.75376 18M18.364 8.05071H14.1213M18.364 8.05071V3.80807"
+                      stroke="#1C274C"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_1276_7761">
+                      <rect width="24" height="24" fill="white" />
+                    </clipPath>
+                  </defs>
+                </svg>
+              </div>
+              <Input
+                label={"File Name"}
+                name={"file-name"}
+                type={"text"}
+                onchange={handleContentTitle}
+              />
+              {newContetError && (
+                <div className="error">{newContentTitleError}</div>
+              )}
+            </div>
+          ) : (
+            <div className="input-new-image">
+              <label htmlFor="issue-image" className="issue-image-label">
+                <svg
+                  width="25px"
+                  height="25px"
+                  viewBox="-2 0 32 32"
+                  version="1.1">
+                  <title>arrow-bottom</title>
+                  <desc>Created with Sketch Beta.</desc>
+                  <defs></defs>
+                  <g
+                    id="Page-1"
+                    stroke="none"
+                    stroke-width="1"
+                    fill="none"
+                    fill-rule="evenodd">
+                    <g
+                      id="Icon-Set"
+                      transform="translate(-519.000000, -931.000000)"
+                      fill="rgb(0 0 0 / 85%)">
+                      <path
+                        d="M543,935 L540,935 L540,937 L543,937 C544.104,937 545,937.896 545,939 L545,959 C545,960.104 544.104,961 543,961 L523,961 C521.896,961 521,960.104 521,959 L521,939 C521,937.896 521.896,937 523,937 L526,937 L526,935 L523,935 C520.791,935 519,936.791 519,939 L519,959 C519,961.209 520.791,963 523,963 L543,963 C545.209,963 547,961.209 547,959 L547,939 C547,936.791 545.209,935 543,935 L543,935 Z M525.343,949.758 L532.242,956.657 C532.451,956.865 532.728,956.954 533,956.939 C533.272,956.954 533.549,956.865 533.758,956.657 L540.657,949.758 C541.048,949.367 541.048,948.733 540.657,948.343 C540.267,947.953 539.633,947.953 539.242,948.343 L534,953.586 L534,932 C534,931.447 533.553,931 533,931 C532.448,931 532,931.447 532,932 L532,953.586 L526.757,948.343 C526.367,947.953 525.733,947.953 525.343,948.343 C524.952,948.733 524.952,949.367 525.343,949.758 L525.343,949.758 Z"
+                        id="arrow-bottom"></path>
+                    </g>
+                  </g>
+                </svg>
+                Upload Image
+                {isloading && <Loading />}
+              </label>
+              <input
+                type="file"
+                name="issue-image"
+                id="issue-image"
+                onChange={(e) => {
+                  handleImageChange(e);
+                  setImageIsUploaded(true);
+                }}
+              />
+              {newContetError && (
+                <div className="error">{newContentImageError}</div>
+              )}
+            </div>
+          )}
+          <div className="btns-new-file">
+            <button className="btn close-btn" onClick={closeAddContentModal}>
+              Close
+            </button>
+
+            <button
+              className={` ${imagedIsUpload ? "btn" : "on-procress"}`}
+              onClick={() => {
+                handleAddNewContent();
+                setIsloading(true);
+              }}>
+              Add
+            </button>
+          </div>
+        </div>
+      </Modal>
+      <Modal
+        isOpen={openNewMemberModel}
+        onRequestClose={closeNewMemberModal}
+        ariaHideApp={false}
+        className={`new-issue-model noImage`}
+        style={{ overlay: { background: "rgb(0 0 0 / 15%)" } }}>
+        <div className="new-member-model">
+          <h2 className="model-title">Add New Member</h2>
+          <div>
+            <MultiSelect
+              options={transformedData}
+              value={selected}
+              onChange={setSelected}
+              labelledBy="Select"
+            />
+            {newMemberError && (
+              <div className="error">{newMemberErrorMessage}</div>
+            )}
+          </div>
+          <div className="btns-new-file">
+            <button className="btn close-btn" onClick={closeNewMemberModal}>
+              Close
+            </button>
+            <button
+              className={` ${selected.length > 0 ? "btn" : "on-procress"}`}
+              onClick={() => {
+                handleAddNewMember();
+                setIsloading(true);
+              }}>
+              Add
+            </button>
+          </div>
+        </div>
+      </Modal>
     </>
   );
 }

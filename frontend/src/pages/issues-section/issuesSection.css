@@ -41,22 +41,34 @@
     flex-direction: column;
     border: 1px solid var(--stroke, #E8E8E8);
     background: #FFF;
+    border-radius: 10px;
     height: 72vh;
-        width: 400px;
-        border-radius: 10px;
 }
 
+
+    
+.user-issues-container:-webkit-scrollbar {
+    width: 0;
+}
+    
+.user-issues-container::-khtml-scrollbar {
+    width: 0;
+}
+    
+.user-issues-container::-moz-scrollbar {
+    width: 0;
+}
 .user-issues-titles {
     display: flex;
     padding: 20px 20px 0px 20px;
-        gap: 20px;
+    gap: 20px;
     flex-direction: column;
     align-items: flex-start;
     cursor: pointer;
-    }
+}
     
-    .selected {
-        background-color: #f0f0f088;
+.selected {
+    background-color: #f0f0f088;
 }
 
 .user-issues-titles:hover {
@@ -78,7 +90,6 @@
 
 .issue-sub-title {
     color: #000;
-    text-align: center;
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
@@ -101,6 +112,20 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 20px;
+    overflow-y: auto;
+        height: 530px;
+    }
+    
+    .post-issue::-webkit-scrollbar {
+        width: 0;
+    }
+    
+    .post-issue::-khtml-scrollbar {
+        width: 0;
+    }
+    
+    .post-issue::-moz-scrollbar {
+        width: 0;
 }
 
 .user-info-issue {
@@ -339,6 +364,9 @@ border: 1px solid var(--stroke, #E8E8E8);
     display: flex;
     align-items: center;
     cursor: pointer;
+    position: absolute;
+        bottom: 30px;
+        left: 500px
 }
 
 .issue-media {
@@ -434,4 +462,20 @@ border: 1px solid var(--stroke, #E8E8E8);
     display: flex;
     align-items: flex-start;
 
+}
+.media-list {
+    overflow-y: auto;
+    height: 400px;
+}
+
+.media-list::-webkit-scrollbar {
+    width: 0;
+}
+
+.media-list::-khtml-scrollbar {
+    width: 0;
+}
+
+.media-list::-moz-scrollbar {
+    width: 0;
 }
