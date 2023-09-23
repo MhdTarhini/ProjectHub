@@ -1,0 +1,15 @@
+.accpted-card {
+    background-color: rgba(86, 255, 176, 0.964);
+}
+
+.rejected-card {
+    background-color: rgb(253, 114, 92);
+}
+
+.loading-display {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}

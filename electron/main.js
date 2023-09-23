@@ -4,6 +4,8 @@ const { PythonShell } = require("python-shell");
 const { channels } = require("../frontend/src/shared/constants");
 const fs = require("fs");
 
+let mainWindow;
+
 const isMac = process.platform === "darwin";
 
 process.env.NODE_ENV = "dev";
@@ -11,6 +13,15 @@ process.env.NODE_ENV = "dev";
 const isDev = process.env.NODE_ENV !== "production";
 
 function createMainWindow() {
+  // const startUrl =
+  //   process.env.ELECTRON_START_URL ||
+  //   url.format({
+  //     pathname: path.join(__dirname, "../index.html"),
+  //     protocol: "file:",
+  //     slashes: true,
+  //   });
+  // mainWindow = new BrowserWindow({ width: 800, height: 600 });
+  // mainWindow.loadURL(startUrl);
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
   mainWindow = new BrowserWindow({
     title: "ProjectHub",
@@ -31,7 +42,16 @@ function createMainWindow() {
     mainWindow.webContents.openDevTools();
   }
 
-  mainWindow.loadURL("http://localhost:3000/");
+  // mainWindow.webContents.on("did-fail-load", () => {
+  //   if (process.env.NODE_ENV === "dev") {
+  //     mainWindow.loadURL("http://localhost:3000");
+  //     // mainWindow.loadFile(
+  //     //   path.join(__dirname, "../frontend/public/index.html")
+  //     // );
+  //   }
+  // });
+
+  mainWindow.loadURL("http://localhost:3000");
 }
 
 app.whenReady().then(() => {
@@ -50,6 +70,11 @@ app.on("window-all-closed", () => {
   if (!isMac) {
     app.quit();
   }
+});
+
+ipcMain.on("reload-window", () => {
+  console.log("reload");
+  mainWindow.reload();
 });
 
 ipcMain.on(channels.Extract_Data, (event, arg) => {

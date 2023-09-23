@@ -52,6 +52,11 @@ class IssueController extends Controller
 
         }
 
+        $member=new IssueMembers;
+        $member->user_id=$user->id;
+        $member->issues_id=$issue->id;
+        $member->save();
+
         return response()->json([
             'status' => 'success',
             'issue'=>$issue,

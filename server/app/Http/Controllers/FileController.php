@@ -174,4 +174,19 @@ function pullFromMain(Request $request)
         'data' => $matching_files,
     ]);
 }
+
+function accepteFile(Request $request){
+    $user=Auth::user();
+    $file=File::where("branch_id",$request->branch_id)->where("name",$request->file_name)->first();
+
+    $file->path_dxf=$request->path_dxf;
+    $file->path_svg=$request->path_svg;
+    $file->version=$request->path_svg;
+    $file->user_id=$user->id;
+    $file->save();
+
+     return response()->json([
+        'status' => 'success',
+     ]);
+}
 }

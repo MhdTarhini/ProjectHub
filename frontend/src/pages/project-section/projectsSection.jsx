@@ -505,15 +505,14 @@ function ProjectsSection() {
                         <Dialog.Title
                           as="h3"
                           className="text-base font-semibold leading-6 text-gray-900">
-                          Remove Member
+                          Time Management Warning
                         </Dialog.Title>
                         <div className="mt-2">
                           <p className="text-sm text-gray-500">
-                            Time Management Error : There Another Active Project
-                            At This Moment
+                            There Another Active Project At This Moment
                           </p>
                           <p className="text-sm text-gray-500">
-                            You Must Handle || Finished First !!
+                            You Must Handle || Finishe it First !!
                           </p>
                         </div>
                       </div>

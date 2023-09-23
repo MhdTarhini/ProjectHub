@@ -38,6 +38,7 @@ Route::group(["middleware" => ["auth:api", 'cors']], function(){
             Route::post("main_commit", [CommitController::class, "addMainCommit"]);
             Route::get('download_file/{file_name?}', [FileController::class, "downloadFile"]);
             Route::post('pull_main', [FileController::class, "pullFromMain"]);
+            Route::post('accepte_file', [FileController::class, "accepteFile"]);
         });
         Route::group(["prefix" => "project-section"], function(){
             Route::post("new_project/{id?}",[ProjectController::class,"newProject"]);

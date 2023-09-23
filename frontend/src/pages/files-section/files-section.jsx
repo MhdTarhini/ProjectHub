@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { channels } from "../../shared/constants";
 import "./files-section.css";
 import Modal from "react-modal";
@@ -11,6 +11,10 @@ import FilesContainer from "../../component/FilesContainer/filesContainer";
 import base64 from "base-64";
 import { ProjectContext } from "../../context/ProjectContext";
 import Loading from "../../component/common/loading";
+import CheckConflict from "../../component/CheckConflict/CheckConflict";
+import { Fragment } from "react";
+import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
+import { Dialog } from "@headlessui/react";
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -18,6 +22,7 @@ function classNames(...classes) {
 function FilesSection() {
   const user = JSON.parse(localStorage.getItem("user"));
   axios.defaults.headers.common["Authorization"] = `Bearer ${user.user.token}`;
+  const cancelButtonRef = useRef(null);
   const [file, setfile] = useState([]);
   const [fileName, setFileName] = useState("");
   const [uploadSuccess, setUploadSuccess] = useState(false);
@@ -40,6 +45,10 @@ function FilesSection() {
   const [modalBrancheOpen, setModalBrancheOpen] = React.useState(false);
   const [selected, setSelected] = useState([]);
   const { teamMember } = useContext(ProjectContext);
+  const [pullData, setPullData] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [CheckingConlfectFile, SetCheckingConlfectFile] = useState(false);
+  const [pullMessage, setPullMessage] = useState([]);
 
   const transformedData = teamMember.map((member) => ({
     label: `${member.user.first_name} ${member.user.last_name} - ${member.user.email}`,
@@ -147,22 +156,26 @@ function FilesSection() {
     }
   }
 
-  async function PullFromMain() {
-    const data = new FormData();
-    data.append("team_id", 1);
-    data.append("branch_id", selectedBranche.id);
-    try {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/api/file-section/pull_main",
-        data
-      );
-      const pull_files = await response.data;
-      if (pull_files.status === "success") {
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  // async function PullFromMain() {
+  //   const data = new FormData();
+  //   data.append("team_id", 1);
+  //   data.append("branch_id", selectedBranche.id);
+  //   try {
+  //     const response = await axios.post(
+  //       "http://127.0.0.1:8000/api/file-section/pull_main",
+  //       data
+  //     );
+  //     const pull_files = await response.data;
+  //     if (pull_files.status === "success") {
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }
+
+  const handleDataFromChild = () => {
+    SetCheckingConlfectFile(false);
+  };
 
   async function handleSubmitUpload() {
     const data = new FormData();
@@ -203,6 +216,9 @@ function FilesSection() {
       );
       const pull_files = await response.data;
       if (pull_files.status === "success") {
+        setPullData(response.data.data);
+        setPullMessage(response.data);
+        setOpen(true);
       }
     } catch (error) {
       console.error(error);
@@ -420,6 +436,9 @@ function FilesSection() {
             branche={selectedBranche}
             file={file}
             updateFile={updateFile}
+            pullData={pullData}
+            onData={handleDataFromChild}
+            openCheck={CheckingConlfectFile}
           />
         </div>
       </div>
@@ -523,6 +542,87 @@ function FilesSection() {
             </button>
           </div>
         </Modal>
+        <Transition.Root show={open} as={Fragment}>
+          <Dialog
+            as="div"
+            className="relative z-10"
+            initialFocus={cancelButtonRef}
+            onClose={setOpen}>
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0"
+              enterTo="opacity-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0">
+              <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+            </Transition.Child>
+
+            <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+              <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                <Transition.Child
+                  as={Fragment}
+                  enter="ease-out duration-300"
+                  enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                  enterTo="opacity-100 translate-y-0 sm:scale-100"
+                  leave="ease-in duration-200"
+                  leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+                  leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
+                  <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                    <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                      <div className="sm:flex sm:items-start">
+                        <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                          <ExclamationTriangleIcon
+                            className="h-6 w-6 text-red-600"
+                            aria-hidden="true"
+                          />
+                        </div>
+                        <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                          <Dialog.Title
+                            as="h3"
+                            className="text-base font-semibold leading-6 text-gray-900">
+                            Pull Result !
+                          </Dialog.Title>
+                          {pullMessage && (
+                            <div className="mt-2">
+                              <p className="text-sm text-gray-500">
+                                {pullMessage.added}
+                              </p>
+                              <p className="text-sm text-gray-500">
+                                {pullMessage.conflict}
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                      {pullData.length > 0 && (
+                        <button
+                          type="button"
+                          className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+                          onClick={() => {
+                            SetCheckingConlfectFile(true);
+                            setOpen(false);
+                          }}>
+                          check
+                        </button>
+                      )}
+                      <button
+                        type="button"
+                        className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                        onClick={() => setOpen(false)}
+                        ref={cancelButtonRef}>
+                        close
+                      </button>
+                    </div>
+                  </Dialog.Panel>
+                </Transition.Child>
+              </div>
+            </div>
+          </Dialog>
+        </Transition.Root>
       </div>
     </>
   );

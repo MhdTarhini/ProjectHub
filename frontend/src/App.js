@@ -13,8 +13,10 @@ import TasksSection from "./pages/tasks-section/tasksSection";
 import IssuesSection from "./pages/issues-section/issuesSection";
 import ChatsSection from "./pages/chats-section/chatsSection";
 import SettingsPage from "./pages/settings-page/settingsPage";
+import { useEffect } from "react";
 
 function App() {
+
   return (
     <AuthContextProvider>
       <ProjectContextProvider>

@@ -1,8 +1,10 @@
 {
+  "productName": "ProjectHub",
   "name": "projecthub",
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
+  "homepage": "./",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "electron:start": "npx electron .",
@@ -18,7 +20,7 @@
   "dependencies": {
     "concurrently": "^8.2.1",
     "cross-env": "^7.0.3",
+    "electron-reload": "^2.0.0-alpha.1",
     "python-shell": "^5.0.0"
   }
-
 }
