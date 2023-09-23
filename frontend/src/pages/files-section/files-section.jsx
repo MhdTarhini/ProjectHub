@@ -31,6 +31,7 @@ function FilesSection() {
   const [errorMessage, setErrorMessage] = useState("");
   const [selectedBranche, setSelectedBranche] = useState({
     id: user.main_branch ? user.main_branch : 0,
+    name: "main",
   });
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [updateFile, setUpdateFile] = useState(false);
@@ -256,7 +257,7 @@ function FilesSection() {
           <div className="branches">
             <Menu
               as="div"
-              className="relative inline-block text-left w-100 menu">
+              className=" menu relative inline-block text-left w-100">
               <div>
                 <Menu.Button
                   style={{
@@ -286,9 +287,9 @@ function FilesSection() {
                 leave="transition ease-in duration-75"
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95">
-                <Menu.Items className="menu-items absolute left-0 mt-2 w-60 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <Menu.Items className=" absolute left-0 mt-2 w-60 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                   {branches.map((branche) => (
-                    <div className="py-1 menu-items" key={branche.id}>
+                    <div className="py-1 m" key={branche.id}>
                       <Menu.Item onClick={() => setSelectedBranche(branche)}>
                         {({ active }) => (
                           <a
@@ -357,7 +358,7 @@ function FilesSection() {
                   leave="transition ease-in duration-75"
                   leaveFrom="transform opacity-100 scale-100"
                   leaveTo="transform opacity-0 scale-95">
-                  <Menu.Items className="menu-items absolute right-0 z-10 mt-2 w-60 origin-top-left divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  <Menu.Items className=" absolute right-0 z-10 mt-2 w-60 origin-top-left divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <div className="py-1">
                       {!isManager && (
                         <Menu.Item onClick={PullFromMain}>

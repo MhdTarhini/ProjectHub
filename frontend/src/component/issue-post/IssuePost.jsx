@@ -144,8 +144,15 @@ function IssuePost({ selectedPost, isSeleted }) {
   if (!selectedPost || !isSeleted) {
     return (
       <>
-        <div className="issue-post">no selected post</div>
-        <div className="issue-media">no media</div>
+        <div className="issue-post-empty">
+          <div className="empty-title">Share Your Problem With Others...</div>
+          <div className="empty-text">
+            Looks like there are no posts yet. Start by sharing your issues and
+            get insights from the community.
+          </div>
+          <button className="btn empty-button">Create New Issue</button>
+        </div>
+        <div className="issue-media"></div>
       </>
     );
   }

@@ -1,3 +1,33 @@
+.files-controller {
+    overflow-y: auto;
+    height: 470px;
+    overflow-x: auto;
+    width: 600px;
+}
+
+.files-controller::-webkit-scrollbar {
+    height: 0;
+}
+
+.files-controller::-khtml-scrollbar {
+    height: 0;
+}
+
+.scrollable-div::-moz-scrollbar {
+    height: 0;
+}
+
+.files-controller::-webkit-scrollbar {
+    width: 0;
+}
+
+.files-controller::-khtml-scrollbar {
+    width: 0;
+}
+
+.files-controller::-moz-scrollbar {
+    width: 0;
+}
 .card-container {
     display: flex;
     flex-wrap: wrap;
@@ -213,6 +243,9 @@
     border: 1px solid var(--stroke, #E8E8E8);
 }
 
+.ReactModal__Overlay {
+    z-index: 9;
+}
 .check-conflict-model {
     display: flex;
     flex-direction: column;
@@ -224,7 +257,7 @@
     border: 1px solid var(--stroke, #E8E8E8);
     background: #FFF;
     transition: opacity 0.3s ease-in-out;
-    z-index: 99999999;
+    z-index: 2;
 }
 
 .close {
@@ -389,4 +422,8 @@
 .team-branch-main {
     font-size: 20px;
     font-weight: 700;
+}
+.files-card {
+    display: flex;
+    gap: 20px
 }

@@ -20,9 +20,6 @@ function classNames(...classes) {
 function FilesContainer({ branche, file, updateFile }) {
   const user = JSON.parse(localStorage.getItem("user"));
   axios.defaults.headers.common["Authorization"] = `Bearer ${user.user.token}`;
-  // const project_id = 1;
-  // const project_id = user.active;
-  // const team_id = user.team_active;
   const [open, setOpen] = useState(false);
   const [getFiles, setGetFiles] = useState([]);
   const [openedfileDetails, setOpenedFileDetails] = useState([]);
@@ -283,7 +280,6 @@ function FilesContainer({ branche, file, updateFile }) {
       const reader = new FileReader();
       reader.onload = (event) => {
         const dxf_file = event.target.result;
-        // setDxfFile(dxf_file);
         window.electron.send(channels.Covert_Data_to_svg, { dxf_file });
       };
       reader.readAsDataURL(file_uploaded);
@@ -346,563 +342,587 @@ function FilesContainer({ branche, file, updateFile }) {
   }, []);
   return (
     <>
-      <div className="files-controller">
-        {isDone && <Message text={"File Is Pushed To Branch"} />}
+      {!branche && !getFiles ? (
+        <div>
+          <div className="issue-post-empty">
+            <div className="empty-title">Create Your Own Journery</div>
+            <div className="empty-text">
+              Looks like there are no Project yet. Start your own Projects and
+              get insights from the community.
+            </div>
+            <button className="btn empty-button">Create New Project</button>
+          </div>
+        </div>
+      ) : (
+        <div className="files-controller">
+          {isDone && <Message text={"File Is Pushed To Branch"} />}
 
-        {isDoneCommitMain && (
-          <Message text={"File Is Commited To Main Branch"} />
-        )}
-
-        {branche.name === "main" ? (
-          doneGetFiles ? (
-            <div className="branches-in-main">
-              {getFiles?.map((branch) => {
-                return (
-                  <div className="teams-branches">
-                    <div className="team-branch-main">{branch?.name}</div>
-                    <div className="files-card">
-                      {branch.files?.map((file) => {
-                        return (
-                          <div
-                            className="card"
-                            key={file.id}
-                            onClick={() => {
-                              setOpenedFileDetails(file);
-                              setSeletedFile(file.path_svg);
-                              openFileModal();
-                              getDxfData(file.path_dxf);
-                              getfileCommit(file.id);
-                              getMainFilePath(file.name);
-                              setIsDoneCommitMain(false);
-                            }}>
-                            <img
-                              src={file.path_svg}
-                              className="file-section-card-img"
-                              alt={file.name}
-                            />
-                            <div className="middle-card">
-                              <div className="file-name">{file.name}</div>
-                              <div className="card-option" onClick={() => {}}>
-                                <div className="point"></div>
-                                <div className="point"></div>
-                                <div className="point"></div>
+          {isDoneCommitMain && (
+            <Message text={"File Is Commited To Main Branch"} />
+          )}
+          {branche.name === "main" && branche.id === user.main_branch ? (
+            doneGetFiles ? (
+              <div className="branches-in-main">
+                {getFiles?.map((branch) => {
+                  return (
+                    <div className="teams-branches">
+                      <div className="team-branch-main">{branch?.name}</div>
+                      <div className="files-card">
+                        {branch.files?.map((file) => {
+                          return (
+                            <div
+                              className="card"
+                              key={file.id}
+                              onClick={() => {
+                                setOpenedFileDetails(file);
+                                setSeletedFile(file.path_svg);
+                                openFileModal();
+                                getDxfData(file.path_dxf);
+                                getfileCommit(file.id);
+                                getMainFilePath(file.name);
+                                setIsDoneCommitMain(false);
+                              }}>
+                              <img
+                                src={file.path_svg}
+                                className="file-section-card-img"
+                                alt={file.name}
+                              />
+                              <div className="middle-card">
+                                <div className="file-name">{file.name}</div>
+                                <div className="card-option" onClick={() => {}}>
+                                  <div className="point"></div>
+                                  <div className="point"></div>
+                                  <div className="point"></div>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        );
-                      })}
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <Loading />
+            )
+          ) : (
+            <div className="card-container">
+              {getFiles.map((file) => {
+                return (
+                  <div
+                    className="card"
+                    key={file.id}
+                    onClick={() => {
+                      setOpenedFileDetails(file);
+                      setSeletedFile(file.path_svg);
+                      openFileModal();
+                      setOpen(true);
+                      getDxfData(file.path_dxf);
+                      getfileCommit(file.id);
+                      getMainFilePath(file.name);
+                      setIsDoneCommitMain(false);
+                    }}>
+                    <img
+                      src={file.path_svg}
+                      className="file-section-card-img"
+                      alt={file.name}
+                    />
+                    <div className="middle-card">
+                      <div className="file-name">{file.name}</div>
+                      <div className="card-option">
+                        <div className="point"></div>
+                        <div className="point"></div>
+                        <div className="point"></div>
+                      </div>
                     </div>
                   </div>
                 );
               })}
             </div>
-          ) : (
-            <Loading />
-          )
-        ) : (
-          <div className="card-container">
-            {getFiles.map((file) => {
-              return (
-                <div
-                  className="card"
-                  key={file.id}
-                  onClick={() => {
-                    setOpenedFileDetails(file);
-                    setSeletedFile(file.path_svg);
-                    openFileModal();
-                    setOpen(true);
-                    getDxfData(file.path_dxf);
-                    getfileCommit(file.id);
-                    getMainFilePath(file.name);
-                    setIsDoneCommitMain(false);
-                  }}>
-                  <img
-                    src={file.path_svg}
-                    className="file-section-card-img"
-                    alt={file.name}
-                  />
-                  <div className="middle-card">
-                    <div className="file-name">{file.name}</div>
-                    <div className="card-option" onClick={() => {}}>
-                      <div className="point"></div>
-                      <div className="point"></div>
-                      <div className="point"></div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
-        
-        <Transition.Root show={open} as={Fragment}>
-          <Dialog
-            as="div"
-            className="relative z-10"
-            onClose={() => {
-              setOpen(false);
-              closeCheckFile();
-              setUpdate([]);
-              setCompareResult([]);
-              closeCheckCommit();
-              closeModal();
-              setNoMainMatch(false);
-            }}>
-            <Transition.Child
-              as={Fragment}
-              enter="ease-in-out duration-300"
-              enterFrom="opacity-0"
-              enterTo="opacity-100"
-              leave="ease-in-out duration-500"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0">
-              <div className="fixed transition-opacity" />
-            </Transition.Child>
+          )}
 
-            <div className="fixed inset-0 overflow-hidden">
-              <div className="absolute inset-0 overflow-hidden">
-                <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
-                  <Transition.Child
-                    as={Fragment}
-                    enter="transform transition ease-in-out duration-500 sm:duration-700"
-                    enterFrom="translate-x-full"
-                    enterTo="translate-x-0"
-                    leave="transform transition ease-in-out duration-500 sm:duration-700"
-                    leaveFrom="translate-x-0"
-                    leaveTo="translate-x-full">
-                    <Dialog.Panel className="pointer-events-auto relative w-screen max-w-md">
-                      <Transition.Child
-                        as={Fragment}
-                        enter="ease-in-out duration-500"
-                        enterFrom="opacity-0"
-                        enterTo="opacity-100"
-                        leave="ease-in-out duration-500"
-                        leaveFrom="opacity-100"
-                        leaveTo="opacity-0">
-                        <div className="absolute left-0 top-0 -ml-8 flex pr-2 pt-4 sm:-ml-10 sm:pr-4">
-                          <button
-                            type="button"
-                            className="relative rounded-md text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white">
-                            <span
-                              className="absolute -inset-2.5"
-                              onClick={() => {
-                                setSelected(["commit message </> version"]);
-                              }}
-                            />
-                            <span className="sr-only">Close panel</span>
-                            <XMarkIcon className="h-6 w-6" aria-hidden="true" />
-                          </button>
-                        </div>
-                      </Transition.Child>
-                      <div className="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl">
-                        <div className="px-4 sm:px-6 top-side-details">
-                          Details
-                        </div>
-                        <div className="relative mt-6 flex-1 px-4 sm:px-6">
-                          <div className="file-details-title">
-                            <div className="square"></div>
-                            <div className="file-name-details">
-                              {openedfileDetails.name}
-                            </div>
+          <Transition.Root show={open} as={Fragment}>
+            <Dialog
+              as="div"
+              className="relative z-10"
+              onClose={() => {
+                setOpen(false);
+                closeCheckFile();
+                setUpdate([]);
+                setCompareResult([]);
+                closeCheckCommit();
+                closeModal();
+                setNoMainMatch(false);
+              }}>
+              <Transition.Child
+                as={Fragment}
+                enter="ease-in-out duration-300"
+                enterFrom="opacity-0"
+                enterTo="opacity-100"
+                leave="ease-in-out duration-500"
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0">
+                <div className="fixed transition-opacity" />
+              </Transition.Child>
+
+              <div className="fixed inset-0 overflow-hidden">
+                <div className="absolute inset-0 overflow-hidden">
+                  <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+                    <Transition.Child
+                      as={Fragment}
+                      enter="transform transition ease-in-out duration-500 sm:duration-700"
+                      enterFrom="translate-x-full"
+                      enterTo="translate-x-0"
+                      leave="transform transition ease-in-out duration-500 sm:duration-700"
+                      leaveFrom="translate-x-0"
+                      leaveTo="translate-x-full">
+                      <Dialog.Panel className="pointer-events-auto relative w-screen max-w-md">
+                        <Transition.Child
+                          as={Fragment}
+                          enter="ease-in-out duration-500"
+                          enterFrom="opacity-0"
+                          enterTo="opacity-100"
+                          leave="ease-in-out duration-500"
+                          leaveFrom="opacity-100"
+                          leaveTo="opacity-0">
+                          <div className="absolute left-0 top-0 -ml-8 flex pr-2 pt-4 sm:-ml-10 sm:pr-4">
+                            <button
+                              type="button"
+                              className="relative rounded-md text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white">
+                              <span
+                                className="absolute -inset-2.5"
+                                onClick={() => {
+                                  setSelected(["commit message </> version"]);
+                                }}
+                              />
+                              <span className="sr-only">Close panel</span>
+                              <XMarkIcon
+                                className="h-6 w-6"
+                                aria-hidden="true"
+                              />
+                            </button>
                           </div>
-                          <div className="download-dxf">
-                            <div>
-                              <div className="file-dxf">
-                                <img
-                                  src="dxf-icon.png"
-                                  alt="dxf icon"
-                                  className="dxf-icon"
-                                />
-                                <div className="file-dxf-details">
-                                  <div className="name-file-dxf">
-                                    {openedfileDetails.name}
+                        </Transition.Child>
+                        <div className="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl">
+                          <div className="px-4 sm:px-6 top-side-details">
+                            Details
+                          </div>
+                          <div className="relative mt-6 flex-1 px-4 sm:px-6">
+                            <div className="file-details-title">
+                              <div className="square"></div>
+                              <div className="file-name-details">
+                                {openedfileDetails.name}
+                              </div>
+                            </div>
+                            <div className="download-dxf">
+                              <div>
+                                <div className="file-dxf">
+                                  <img
+                                    src="dxf-icon.png"
+                                    alt="dxf icon"
+                                    className="dxf-icon"
+                                  />
+                                  <div className="file-dxf-details">
+                                    <div className="name-file-dxf">
+                                      {openedfileDetails.name}
+                                    </div>
+                                    <div className="type-file-dxf">
+                                      DXF File
+                                    </div>
                                   </div>
-                                  <div className="type-file-dxf">DXF File</div>
+                                </div>
+                              </div>
+                              <div className="download-icon">
+                                <div
+                                  className="view-svg"
+                                  onClick={openFileModal}>
+                                  <svg
+                                    width="30px"
+                                    height="30px"
+                                    viewBox="0 -4 20 20"
+                                    version="1.1"
+                                    className="view_svg">
+                                    <defs></defs>
+                                    <g
+                                      id="Page-1"
+                                      stroke="none"
+                                      stroke-width="1"
+                                      fill="none"
+                                      fill-rule="evenodd">
+                                      <g
+                                        id="Dribbble-Light-Preview"
+                                        transform="translate(-260.000000, -4563.000000)"
+                                        fill="#000000">
+                                        <g
+                                          id="icons"
+                                          transform="translate(56.000000, 160.000000)">
+                                          <path
+                                            d="M216,4409.00052 C216,4410.14768 215.105,4411.07682 214,4411.07682 C212.895,4411.07682 212,4410.14768 212,4409.00052 C212,4407.85336 212.895,4406.92421 214,4406.92421 C215.105,4406.92421 216,4407.85336 216,4409.00052 M214,4412.9237 C211.011,4412.9237 208.195,4411.44744 206.399,4409.00052 C208.195,4406.55359 211.011,4405.0763 214,4405.0763 C216.989,4405.0763 219.805,4406.55359 221.601,4409.00052 C219.805,4411.44744 216.989,4412.9237 214,4412.9237 M214,4403 C209.724,4403 205.999,4405.41682 204,4409.00052 C205.999,4412.58422 209.724,4415 214,4415 C218.276,4415 222.001,4412.58422 224,4409.00052 C222.001,4405.41682 218.276,4403 214,4403"
+                                            id="view_simple-[#815]"></path>
+                                        </g>
+                                      </g>
+                                    </g>
+                                  </svg>
+                                </div>
+                                <div className="download-dxf-file">
+                                  <svg
+                                    width="30px"
+                                    height="30px"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="download-dxf-file">
+                                    <g id="Interface / Download">
+                                      <path
+                                        id="Vector"
+                                        d="M6 21H18M12 3V17M12 17L17 12M12 17L7 12"
+                                        stroke="#000000"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                      />
+                                    </g>
+                                  </svg>
                                 </div>
                               </div>
                             </div>
-                            <div className="download-icon">
-                              <div className="view-svg" onClick={openFileModal}>
-                                <svg
-                                  width="30px"
-                                  height="30px"
-                                  viewBox="0 -4 20 20"
-                                  version="1.1"
-                                  className="view_svg">
-                                  <defs></defs>
-                                  <g
-                                    id="Page-1"
-                                    stroke="none"
-                                    stroke-width="1"
-                                    fill="none"
-                                    fill-rule="evenodd">
-                                    <g
-                                      id="Dribbble-Light-Preview"
-                                      transform="translate(-260.000000, -4563.000000)"
-                                      fill="#000000">
-                                      <g
-                                        id="icons"
-                                        transform="translate(56.000000, 160.000000)">
-                                        <path
-                                          d="M216,4409.00052 C216,4410.14768 215.105,4411.07682 214,4411.07682 C212.895,4411.07682 212,4410.14768 212,4409.00052 C212,4407.85336 212.895,4406.92421 214,4406.92421 C215.105,4406.92421 216,4407.85336 216,4409.00052 M214,4412.9237 C211.011,4412.9237 208.195,4411.44744 206.399,4409.00052 C208.195,4406.55359 211.011,4405.0763 214,4405.0763 C216.989,4405.0763 219.805,4406.55359 221.601,4409.00052 C219.805,4411.44744 216.989,4412.9237 214,4412.9237 M214,4403 C209.724,4403 205.999,4405.41682 204,4409.00052 C205.999,4412.58422 209.724,4415 214,4415 C218.276,4415 222.001,4412.58422 224,4409.00052 C222.001,4405.41682 218.276,4403 214,4403"
-                                          id="view_simple-[#815]"></path>
-                                      </g>
-                                    </g>
-                                  </g>
-                                </svg>
+                            <div className="side-details-file">
+                              <div className="property">Property</div>
+                              <div className="details-of-file">
+                                <div className="file-details-version">
+                                  <div>Version</div>
+                                  <div>{openedfileDetails.version}</div>
+                                </div>
                               </div>
-                              <div className="download-dxf-file">
-                                <svg
-                                  width="30px"
-                                  height="30px"
-                                  viewBox="0 0 24 24"
-                                  fill="none"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  className="download-dxf-file">
-                                  <g id="Interface / Download">
-                                    <path
-                                      id="Vector"
-                                      d="M6 21H18M12 3V17M12 17L17 12M12 17L7 12"
-                                      stroke="#000000"
-                                      stroke-width="2"
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"
+                              <div className="details-of-file">
+                                <div className="file-details-version">
+                                  <div>Created by</div>
+                                  {openedfileDetails.user && (
+                                    <div className="file-details-user">{`${openedfileDetails.user.first_name} ${openedfileDetails.user.last_name}`}</div>
+                                  )}
+                                </div>
+                              </div>
+                              <div className="details-of-file">
+                                <div className="file-details-version">
+                                  <div>Created Date</div>
+                                  {openedfileDetails.user && (
+                                    <div className="file-details-user">{`${
+                                      openedfileDetails.created_at.split("T")[0]
+                                    }`}</div>
+                                  )}
+                                </div>
+                              </div>
+                              <div className="hr-details"></div>
+                              <div className="show-file-details">
+                                {FileDetails}
+                              </div>
+                              <div className="hr-details"></div>
+                              {!isManager && (
+                                <div className="commit-field">
+                                  <div className="commit-field-title">
+                                    Local Commit
+                                  </div>
+                                  <Input
+                                    label={"Commit message"}
+                                    name={"Commit-message"}
+                                    type={"text"}
+                                    onchange={handleCommitMessage}
+                                  />
+                                  <div className="number-of-letter">
+                                    {commitMessage.length}/50
+                                  </div>
+
+                                  <div className="input-upload-file">
+                                    <label
+                                      className={`btn updated-file ${
+                                        isLocalFileLoading
+                                          ? "loading-green"
+                                          : "n"
+                                      }`}
+                                      htmlFor="updated-file">
+                                      <div className="download-icon">
+                                        <svg
+                                          width="20px"
+                                          height="20px"
+                                          viewBox="0 0 24 24"
+                                          fill="fffff"
+                                          xmlns="http://www.w3.org/2000/svg">
+                                          <g id="Interface / Download">
+                                            <path
+                                              id="Vector"
+                                              d="M6 21H18M12 3V17M12 17L17 12M12 17L7 12"
+                                              stroke="#000000"
+                                              troke-width="2"
+                                              stroke-linecap="round"
+                                              stroke-linejoin="round"
+                                              fill="fffff"
+                                            />
+                                          </g>
+                                        </svg>
+                                      </div>
+                                      {isLocalFileLoading ? (
+                                        <Loading />
+                                      ) : (
+                                        <div>File</div>
+                                      )}
+                                    </label>
+                                    <input
+                                      type="file"
+                                      name="update file"
+                                      id="updated-file"
+                                      onChange={(e) => {
+                                        setIsLocalFileLoading(true);
+                                        setUpdate(e.target.files[0]);
+                                        handleCompare(
+                                          e,
+                                          openedfileDetails.path_dxf
+                                        );
+                                        handleUpload(e);
+                                      }}
+                                      className="none"
                                     />
-                                  </g>
-                                </svg>
-                              </div>
+                                    <div
+                                      className={` btn-check ${
+                                        compareSuccess
+                                          ? "btn color-btn-check"
+                                          : "on-procress"
+                                      }`}
+                                      onClick={() => {
+                                        displayConflict(CompareResult);
+                                        closeCheckFile();
+                                        openModal();
+                                      }}>
+                                      Check
+                                    </div>
+                                  </div>
+                                  <div className="check-commit">
+                                    <button
+                                      className={` btn-commit ${
+                                        compareSuccess ? "btn" : "on-procress"
+                                      } ${
+                                        isLocalCommitLoading
+                                          ? "loading-green"
+                                          : "n"
+                                      }`}
+                                      onClick={() => {
+                                        setIsLocalCommitLoading(true);
+                                        submitCommit(
+                                          openedfileDetails.path_dxf,
+                                          openedfileDetails.version,
+                                          openedfileDetails.id
+                                        );
+                                      }}>
+                                      {isLocalCommitLoading ? (
+                                        <Loading />
+                                      ) : (
+                                        <div>Commit</div>
+                                      )}
+                                    </button>
+                                    <button
+                                      className={` btn-commit ${
+                                        compareSuccess && isCommited
+                                          ? "btn"
+                                          : "on-procress"
+                                      }`}
+                                      onClick={() => {
+                                        setOpen(false);
+                                        handleLocalPush();
+                                        setCompareSuccess(false);
+                                        setCommitMessage("");
+                                        closeModal();
+                                      }}>
+                                      Push
+                                    </button>
+                                  </div>
+                                  {errorLocal && (
+                                    <div className="error">
+                                      {errorLocalMessage}
+                                    </div>
+                                  )}
+                                  {isCommited && (
+                                    <div className="success">
+                                      Commit Successfully !
+                                    </div>
+                                  )}
+                                  <div className="hr-details"></div>
+                                </div>
+                              )}
                             </div>
-                          </div>
-                          <div className="side-details-file">
-                            <div className="property">Property</div>
-                            <div className="details-of-file">
-                              <div className="file-details-version">
-                                <div>Version</div>
-                                <div>{openedfileDetails.version}</div>
-                              </div>
-                            </div>
-                            <div className="details-of-file">
-                              <div className="file-details-version">
-                                <div>Created by</div>
-                                {openedfileDetails.user && (
-                                  <div className="file-details-user">{`${openedfileDetails.user.first_name} ${openedfileDetails.user.last_name}`}</div>
+
+                            <div className="commit-tracker">
+                              <Listbox value={selected} onChange={setSelected}>
+                                {({ open }) => (
+                                  <>
+                                    <Listbox.Label className="block text-sm font-medium leading-6 text-gray-900">
+                                      Commit History
+                                    </Listbox.Label>
+                                    <div className="relative mt-2">
+                                      <Listbox.Button className="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6">
+                                        <span className="flex items-center">
+                                          <span className="ml-3 block truncate">
+                                            {selected}
+                                          </span>
+                                        </span>
+                                        <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
+                                          <ChevronUpDownIcon
+                                            className="h-5 w-5 text-gray-400"
+                                            aria-hidden="true"
+                                          />
+                                        </span>
+                                      </Listbox.Button>
+
+                                      <Transition
+                                        show={open}
+                                        as={Fragment}
+                                        leave="transition ease-in duration-100"
+                                        leaveFrom="opacity-100"
+                                        leaveTo="opacity-0">
+                                        <Listbox.Options className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                          {allCommit.map((commit) => (
+                                            <Listbox.Option
+                                              key={commit.id}
+                                              className={({ active }) =>
+                                                classNames(
+                                                  active
+                                                    ? "bg-indigo-600 text-white"
+                                                    : "text-gray-900",
+                                                  "relative cursor-default select-none py-2 pl-3 pr-9"
+                                                )
+                                              }
+                                              value={commit.message + " </> "}>
+                                              {({ selected, active }) => (
+                                                <>
+                                                  <div className="flex items-center">
+                                                    <span
+                                                      className={classNames(
+                                                        selected
+                                                          ? "font-semibold"
+                                                          : "font-normal",
+                                                        "ml-3 block truncate"
+                                                      )}>
+                                                      {commit.message + " </> "}
+                                                    </span>
+                                                  </div>
+
+                                                  {setSeletedCommitSVG(
+                                                    commit.compare_path_svg
+                                                  )}
+                                                  {selected ? (
+                                                    <span
+                                                      className={classNames(
+                                                        active
+                                                          ? "text-white"
+                                                          : "text-indigo-600",
+                                                        "absolute inset-y-0 right-0 flex items-center pr-4"
+                                                      )}>
+                                                      <CheckIcon
+                                                        className="h-5 w-5"
+                                                        aria-hidden="true"
+                                                      />
+                                                    </span>
+                                                  ) : null}
+                                                </>
+                                              )}
+                                            </Listbox.Option>
+                                          ))}
+                                        </Listbox.Options>
+                                      </Transition>
+                                    </div>
+                                  </>
                                 )}
-                              </div>
+                              </Listbox>
                             </div>
-                            <div className="details-of-file">
-                              <div className="file-details-version">
-                                <div>Created Date</div>
-                                {openedfileDetails.user && (
-                                  <div className="file-details-user">{`${
-                                    openedfileDetails.created_at.split("T")[0]
-                                  }`}</div>
-                                )}
-                              </div>
-                            </div>
+                            <button
+                              className="btn btn-commit-check"
+                              onClick={() => {
+                                setSelected(["commit message </> version"]);
+                                closeCheckFile();
+                                openCommitModal();
+                              }}>
+                              Check Commit
+                            </button>
                             <div className="hr-details"></div>
-                            <div className="show-file-details">
-                              {FileDetails}
-                            </div>
-                            <div className="hr-details"></div>
-                            {!isManager && (
-                              <div className="commit-field">
+                            {!isManager && branche.team_id == null && (
+                              <>
                                 <div className="commit-field-title">
-                                  Local Commit
+                                  Main commit
                                 </div>
                                 <Input
                                   label={"Commit message"}
                                   name={"Commit-message"}
                                   type={"text"}
-                                  onchange={handleCommitMessage}
+                                  onchange={handleMainCommitMessage}
                                 />
-                                <div className="number-of-letter">
-                                  {commitMessage.length}/50
-                                </div>
-
-                                <div className="input-upload-file">
-                                  <label
-                                    className={`btn updated-file ${
-                                      isLocalFileLoading ? "loading-green" : "n"
-                                    }`}
-                                    htmlFor="updated-file">
-                                    <div className="download-icon">
-                                      <svg
-                                        width="20px"
-                                        height="20px"
-                                        viewBox="0 0 24 24"
-                                        fill="fffff"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <g id="Interface / Download">
-                                          <path
-                                            id="Vector"
-                                            d="M6 21H18M12 3V17M12 17L17 12M12 17L7 12"
-                                            stroke="#000000"
-                                            troke-width="2"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            fill="fffff"
-                                          />
-                                        </g>
-                                      </svg>
-                                    </div>
-                                    {isLocalFileLoading ? (
-                                      <Loading />
-                                    ) : (
-                                      <div>File</div>
-                                    )}
-                                  </label>
-                                  <input
-                                    type="file"
-                                    name="update file"
-                                    id="updated-file"
-                                    onChange={(e) => {
-                                      setIsLocalFileLoading(true);
-                                      setUpdate(e.target.files[0]);
-                                      handleCompare(
-                                        e,
-                                        openedfileDetails.path_dxf
-                                      );
-                                      handleUpload(e);
-                                    }}
-                                    className="none"
-                                  />
-                                  <div
-                                    className={` btn-check ${
-                                      compareSuccess
-                                        ? "btn color-btn-check"
+                                <div className="btn-main-commit">
+                                  <button
+                                    className={`commit-main ${
+                                      mainCompareSuccess || noMainMatch
+                                        ? "btn"
                                         : "on-procress"
                                     }`}
                                     onClick={() => {
-                                      displayConflict(CompareResult);
+                                      if (noMainMatch) {
+                                        handleCommitMain(
+                                          null,
+                                          openedfileDetails.path_svg,
+                                          null,
+                                          openedfileDetails.path_dxf,
+                                          "-1",
+                                          0
+                                        );
+                                      } else {
+                                        handleCommitMain(
+                                          mainCompareResult,
+                                          openedfileDetails.path_svg,
+                                          mainDxfPath,
+                                          openedfileDetails.path_dxf,
+                                          mainDxfVersion,
+                                          0
+                                        );
+                                      }
+                                      setOpen(false);
+                                      closeCheckFile();
+                                    }}>
+                                    Commit To Main
+                                  </button>
+                                  <div
+                                    className={`check-main ${
+                                      noMainMatch ? "on-procress" : "btn"
+                                    }`}
+                                    onClick={() => {
+                                      CompareWithMain(
+                                        mainDxfPath,
+                                        openedfileDetails.path_dxf
+                                      );
                                       closeCheckFile();
                                       openModal();
                                     }}>
                                     Check
                                   </div>
                                 </div>
-                                <div className="check-commit">
-                                  <button
-                                    className={` btn-commit ${
-                                      compareSuccess ? "btn" : "on-procress"
-                                    } ${
-                                      isLocalCommitLoading
-                                        ? "loading-green"
-                                        : "n"
-                                    }`}
-                                    onClick={() => {
-                                      setIsLocalCommitLoading(true);
-                                      submitCommit(
-                                        openedfileDetails.path_dxf,
-                                        openedfileDetails.version,
-                                        openedfileDetails.id
-                                      );
-                                    }}>
-                                    {isLocalCommitLoading ? (
-                                      <Loading />
-                                    ) : (
-                                      <div>Commit</div>
-                                    )}
-                                  </button>
-                                  <button
-                                    className={` btn-commit ${
-                                      compareSuccess && isCommited
-                                        ? "btn"
-                                        : "on-procress"
-                                    }`}
-                                    onClick={() => {
-                                      setOpen(false);
-                                      handleLocalPush();
-                                      setCompareSuccess(false);
-                                      setCommitMessage("");
-                                      closeModal();
-                                    }}>
-                                    Push
-                                  </button>
-                                </div>
-                                {errorLocal && (
+                                {errorMain && (
                                   <div className="error">
-                                    {errorLocalMessage}
+                                    {errorMainMessage}
                                   </div>
                                 )}
-                                {isCommited && (
-                                  <div className="success">
-                                    Commit Successfully !
-                                  </div>
-                                )}
-                                <div className="hr-details"></div>
-                              </div>
+                              </>
                             )}
                           </div>
-
-                          <div className="commit-tracker">
-                            <Listbox value={selected} onChange={setSelected}>
-                              {({ open }) => (
-                                <>
-                                  <Listbox.Label className="block text-sm font-medium leading-6 text-gray-900">
-                                    Commit History
-                                  </Listbox.Label>
-                                  <div className="relative mt-2">
-                                    <Listbox.Button className="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6">
-                                      <span className="flex items-center">
-                                        <span className="ml-3 block truncate">
-                                          {selected}
-                                        </span>
-                                      </span>
-                                      <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
-                                        <ChevronUpDownIcon
-                                          className="h-5 w-5 text-gray-400"
-                                          aria-hidden="true"
-                                        />
-                                      </span>
-                                    </Listbox.Button>
-
-                                    <Transition
-                                      show={open}
-                                      as={Fragment}
-                                      leave="transition ease-in duration-100"
-                                      leaveFrom="opacity-100"
-                                      leaveTo="opacity-0">
-                                      <Listbox.Options className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                                        {allCommit.map((commit) => (
-                                          <Listbox.Option
-                                            key={commit.id}
-                                            className={({ active }) =>
-                                              classNames(
-                                                active
-                                                  ? "bg-indigo-600 text-white"
-                                                  : "text-gray-900",
-                                                "relative cursor-default select-none py-2 pl-3 pr-9"
-                                              )
-                                            }
-                                            value={commit.message + " </> "}>
-                                            {({ selected, active }) => (
-                                              <>
-                                                <div className="flex items-center">
-                                                  <span
-                                                    className={classNames(
-                                                      selected
-                                                        ? "font-semibold"
-                                                        : "font-normal",
-                                                      "ml-3 block truncate"
-                                                    )}>
-                                                    {commit.message + " </> "}
-                                                  </span>
-                                                </div>
-
-                                                {setSeletedCommitSVG(
-                                                  commit.compare_path_svg
-                                                )}
-                                                {selected ? (
-                                                  <span
-                                                    className={classNames(
-                                                      active
-                                                        ? "text-white"
-                                                        : "text-indigo-600",
-                                                      "absolute inset-y-0 right-0 flex items-center pr-4"
-                                                    )}>
-                                                    <CheckIcon
-                                                      className="h-5 w-5"
-                                                      aria-hidden="true"
-                                                    />
-                                                  </span>
-                                                ) : null}
-                                              </>
-                                            )}
-                                          </Listbox.Option>
-                                        ))}
-                                      </Listbox.Options>
-                                    </Transition>
-                                  </div>
-                                </>
-                              )}
-                            </Listbox>
-                          </div>
-                          <button
-                            className="btn btn-commit-check"
-                            onClick={() => {
-                              setSelected(["commit message </> version"]);
-                              closeCheckFile();
-                              openCommitModal();
-                            }}>
-                            Check Commit
+                          <button className="btn delete btn-delete-file">
+                            delete file
                           </button>
-                          <div className="hr-details"></div>
-                          {!isManager && branche.team_id == null && (
-                            <>
-                              <div className="commit-field-title">
-                                Main commit
-                              </div>
-                              <Input
-                                label={"Commit message"}
-                                name={"Commit-message"}
-                                type={"text"}
-                                onchange={handleMainCommitMessage}
-                              />
-                              <div className="btn-main-commit">
-                                <button
-                                  className={`commit-main ${
-                                    mainCompareSuccess || noMainMatch
-                                      ? "btn"
-                                      : "on-procress"
-                                  }`}
-                                  onClick={() => {
-                                    if (noMainMatch) {
-                                      handleCommitMain(
-                                        null,
-                                        openedfileDetails.path_svg,
-                                        null,
-                                        openedfileDetails.path_dxf,
-                                        "-1",
-                                        0
-                                      );
-                                    } else {
-                                      handleCommitMain(
-                                        mainCompareResult,
-                                        openedfileDetails.path_svg,
-                                        mainDxfPath,
-                                        openedfileDetails.path_dxf,
-                                        mainDxfVersion,
-                                        0
-                                      );
-                                    }
-                                    setOpen(false);
-                                    closeCheckFile();
-                                  }}>
-                                  Commit To Main
-                                </button>
-                                <div
-                                  className={`check-main ${
-                                    noMainMatch ? "on-procress" : "btn"
-                                  }`}
-                                  onClick={() => {
-                                    CompareWithMain(
-                                      mainDxfPath,
-                                      openedfileDetails.path_dxf
-                                    );
-                                    closeCheckFile();
-                                    openModal();
-                                  }}>
-                                  Check
-                                </div>
-                              </div>
-                              {errorMain && (
-                                <div className="error">{errorMainMessage}</div>
-                              )}
-                            </>
-                          )}
                         </div>
-                        <button className="btn delete btn-delete-file">
-                          delete file
-                        </button>
-                      </div>
-                    </Dialog.Panel>
-                  </Transition.Child>
+                      </Dialog.Panel>
+                    </Transition.Child>
+                  </div>
                 </div>
               </div>
-            </div>
-          </Dialog>
-        </Transition.Root>
-      </div>
+            </Dialog>
+          </Transition.Root>
+        </div>
+      )}
+
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}

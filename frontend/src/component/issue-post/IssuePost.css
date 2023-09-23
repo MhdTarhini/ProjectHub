@@ -21,3 +21,56 @@
     flex-direction: column;
     gap: 20px
 }
+.issue-post-empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 600px;
+}
+
+.issue-post-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    background-color: #f7f9fc;
+    border-radius: 8px;
+}
+
+.empty-icon {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 20px;
+}
+
+.empty-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.empty-text {
+    font-size: 16px;
+    color: #777;
+    text-align: center;
+    max-width: 300px;
+    margin-bottom: 20px;
+}
+
+.btn.empty-button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn.empty-button:hover {
+    background-color: #0056b3;
+}
