@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Branch;
 use App\Models\Commit;
 use App\Models\File;
+use App\Models\Team;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -55,9 +56,27 @@ class FileController extends Controller
         'project_id' => 'required|string|max:255',
         ]);
 
-        $get_files = File::with(["user","project"])->where('branche_id', $request->branche_id)
-            ->where('project_id', $request->project_id)
-            ->get();
+        $isMain = Branch::where("project_id",$request->project_id)->where('id', $request->branche_id)
+                        ->where('name', "main")->first();
+
+        if($isMain){
+            $projectTeamIds = Team::where('project_id', $request->project_id)->pluck('id');
+
+            $branchIds = Branch::whereIn('team_id', $projectTeamIds)
+                    ->where('project_id', $request->project_id)
+                    ->pluck('id');
+
+            // $get_files = File::with(['user', 'project','branche'])
+            //         ->whereIn('branche_id', $branchIds)
+            //         ->where('project_id', $request->project_id)
+            //         ->get();
+            $get_files=Branch::whereIn("id",$branchIds)->with("files")->get();
+        }else{
+            $get_files = File::with(["user","project"])->where('branche_id', $request->branche_id)
+                ->where('project_id', $request->project_id)
+                ->get();
+        }
+
 
         return response()->json([
             'status' => 'success',

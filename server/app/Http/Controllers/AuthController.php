@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Branch;
 use App\Models\Member;
 use App\Models\Project;
 use App\Models\Team;
@@ -46,7 +47,7 @@ class AuthController extends Controller{
         $user = Auth::user();
         $user->token = $token;
 
-        $teams_id = Member::where("user_id", $user->id)->pluck('id')->toArray();
+        $teams_id = Member::where("user_id", $user->id)->pluck('team_id')->toArray();
 
         $projects_id = Team::whereIn('id', $teams_id)->pluck('project_id')->toArray();
         
@@ -57,14 +58,15 @@ class AuthController extends Controller{
         if(!$active_project){
             $active_project=Project::WhereIn("id",$projects_id)->where("status",1)->pluck('id')->first();
         }
-        
+
+        $main_branch=Branch::Where("project_id",$active_project)->where("name","main")->pluck("id")->first();
+                
         $manager_projects=$created_projects->pluck('id')->toArray();
 
-        $activeTeam=Team::where('project_id',$active_project)->pluck('id')->first();
+        $activeTeam=Team::where('project_id',$active_project)->pluck('id');
 
-        $isUserInTeam = Member::where('team_id', $activeTeam)
-                      ->where('user_id', $user->id)
-                      ->exists();
+        $isUserInTeam = Member::whereIn('team_id', $activeTeam)
+                      ->where('user_id', $user->id)->pluck('team_id')->first();
 
         if (!$isUserInTeam) {
             $activeTeam=0;
@@ -76,7 +78,8 @@ class AuthController extends Controller{
             'projects_Member_id' => $projects_id,
             'projects_Manager_id' => $manager_projects,
             'active'=>$active_project?$active_project: 0,
-            'team_active'=>$activeTeam,
+            'team_active'=>$isUserInTeam,
+            'main_branch'=>$main_branch?$main_branch:0
         ];
             
         return response()->json([

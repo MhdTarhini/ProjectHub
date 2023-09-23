@@ -19,7 +19,7 @@ class File extends Model
     }
         public function branche()
     {
-        return $this->belongsTo(Branche::class);
+        return $this->belongsTo(Branch::class,"branche_id");
     }
         public function getUserAttribute()
     {

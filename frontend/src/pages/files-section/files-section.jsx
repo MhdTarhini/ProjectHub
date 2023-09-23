@@ -30,7 +30,7 @@ function FilesSection() {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [selectedBranche, setSelectedBranche] = useState({
-    id: "1",
+    id: user.main_branch ? user.main_branch : 0,
   });
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [updateFile, setUpdateFile] = useState(false);

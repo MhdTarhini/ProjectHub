@@ -42,8 +42,27 @@ class DatabaseSeeder extends Seeder
             'role_id'=>1,
             'profile_img'=>"http://127.0.0.1:8000/uploads/users_image/default.png"
 
-
         ]));
+
+        //  DB::table('projects')->insert([
+        //     'name' => "project-1",
+        //     "description"=>"Two building blocks",
+        //     "location"=>"Beirut",
+        //     "status"=>"1",
+        //     "created_by"=>"1",
+        //     'created_at'=>"2023-09-04 17:25:55"
+
+        // ]);
+        // DB::table('projects')->insert([
+        //     'name' => "project-2",
+        //     "description"=>"Hospital",
+        //     "location"=>"Beirut",
+        //     "status"=>"2",
+        //     "created_by"=>"2",
+        //     'created_at'=>"2023-09-04 17:25:55"
+
+        // ]);
+
         DB::table("users")->insert(([
             'first_name'=>"lara",
             'last_name'=>"lara",
@@ -55,9 +74,9 @@ class DatabaseSeeder extends Seeder
 
         ]));
         DB::table("users")->insert(([
-            'first_name'=>"tala",
-            'last_name'=>"tala",
-            'email'=>"tala@gmail.com",
+            'first_name'=>"hassan",
+            'last_name'=>"hassan",
+            'email'=>"hassan@gmail.com",
             'password'=>Hash::make('1234567'),
             'role_id'=>1,
             'profile_img'=>"http://127.0.0.1:8000/uploads/users_image/default.png"
@@ -75,24 +94,9 @@ class DatabaseSeeder extends Seeder
 
         ]));
 
-        DB::table('projects')->insert([
-            'name' => "project-1",
-            "description"=>"Two building blocks",
-            "location"=>"Beirut",
-            "status"=>"1",
-            "created_by"=>"1",
-            'created_at'=>"2023-09-04 17:25:55"
 
-        ]);
-        DB::table('projects')->insert([
-            'name' => "project-2",
-            "description"=>"Hospital",
-            "location"=>"Beirut",
-            "status"=>"2",
-            "created_by"=>"2",
-            'created_at'=>"2023-09-04 17:25:55"
 
-        ]);
+       
 
         
         // DB::table("teams")->insert(([

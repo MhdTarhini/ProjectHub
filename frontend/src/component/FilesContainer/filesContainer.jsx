@@ -65,6 +65,7 @@ function FilesContainer({ branche, file, updateFile }) {
   const [updateFiles, setUpdateFiles] = useState(false);
   const [isDoneCommitMain, setIsDoneCommitMain] = useState(false);
   const [isManager, setIsManager] = useState(false);
+  const [doneGetFiles, setDoneGetFiles] = useState(false);
 
   function openModal() {
     setIsloading(false);
@@ -163,6 +164,7 @@ function FilesContainer({ branche, file, updateFile }) {
       );
       const files = await response.data;
       setGetFiles(files.data);
+      setDoneGetFiles(true);
     } catch (error) {
       setError(true);
       setErrorMessage(error.response.data.message);
@@ -199,6 +201,24 @@ function FilesContainer({ branche, file, updateFile }) {
   }
   function handleMainCommitMessage(e) {
     setMainCommitMessage(e.target.value);
+  }
+
+  function handleCompare(e, old_version_path) {
+    setCompareSuccess(false);
+    const file_uploaded = e.target.files[0];
+    if (file_uploaded) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const new_version_data = event.target.result;
+        window.electron.send(channels.Compare_Data, {
+          new_version_data,
+          old_version_path,
+        });
+      };
+      reader.readAsDataURL(file_uploaded);
+    } else {
+      console.log("No file uploaded");
+    }
   }
 
   function CompareWithMain(main_file_path, local_file_path) {
@@ -333,41 +353,88 @@ function FilesContainer({ branche, file, updateFile }) {
           <Message text={"File Is Commited To Main Branch"} />
         )}
 
-        <div className="card-container">
-          {getFiles.map((file) => {
-            return (
-              <div
-                className="card"
-                key={file.id}
-                onClick={() => {
-                  setOpenedFileDetails(file);
-                  setSeletedFile(file.path_svg);
-                  openFileModal();
-                  setOpen(true);
-                  getDxfData(file.path_dxf);
-                  getfileCommit(file.id);
-                  getMainFilePath(file.name);
-                  setIsDoneCommitMain(false);
-                }}>
-                <img
-                  src={file.path_svg}
-                  className="file-section-card-img"
-                  alt={file.name}
-                />
-                <div className="middle-card">
-                  <div className="file-name">{file.name}</div>
-                  <div className="card-option" onClick={() => {}}>
-                    <div className="point"></div>
-                    <div className="point"></div>
-                    <div className="point"></div>
+        {branche.name === "main" ? (
+          doneGetFiles ? (
+            <div className="branches-in-main">
+              {getFiles?.map((branch) => {
+                return (
+                  <div className="teams-branches">
+                    <div className="team-branch-main">{branch?.name}</div>
+                    <div className="files-card">
+                      {branch.files?.map((file) => {
+                        return (
+                          <div
+                            className="card"
+                            key={file.id}
+                            onClick={() => {
+                              setOpenedFileDetails(file);
+                              setSeletedFile(file.path_svg);
+                              openFileModal();
+                              getDxfData(file.path_dxf);
+                              getfileCommit(file.id);
+                              getMainFilePath(file.name);
+                              setIsDoneCommitMain(false);
+                            }}>
+                            <img
+                              src={file.path_svg}
+                              className="file-section-card-img"
+                              alt={file.name}
+                            />
+                            <div className="middle-card">
+                              <div className="file-name">{file.name}</div>
+                              <div className="card-option" onClick={() => {}}>
+                                <div className="point"></div>
+                                <div className="point"></div>
+                                <div className="point"></div>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <Loading />
+          )
+        ) : (
+          <div className="card-container">
+            {getFiles.map((file) => {
+              return (
+                <div
+                  className="card"
+                  key={file.id}
+                  onClick={() => {
+                    setOpenedFileDetails(file);
+                    setSeletedFile(file.path_svg);
+                    openFileModal();
+                    setOpen(true);
+                    getDxfData(file.path_dxf);
+                    getfileCommit(file.id);
+                    getMainFilePath(file.name);
+                    setIsDoneCommitMain(false);
+                  }}>
+                  <img
+                    src={file.path_svg}
+                    className="file-section-card-img"
+                    alt={file.name}
+                  />
+                  <div className="middle-card">
+                    <div className="file-name">{file.name}</div>
+                    <div className="card-option" onClick={() => {}}>
+                      <div className="point"></div>
+                      <div className="point"></div>
+                      <div className="point"></div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
-          {/* </Dialog>
-          </Transition.Root> */}
-        </div>
+              );
+            })}
+          </div>
+        )}
+        
         <Transition.Root show={open} as={Fragment}>
           <Dialog
             as="div"
@@ -586,7 +653,6 @@ function FilesContainer({ branche, file, updateFile }) {
                                   </label>
                                   <input
                                     type="file"
-                                    s
                                     name="update file"
                                     id="updated-file"
                                     onChange={(e) => {

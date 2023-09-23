@@ -19,6 +19,10 @@ class Branch extends Model
     {
         return $this->hasMany(BranchMember::class, 'branche_id');
     }
+       public function files()
+    {
+        return $this->hasMany(File::class,'branche_id');
+    }
        public function project()
     {
         return $this->belongsTo(Project::class, 'project_id');

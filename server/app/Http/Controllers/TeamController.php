@@ -21,8 +21,13 @@ class TeamController extends Controller
 
     $usersInTeams = Member::whereIn('team_id', $teamsInNotActiveProjects)
                                         ->pluck('user_id');
+                                        
+    $userIsManagerActiveProject=Project::where("status",1)->pluck("created_by");
 
-    $filteredUsers = User::whereNotIn('id', $usersInTeams)->get();
+    $mergedUserIds = $usersInTeams->merge($userIsManagerActiveProject)->unique();
+
+    $filteredUsers = User::whereNotIn('id', $mergedUserIds)->get();
+
 
     return response()->json([
         'status' => 'success',

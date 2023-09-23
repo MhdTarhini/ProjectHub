@@ -374,3 +374,19 @@
 .commit-main {
     flex: 1;
 }
+.branches-in-main {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.teams-branches {
+    display: flex;
+    flex-direction: column;
+    gap: 20px
+}
+
+.team-branch-main {
+    font-size: 20px;
+    font-weight: 700;
+}
