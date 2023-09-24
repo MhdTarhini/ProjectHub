@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('chat_rooms', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('room_db_id');
+            $table->string('room_image');
             $table->unsignedBigInteger('project_id');
             $table->foreign('project_id')->references('id')->on('projects');
             $table->unsignedBigInteger('created_by');

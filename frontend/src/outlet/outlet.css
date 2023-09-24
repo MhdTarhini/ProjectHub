@@ -9,9 +9,11 @@
     width: 100%;
 }
     
-.sidebar {
+/* .sidebar {
     flex: 1;
 }
+
+*/
 
 .main{
     flex: 7;

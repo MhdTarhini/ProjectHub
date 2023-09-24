@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BranchController;
+use App\Http\Controllers\ChatController;
+use App\Http\Controllers\ChatRoomController;
 use App\Http\Controllers\CommitController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\IssueContentController;
@@ -53,6 +55,10 @@ Route::group(["middleware" => ["auth:api", 'cors']], function(){
             Route::post("add_comment",[IssueController::class,"addComment"]);
             Route::post("add_media",[IssueController::class,"addMedia"]);
             Route::post("add_members",[IssueController::class,"addMembers"]);
+            
+        });
+        Route::group(["prefix" => "chat-section"], function(){
+            Route::post("add_room",[ChatRoomController::class,"newRoom"]);
             
         });
 
