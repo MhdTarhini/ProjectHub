@@ -20,7 +20,12 @@
     line-height: normal;
     padding: 40px;
 }
-
+.project-post-empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
 .project-section-table {
     width: 100%;
 }

@@ -245,143 +245,145 @@ function ProjectsSection() {
               <ProjectsTable openedProject={openedProject} />
             </>
           ) : (
-            <table>
-              <thead>
-                <tr>
-                  <th>Projects</th>
-                  <th>Location</th>
-                  <th>Members</th>
-                  <th>Status</th>
-                  <th>Date</th>
-                </tr>
-              </thead>
-              {userProjects ? (
-                <tbody>
-                  {userProjects.map((item, index) => (
-                    <React.Fragment key={index + "a"}>
-                      <tr className="row-project">
-                        <td>{item.name}</td>
-                        <td>{item.location}</td>
-                        <td className="members-images">
-                          {item.teams.map((team, teamIndex) => {
-                            return team.members.map((user, userIndex) => (
-                              <img
-                                src={user.user.profile_img}
-                                className={`members-img img-${userIndex + 1}`}
-                                alt={`${user.user.name}`}
-                                key={userIndex + "b"}
-                              />
-                            ));
-                          })}
-                        </td>
-                        <td style={{ width: "200px", margin: "0" }}>
-                          <div
-                            style={{ display: "flex", alignItems: "center" }}>
-                            {isloading && <Loading />}
-                            <Menu
-                              as="div"
-                              style={{ width: "200px", margin: "0" }}>
-                              <div>
-                                <Menu.Button
-                                  style={{
-                                    justifyContent: "space-between",
-                                    width: "200px",
-                                    padding: "10px 15px",
-                                    color: `black`,
-                                    border: `1px solid ${
-                                      statusColors[item.status]
-                                    }`,
-                                    cursor: `${
-                                      item.created_by === user.user.id
-                                        ? "pointer"
-                                        : "default"
-                                    }  `,
-                                  }}
-                                  className="inline-flex items-center w-full justify-center gap-x-1.5 rounded-md bg-white px-20 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-                                  <div className="branch-naming">
-                                    {status.map((state) => {
-                                      if (state.value == item.status) {
-                                        return <div>{state.status}</div>;
-                                      }
-                                    })}
-                                  </div>
-                                  {item.created_by === user.user.id && (
-                                    <ChevronDownIcon
-                                      className="-mr-1 h-5 w-5 text-gray-400"
-                                      aria-hidden="true"
-                                    />
-                                  )}
-                                </Menu.Button>
-                              </div>
-                              {item.created_by === user.user.id && (
-                                <Transition
-                                  as="div"
-                                  enter="transition ease-out duration-100"
-                                  enterFrom="transform opacity-0 scale-95"
-                                  enterTo="transform opacity-100 scale-100"
-                                  leave="transition ease-in duration-75"
-                                  leaveFrom="transform opacity-100 scale-100"
-                                  leaveTo="transform opacity-0 scale-95">
-                                  <Menu.Items className="menu-items absolute top-0 mt-2 w-60 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none focus:bg-grey">
-                                    {status.map((state) => (
-                                      <div
-                                        className="py-1 menu-items"
-                                        key={state.status}
-                                        onClick={() => {
-                                          updateStatus(item.id, state.value);
-                                          setIsloading(true);
-                                        }}>
-                                        <Menu.Item>
-                                          {({ active }) => (
-                                            <a
-                                              href="#"
-                                              className={classNames(
-                                                active
-                                                  ? `bg-grey-100 text-gray-900`
-                                                  : "text-gray-700",
-                                                "block px-4 py-2 text-sm flex items-center justify-center"
-                                              )}>
-                                              {state.status}
-                                            </a>
-                                          )}
-                                        </Menu.Item>
-                                      </div>
-                                    ))}
-                                  </Menu.Items>
-                                </Transition>
-                              )}
-                            </Menu>
-                          </div>
-                        </td>
-                        <td>{item.created_at.split("T")[0]}</td>
-                        <svg
-                          style={{
-                            marginTop: "10px",
-                            cursor: "pointer",
-                          }}
-                          onClick={() => {
-                            setOpenProjectdetails(true);
-                            setOpenedProject(item);
-                          }}
-                          fill="#000000"
-                          width="30px"
-                          height="30px"
-                          viewBox="0 0 32 32"
-                          version="1.1"
-                          xmlns="http://www.w3.org/2000/svg">
-                          <title>go</title>
-                          <path d="M27.728 16.024l-8.485 8.482-2.828-2.835 3.656-3.671h-14.071v-4h14.071l-3.657-3.644 2.828-2.816 8.486 8.484z"></path>
-                        </svg>
-                      </tr>
-                      <div className="line-table"></div>
-                    </React.Fragment>
-                  ))}
-                  <div className="line-table"></div>
-                </tbody>
+            <div>
+              {userProjects.length > 0 ? (
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Projects</th>
+                      <th>Location</th>
+                      <th>Members</th>
+                      <th>Status</th>
+                      <th>Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {userProjects.map((item, index) => (
+                      <React.Fragment key={index + "a"}>
+                        <tr className="row-project">
+                          <td>{item.name}</td>
+                          <td>{item.location}</td>
+                          <td className="members-images">
+                            {item.teams.map((team, teamIndex) => {
+                              return team.members.map((user, userIndex) => (
+                                <img
+                                  src={user.user.profile_img}
+                                  className={`members-img img-${userIndex + 1}`}
+                                  alt={`${user.user.name}`}
+                                  key={userIndex + "b"}
+                                />
+                              ));
+                            })}
+                          </td>
+                          <td style={{ width: "200px", margin: "0" }}>
+                            <div
+                              style={{ display: "flex", alignItems: "center" }}>
+                              {isloading && <Loading />}
+                              <Menu
+                                as="div"
+                                style={{ width: "200px", margin: "0" }}>
+                                <div>
+                                  <Menu.Button
+                                    style={{
+                                      justifyContent: "space-between",
+                                      width: "200px",
+                                      padding: "10px 15px",
+                                      color: `black`,
+                                      border: `1px solid ${
+                                        statusColors[item.status]
+                                      }`,
+                                      cursor: `${
+                                        item.created_by === user.user.id
+                                          ? "pointer"
+                                          : "default"
+                                      }  `,
+                                    }}
+                                    className="inline-flex items-center w-full justify-center gap-x-1.5 rounded-md bg-white px-20 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                                    <div className="branch-naming">
+                                      {status.map((state) => {
+                                        if (state.value == item.status) {
+                                          return <div>{state.status}</div>;
+                                        }
+                                      })}
+                                    </div>
+                                    {item.created_by === user.user.id && (
+                                      <ChevronDownIcon
+                                        className="-mr-1 h-5 w-5 text-gray-400"
+                                        aria-hidden="true"
+                                      />
+                                    )}
+                                  </Menu.Button>
+                                </div>
+                                {item.created_by === user.user.id && (
+                                  <Transition
+                                    as="div"
+                                    enter="transition ease-out duration-100"
+                                    enterFrom="transform opacity-0 scale-95"
+                                    enterTo="transform opacity-100 scale-100"
+                                    leave="transition ease-in duration-75"
+                                    leaveFrom="transform opacity-100 scale-100"
+                                    leaveTo="transform opacity-0 scale-95">
+                                    <Menu.Items className="menu-items absolute top-0 mt-2 w-60 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none focus:bg-grey">
+                                      {status.map((state) => (
+                                        <div
+                                          className="py-1 menu-items"
+                                          key={state.status}
+                                          onClick={() => {
+                                            updateStatus(item.id, state.value);
+                                            setIsloading(true);
+                                          }}>
+                                          <Menu.Item>
+                                            {({ active }) => (
+                                              <a
+                                                href="#"
+                                                className={classNames(
+                                                  active
+                                                    ? `bg-grey-100 text-gray-900`
+                                                    : "text-gray-700",
+                                                  "block px-4 py-2 text-sm flex items-center justify-center"
+                                                )}>
+                                                {state.status}
+                                              </a>
+                                            )}
+                                          </Menu.Item>
+                                        </div>
+                                      ))}
+                                    </Menu.Items>
+                                  </Transition>
+                                )}
+                              </Menu>
+                            </div>
+                          </td>
+                          <td>{item.created_at.split("T")[0]}</td>
+                          <svg
+                            style={{
+                              marginTop: "10px",
+                              cursor: "pointer",
+                            }}
+                            onClick={() => {
+                              setOpenProjectdetails(true);
+                              setOpenedProject(item);
+                            }}
+                            fill="#000000"
+                            width="30px"
+                            height="30px"
+                            viewBox="0 0 32 32"
+                            version="1.1"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <title>go</title>
+                            <path d="M27.728 16.024l-8.485 8.482-2.828-2.835 3.656-3.671h-14.071v-4h14.071l-3.657-3.644 2.828-2.816 8.486 8.484z"></path>
+                          </svg>
+                        </tr>
+                        <div className="line-table"></div>
+                      </React.Fragment>
+                    ))}
+                    <div className="line-table"></div>
+                  </tbody>
+                </table>
               ) : (
                 <div>
                   <>
-                    <div className="issue-post-empty">
+                    <div className="project-post-empty">
                       <div className="empty-title">
                         Create Your Own Journery
                       </div>
@@ -396,7 +398,7 @@ function ProjectsSection() {
                   </>
                 </div>
               )}
-            </table>
+            </div>
           )}
         </div>
       </div>

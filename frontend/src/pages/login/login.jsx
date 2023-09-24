@@ -1,10 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./login.css";
 import axios from "axios";
-import { AuthContext } from "../../context/authContext";
 import { Link, useNavigate } from "react-router-dom";
-import { ProjectContext } from "../../context/ProjectContext";
-import { useSignInWithGoogle } from "react-firebase-hooks/auth";
 import { getAuth } from "firebase/auth";
 
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
@@ -15,40 +12,58 @@ function Login() {
   const [error, setError] = useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = useState("");
   const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
+  const [authMethod, setAuthMethod] = useState("email");
 
   const navigate = useNavigate();
 
   async function handleLogin() {
     const data = new FormData();
     data.append("email", email);
-    data.append("password", password);
+    data.append("password", password ? password : null);
+    data.append("authMethod", authMethod);
     try {
       const response = await axios.post(
         "http://127.0.0.1:8000/api/guest/login",
         data
       );
-      const userdata = await response.data.data;
-      localStorage.setItem("user", JSON.stringify(userdata));
-      navigate("/v1");
+      const userdata = await response.data;
+      if (userdata.status === "success") {
+        localStorage.setItem("user", JSON.stringify(userdata.data));
+        navigate("/v1");
+      } else {
+        SignInWithGoogle();
+      }
     } catch (error) {
       setError(true);
-      if (error.response.data.errors.email) {
+      setEmailErrorMessage("password or email are not valid");
+      if (error.message === "Unauthorized") {
+        setEmailErrorMessage("password or email are not valid");
+      }
+      if (password === "") {
+        setPasswordErrorMessage("password is requierd");
+      }
+      if (error.response.data.errors?.email) {
         setEmailErrorMessage(error.response.data.errors.email);
       }
-      if (error.response.data.errors.password) {
+      if (error.response.data.errors?.password) {
         setPasswordErrorMessage(error.response.data.errors.password);
       }
     }
   }
 
-  const useSignInWithGoogle = () => {
+  const SignInWithGoogle = () => {
     const auth = getAuth();
     const provider = new GoogleAuthProvider();
     provider.setCustomParameters({ prompt: "select_account" });
 
     signInWithPopup(auth, provider)
       .then((result) => {
-        console.log(result.user);
+        setEmail(result.user.email);
+        setPassword(null);
+        setAuthMethod("google");
+      })
+      .then(() => {
+        handleLogin();
       })
       .catch((error) => {
         console.error("Error signing in with Google:", error.message);
@@ -64,7 +79,7 @@ function Login() {
           <div className="login-description">
             Collaborate with your team in professional way
           </div>
-          <div className="google">
+          <div className="google" onClick={SignInWithGoogle}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               height="24"
@@ -88,7 +103,7 @@ function Login() {
               />
               <path d="M1 1h22v22H1z" fill="none" />
             </svg>
-            <div onClick={useSignInWithGoogle}>Sign in with Google</div>
+            <div>Sign in with Google</div>
           </div>
           <svg
             xmlns="http://www.w3.org/2000/svg"

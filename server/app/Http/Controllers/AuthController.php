@@ -30,10 +30,24 @@ class AuthController extends Controller{
     public function login(Request $request){
         $request->validate([
             'email' => 'required|string|email',
-            'password' => 'required|string',
+            'password' => 'string|nullable',
         ]);
 
-        $credentials = $request->only('email', 'password');
+        $CheckAuthMethod=User::Where("email",$request->email)->pluck("authMethod")->first();
+
+        if($request->authMethod=="email" && $request->password==null){
+            return response()->json([
+                'status' => 'faild',
+            ]);
+        }
+        if($CheckAuthMethod=="google"){
+        $credentials = $request->only('email','password');
+
+        }else{
+            $credentials = $request->only('email', 'password');
+            
+        }
+        
 
         $token = Auth::attempt($credentials);
  
@@ -94,26 +108,31 @@ class AuthController extends Controller{
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6',
-            // 'profile_img'=>'image|mimes:jpeg,png,jpg,gif,svg|max:2048|null'
+            'password' => 'string|nullable',
+            'profile_img'=>'string|nullable',
         ]);
 
-        $imageName = "default.png";
-        if ($request->hasFile('profile-img')) {
-            $image = $request->file('profile-image');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $image->move(public_path('uploads/users_image'), $imageName);
+        // $imageName = "default.png";
+        // if ($request->hasFile('profile-img')) {
+        //     $image = $request->file('profile-image');
+        //     $imageName = time() . '_' . $image->getClientOriginalName();
+        //     $image->move(public_path('uploads/users_image'), $imageName);
+        // }
+
+        if($request->authMehod==="email" && $request->password===null){
+            return response()->json([
+            'status' => 'faild',
+        ]);
         }
-
-
 
         $user = new User; 
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
         $user->email = $request->email;
+        $user->authMethod = $request->authMethod;
         $user->role_id = "1";
         $user->password = Hash::make($request->password);
-        $user->profile_img = "http://127.0.0.1:8000/uploads/userImages/".$imageName;
+        $user->profile_img = $request->profile_img?$request->profile_img: "http://127.0.0.1:8000/uploads/userImages/default.png";
         $user->save();
 
         $token = Auth::login($user);

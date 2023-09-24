@@ -2,6 +2,8 @@ import React, { useContext, useState } from "react";
 import "./register.css";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { getAuth } from "firebase/auth";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 function Register() {
   const [email, setEmail] = useState("");
@@ -13,6 +15,8 @@ function Register() {
   const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
   const [firstNameErrorMessage, setFirstNameErrorMessage] = useState("");
   const [lastNameErrorMessage, setLastNameErrorMessage] = useState("");
+  const [profileImage, setProfileImage] = useState(null);
+  const [authMethod, setAuthMethod] = useState("email");
 
   const navigate = useNavigate();
 
@@ -22,14 +26,19 @@ function Register() {
     data.append("password", password);
     data.append("last_name", lastName);
     data.append("first_name", firstName);
-    // data.append("profile_img", null);
+    data.append("profile_img", profileImage);
+    data.append("authMethod", authMethod);
     try {
       const response = await axios.post(
         "http://127.0.0.1:8000/api/guest/register",
         data
       );
       const userdata = await response.data;
-      navigate("/");
+      if (userdata.status === "success") {
+        navigate("/");
+      } else {
+        setPasswordErrorMessage("password is required");
+      }
     } catch (error) {
       setError(true);
       if (error.response.data.errors.email) {
@@ -46,6 +55,27 @@ function Register() {
       }
     }
   }
+
+  const useSignInWithGoogle = () => {
+    const auth = getAuth();
+    const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: "select_account" });
+
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        console.log(result.user.email);
+        setEmail(result.user.email);
+        setFristName(result.user.displayName.split(" ")[0]);
+        setLastName(result.user.displayName.split(" ")[1]);
+        setProfileImage(result.user.photoURL);
+        setPassword(null);
+        setAuthMethod("google");
+        handleRegister();
+      })
+      .catch((error) => {
+        console.error("Error signing in with Google:", error.message);
+      });
+  };
 
   return (
     <div className="login-page">
@@ -220,7 +250,7 @@ function Register() {
             <path d="M0 1H155" stroke="black" />
             <path d="M310 1H471" stroke="black" />
           </svg>
-          <div className="google">
+          <div className="google" onClick={useSignInWithGoogle}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               height="24"
