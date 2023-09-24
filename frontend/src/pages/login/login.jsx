@@ -4,6 +4,10 @@ import axios from "axios";
 import { AuthContext } from "../../context/authContext";
 import { Link, useNavigate } from "react-router-dom";
 import { ProjectContext } from "../../context/ProjectContext";
+import { useSignInWithGoogle } from "react-firebase-hooks/auth";
+import { getAuth } from "firebase/auth";
+
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -36,6 +40,19 @@ function Login() {
       }
     }
   }
+
+  const useSignInWithGoogle = () => {
+    const auth = getAuth();
+    const provider = new GoogleAuthProvider();
+
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        console.log(result.user);
+      })
+      .catch((error) => {
+        console.error("Error signing in with Google:", error.message);
+      });
+  };
 
   return (
     <div className="login-page">
@@ -70,7 +87,7 @@ function Login() {
               />
               <path d="M1 1h22v22H1z" fill="none" />
             </svg>
-            <div>Sign in with Google</div>
+            <div onClick={useSignInWithGoogle}>Sign in with Google</div>
           </div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
