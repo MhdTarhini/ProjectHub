@@ -59,6 +59,7 @@ Route::group(["middleware" => ["auth:api", 'cors']], function(){
         });
         Route::group(["prefix" => "chat-section"], function(){
             Route::post("add_room",[ChatRoomController::class,"newRoom"]);
+            Route::get("get_rooms",[ChatRoomController::class,"getRooms"]);
             
         });
 

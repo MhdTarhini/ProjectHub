@@ -1,19 +1,41 @@
 .chat-section {
     display: flex;
-    padding: 20px 0px 0px 40px;
+    padding: 0px 0px 0px 27px;
 
 }
 .right-side-chat {
     width: 300px;
+    height: 680px;
+    border-right: 1px solid var(--stroke, #E8E8E8);
 }
     
 .left-side-chat {
-    flex: 2;
 }
     
 .top-right-side {
     display: flex;
+    justify-content: space-around;
+    border: 1px solid var(--stroke, #E8E8E8);
+    width: fit-content;
+
 }
+.contact{
+    padding: 10px;
+    border-right: 1px solid var(--stroke, #E8E8E8);
+    padding: 10px 52px;
+}
+.contact:hover{
+    background-color: #E8E8E8;
+}
+.chat-name-navbar{
+    padding: 10px;
+    border: 1px solid var(--stroke, #E8E8E8);
+    padding: 10px 52px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
 
 .bottom-right-side {
     display: flex;
@@ -23,23 +45,28 @@
 
 .line-space {
     height: 3px;
-    width: 200px;
+    width: 300px;
 }
 
 .contact-list {
     display: flex;
     flex-direction: column;
-        gap: 20px;
 }
 .user-info-contact {
     display: flex;
-    gap: 10px;
+    padding: 10px 20px 10px 10px;
+    gap:10px;
+    cursor: pointer;
     
 }
     
-    .user-chat-contact-img {
-        width: 50px;
+.user-chat-contact-img {
+    width: 50px;
     height: 50px;
+}
+.user-room-contact-img {
+    width: 30px;
+    height: 30px;
 }
 
 .user-info-contact:hover {
@@ -49,5 +76,89 @@
 .room-list {
     display: flex;
     flex-direction: column;
-    gap: 20px
+}
+.room-info-contact {
+    display: flex;
+    padding: 20px 20px 20px 20px;
+    gap:10px;
+    cursor: pointer;
+    
+}
+.left-side-chat{
+    width: 800px;
+    border-right: 1px solid var(--stroke, #E8E8E8);
+
+
+}
+.chat-container{
+    height: 550px;
+}
+
+.message-info {
+    display: flex;
+    padding: 10px 20px 10px 10px;
+    gap:10px;
+    align-items: center;
+    justify-content: flex-start;
+    
+}
+.chat-part{
+     height: 580px;
+}
+.send-input{
+        width: 680px;
+
+}
+.input-chat-field{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+}
+.user-message{
+    flex-direction: row-reverse;
+}
+.create-room{
+    padding: 20px;
+    cursor: pointer;
+}
+.create-room:hover{
+    background-color: #E8E8E8;
+}
+
+.new-room-model {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    color: #000;
+    position: absolute;
+    left: 30%;
+    width: 500px;
+    bottom:50%;
+    border: 1px solid var(--stroke, #E8E8E8);
+    background: #FFF;
+    border-radius: 6px;
+    gap:20px
+
+}
+.message-info {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+}
+
+
+.message-info > img.user-chat-contact-img {
+  margin-right: 10px; 
+}
+
+
+.user-message {
+    flex-direction: row;
+  justify-content: flex-end;
+}
+
+.user-message > img.user-chat-contact-img {
+  margin-left: 10px; 
+  order: 1;
 }
