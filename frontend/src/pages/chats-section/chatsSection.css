@@ -1,0 +1,32 @@
+.chat-section {
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+    /* background-color: ; */
+    height: 80%;
+}
+
+.chat-container {
+    display: flex;
+    border-radius: 10px;
+    width: 100%;
+    height: 100vh;
+    background-color: red;
+
+}
+
+.chat-sidebar {
+    flex: 1;
+    background-color: aquamarine;
+}
+
+.chat {
+    flex: 2;
+}
+
+.chat-navbar {
+    display: flex;
+    gap: 20px;
+    height: 50px;
+    background-color: blue;
+}
