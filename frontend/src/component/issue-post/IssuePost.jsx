@@ -183,7 +183,9 @@ function IssuePost({ selectedPost, isSeleted }) {
                 className="post-image"
               />
               <div className="img-post-details">
-                <div className="img-description">wlecome</div>
+                <div className="img-description">
+                  {matchedContent.description}
+                </div>
               </div>
               <div className="points">
                 <div className="point"></div>
@@ -324,37 +326,36 @@ function IssuePost({ selectedPost, isSeleted }) {
               </svg>{" "}
             </div>
             <div className="media-list">
-            {selectedPost.contents?.map((item) => (
-              <div className="media-card">
-                <div className="issue-post-img-media">
-                  <img src={item?.svg_path} alt="" className="post-image" />
-                  <div className="img-post-details">
-                    <div className="img-description">{item?.description}</div>
-                  </div>
-                  <div className="points">
-                    <div className="point"></div>
-                    <div className="point"></div>
-                    <div className="point"></div>
-                  </div>
-                </div>
-                <div className="user-media-upload">
-                  <img
-                    src={item.users?.profile_img}
-                    alt=""
-                    className="user-img-media"
-                  />
-                  <div className="user-info-comment">
-                    <div className="user-name-issue-comment">
-                      {`${item.users?.first_name} ${item.users?.last_name}`}
+              {selectedPost.contents?.map((item) => (
+                <div className="media-card">
+                  <div className="issue-post-img-media">
+                    <img src={item?.svg_path} alt="" className="post-image" />
+                    <div className="img-post-details">
+                      <div className="img-description">{item?.description}</div>
                     </div>
-                    <div className="user-job-issue-comment">
-                      {item.users?.email}
+                    <div className="points">
+                      <div className="point"></div>
+                      <div className="point"></div>
+                      <div className="point"></div>
                     </div>
                   </div>
+                  <div className="user-media-upload">
+                    <img
+                      src={item.users?.profile_img}
+                      alt=""
+                      className="user-img-media"
+                    />
+                    <div className="user-info-comment">
+                      <div className="user-name-issue-comment">
+                        {`${item.users?.first_name} ${item.users?.last_name}`}
+                      </div>
+                      <div className="user-job-issue-comment">
+                        {item.users?.email}
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            ))}
-
+              ))}
             </div>
           </div>
         </div>

@@ -1,13 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
-import ChatSidebar from "../../component/chatComponent/sidebar/ChatSidebar";
-import Chat from "../../component/chatComponent/chat/Chat";
 import "./chatsSection.css";
 import { MultiSelect } from "react-multi-select-component";
 import {
-  doc,
-  setDoc,
   getFirestore,
-  getDoc,
   onSnapshot,
   collection,
   addDoc,
@@ -16,12 +11,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
-import {
-  GoogleAuthProvider,
-  signInWithPopup,
-  onAuthStateChanged,
-  signOut,
-} from "firebase/auth";
+import { signOut } from "firebase/auth";
 import { getAuth } from "firebase/auth";
 import { ProjectContext } from "../../context/ProjectContext";
 import axios from "axios";
@@ -42,16 +32,13 @@ const db = getFirestore(
 function ChatsSection() {
   const userData = JSON.parse(localStorage.getItem("user"));
   const auth = getAuth();
-  const [user, setUser] = useState(null);
   const [message, setMessage] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [rooms, setRooms] = useState([]);
-  const [users, setUsers] = useState([]);
   const [userRooms, setUserRooms] = useState([]);
   const [roomsName, setRoomsName] = useState([]);
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [newRoomName, setNewRoomName] = useState(null);
-  const [openContact, setOpenContact] = useState(false);
   const [isMulti, setIsMulti] = useState(false);
   const [createMultiRoomIsOpen, setCreateMultiRoomIsOpen] = useState(false);
   const [seletedRoomInfo, setSeletedRoomInfo] = useState([]);
@@ -69,36 +56,8 @@ function ChatsSection() {
 
   function closeCreateMultiRoom() {
     setCreateMultiRoomIsOpen(false);
+    setIsMulti(false);
   }
-
-  let selected_users_id = [];
-  // function newMulti() {
-  //   const data = new FormData();
-
-  //   data.append("members", selected_users_id);
-  //   data.append("project_id", user.active);
-  //   data.append("name", brancheName);
-
-  //   // let selected_users_id = [3, 4];
-  //   // function newBranch() {
-  //   //   const data = new FormData();
-  //   //   selected.map((select) => {
-  //   //     console.log(select);
-  //   //     selected_users_id.push(select.value);
-  //   //   });
-  //   //   data.append("members", selected_users_id);
-  //   //   data.append("project_id", 1);
-  //   //   data.append("name", brancheName);
-
-  //   try {
-  //     const response = axios.post(
-  //       "http://127.0.0.1:8000/api/file-section/new_branch",
-  //       data
-  //     );
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }
 
   async function getRooms() {
     try {
@@ -115,7 +74,7 @@ function ChatsSection() {
 
   useEffect(() => {
     getRooms();
-  }, []);
+  }, [isMulti]);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "rooms"), (snapshot) => {
@@ -128,20 +87,7 @@ function ChatsSection() {
     });
 
     return unsubscribe;
-  }, []);
-
-  // useEffect(() => {
-  //   const unsubscribe = onSnapshot(collection(db, "users"), (snapshot) => {
-  //     setUsers(
-  //       snapshot.docs.map((doc) => ({
-  //         id: doc.id,
-  //         data: doc.data(),
-  //       }))
-  //     );
-  //   });
-
-  //   return unsubscribe;
-  // }, []);
+  }, [isMulti]);
 
   useEffect(() => {
     const q = query(collection(db, "messages"), orderBy("timestamp"));
@@ -175,21 +121,12 @@ function ChatsSection() {
     }
   }, [selectedRoom]);
 
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUser(user);
-      } else {
-        setUser(null);
-      }
-    });
-  }, []);
-
   const createRoom = async (roomName) => {
     await addDoc(collection(db, "rooms"), {
       name: roomName,
       createdAt: serverTimestamp(),
     });
+    setIsMulti(true);
   };
 
   // const signInWithGoogle = async () => {
@@ -235,7 +172,7 @@ function ChatsSection() {
       const response = await axios.post(
         `http://127.0.0.1:8000/api/chat-section/add_room`,
         {
-          room_member: reciver_id ? reciver_id : selected_id,
+          room_member: selected_id,
           project_id: userData.active,
           name: name,
           Room_db_id: RoomId ? RoomId : newRoomName,
@@ -243,6 +180,7 @@ function ChatsSection() {
         }
       );
       const add_new_chat = await response.data;
+      setIsMulti(true);
     } catch (error) {
       console.error(error);
     }
@@ -253,147 +191,148 @@ function ChatsSection() {
 
   return (
     <div className="chat-section">
-      <div className="right-side-chat">
-        <div className="top-right-side">
-          <div
-            className="contact"
+      <div className="left-side-chat">
+        <div className="top-left-side">
+          <div className="chat-word">Chat</div>
+          <input type="search" name="search" id="" />
+          <svg
+            width="40px"
+            height="40px"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
             onClick={() => {
-              setOpenContact(true);
+              setCreateMultiRoomIsOpen(true);
             }}>
-            Contact
-          </div>
-          <div
-            className="contact"
-            onClick={() => {
-              setOpenContact(false);
-            }}>
-            Chat
+            <path
+              d="M15 12L12 12M12 12L9 12M12 12L12 9M12 12L12 15"
+              stroke="#0F8EEA"
+              stroke-width="1.5"
+              stroke-linecap="round"
+            />
+            <path
+              d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7"
+              stroke="#0F8EEA"
+              stroke-width="1.5"
+              stroke-linecap="round"
+            />
+          </svg>
+        </div>
+        <div className="bottom-left-side">
+          <div className="all">ALL</div>
+          <div className="room-list">
+            {rooms.map((room) =>
+              userRooms.map((userRoom) => {
+                console.log(userRoom.Room_db_id);
+                console.log(room.data.name);
+                if (room.data.name === userRoom.Room_db_id) {
+                  return (
+                    <>
+                      <div
+                        key={room.id}
+                        onClick={() => {
+                          setSelectedRoom(room.id);
+                          setSeletedRoomInfo(userRoom);
+                        }}
+                        className="user-info-contact">
+                        <img
+                          src={userRoom.room_image}
+                          alt=""
+                          className="user-chat-contact-img"
+                        />
+                        <div className="date-name">
+                          <div className="user-name-info-contact">
+                            <div className="name">{userRoom.name}</div>
+                            <div className="date">10:20 am</div>
+                          </div>
+                          <div className="display-text">hello there</div>
+                        </div>
+                      </div>
+                      <div className="line-space-chat"></div>
+                    </>
+                  );
+                }
+              })
+            )}
           </div>
         </div>
-        <div className="bottom-right-side">
-          {openContact ? (
-            <div className="contact-list">
-              {teamMember.map((member) => {
-                return (
-                  <>
-                    <div
-                      className="user-info-contact"
-                      onClick={() => {
-                        handleCreateRoom(
-                          [member.user.id],
-                          `${member.user.first_name} ${member.user.last_name}`,
-                          `${member.user.id} - ${userData.user.id}`,
-                          member.profile_img
-                        );
-                        createRoom(`${member.user.id}-${userData.user.id}`);
-                        setOpenContact(false);
-                      }}>
-                      <img
-                        src={member.user.profile_img}
-                        alt=""
-                        className="user-chat-contact-img"
-                      />
-                      <div className="user-name-info-contact">
-                        <div className="name">{member.user.first_name}</div>
-                        <div className="name">{member.user.email}</div>
-                      </div>
+      </div>
+      <div className="right-side-chat">
+        <div className="chat-name-navbar">
+          <img
+            src={
+              seletedRoomInfo.room_image
+                ? seletedRoomInfo.room_image
+                : "http://127.0.0.1:8000/uploads/users_image/default.png"
+            }
+            alt=""
+            className="user-room-contact-img "
+          />
+          <div>
+            {seletedRoomInfo.name ? seletedRoomInfo.name : "let's Chat"}
+          </div>
+        </div>
+        <div className="chat-container">
+          {message.length > 0 ? (
+            <div className="chat-part">
+              {message.map((msg) => (
+                <div
+                  key={msg.id}
+                  className={`message-info ${
+                    msg.data.displayName ===
+                    `${userData.user.first_name} ${userData.user.last_name}`
+                      ? "user-message"
+                      : ""
+                  }`}>
+                  <img
+                    src={msg.data.photoURL}
+                    alt={msg.data.displayName}
+                    className="user-chat-contact-img"
+                  />
+                  <div className="message-container">
+                    <div className="user-name-message">
+                      {msg.data.displayName}
                     </div>
-                    <div className="line-space"></div>
-                  </>
-                );
-              })}
+                    <div className="chat-message-send">{msg.data.text}</div>
+                  </div>
+                </div>
+              ))}
             </div>
           ) : (
-            <>
-              <div className="contact-list">
-                <div
-                  className="create-room"
+            <div>
+              <div className="chat-empty">
+                <div className="empty-title">No message yet...</div>
+                <div className="empty-text">
+                  Start sharing and communicate with other.
+                </div>
+                <button
+                  className="btn empty-button"
                   onClick={() => {
                     setCreateMultiRoomIsOpen(true);
                   }}>
-                  Create Room
-                </div>
-                <div className="line-space"></div>
-                <div className="room-list">
-                  {rooms.map((room) =>
-                    userRooms.map((userRoom) => {
-                      if (room.data.name === userRoom.Room_db_id) {
-                        return (
-                          <>
-                            <div
-                              key={room.id}
-                              onClick={() => {
-                                setSelectedRoom(room.id);
-                                setSeletedRoomInfo(userRoom);
-                              }}
-                              className="user-info-contact">
-                              <img
-                                src={userRoom.room_image}
-                                alt=""
-                                className="user-chat-contact-img"
-                              />
-                              <div className="user-name-info-contact">
-                                <div className="name">{userRoom.name}</div>
-                              </div>
-                            </div>
-                            <div className="line-space"></div>
-                          </>
-                        );
-                      }
-                    })
-                  )}
-                </div>
+                  Create New Room
+                </button>
               </div>
-            </>
+            </div>
           )}
-        </div>
-      </div>
-      <div className="left-side-chat">
-        <div className="chat-container">
-          <div className="chat-name-navbar">
-            <img
-              src={seletedRoomInfo.room_image}
-              alt=""
-              className="user-room-contact-img "
-            />
-            <div>{seletedRoomInfo.name}</div>
-          </div>
-          <div className="chat-part">
-            {message.map((msg) => (
-              <div
-                key={msg.id}
-                className={`message-info ${
-                  msg.data.displayName ===
-                  `${userData.user.first_name} ${userData.user.last_name}`
-                    ? "user-message"
-                    : ""
-                }`}>
-                <img
-                  src={msg.data.photoURL}
-                  alt={msg.data.displayName}
-                  className="user-chat-contact-img"
-                />
-                {msg.data.text}
-              </div>
-            ))}
-          </div>
           <div className="input-chat-field">
             <input
               type="text"
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               className="send-input"
+              placeholder="Write your message here..."
             />
             <button onClick={selectedRoom ? sendMessageToRoom : sendMessage}>
               <svg
                 width="40px"
                 height="40px"
                 viewBox="0 0 24 24"
-                fill="none"
+                fill="#0F8EEA"
                 xmlns="http://www.w3.org/2000/svg">
                 <path
                   d="M11.5003 12H5.41872M5.24634 12.7972L4.24158 15.7986C3.69128 17.4424 3.41613 18.2643 3.61359 18.7704C3.78506 19.21 4.15335 19.5432 4.6078 19.6701C5.13111 19.8161 5.92151 19.4604 7.50231 18.7491L17.6367 14.1886C19.1797 13.4942 19.9512 13.1471 20.1896 12.6648C20.3968 12.2458 20.3968 11.7541 20.1896 11.3351C19.9512 10.8529 19.1797 10.5057 17.6367 9.81135L7.48483 5.24303C5.90879 4.53382 5.12078 4.17921 4.59799 4.32468C4.14397 4.45101 3.77572 4.78336 3.60365 5.22209C3.40551 5.72728 3.67772 6.54741 4.22215 8.18767L5.24829 11.2793C5.34179 11.561 5.38855 11.7019 5.407 11.8459C5.42338 11.9738 5.42321 12.1032 5.40651 12.231C5.38768 12.375 5.34057 12.5157 5.24634 12.7972Z"
-                  stroke="#000000"
+                  stroke="#fffff"
                   stroke-width="2"
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -402,20 +341,8 @@ function ChatsSection() {
             </button>
           </div>
         </div>
-        {/* <div>
-          <h3>Users</h3>
-          {users.map((user) => (
-            <div key={user.id}>{user.data.displayName}</div>
-          ))}
-        </div> */}
       </div>
-      {/* <Modal
-        isOpen={createMultiRoomIsOpen}
-        onRequestClose={closeCreateMultiRoom}
-        ariaHideApp={false}
-        className="new-Room-model">
-        
-      </Modal> */}
+
       <Modal
         isOpen={createMultiRoomIsOpen}
         onRequestClose={closeCreateMultiRoom}
@@ -441,10 +368,11 @@ function ChatsSection() {
           onChange={(e) => setNewRoomName(e.target.value)}
         />
         <button
+          className="btn"
           onClick={() => {
-            setIsMulti(true);
             handleCreateRoom(null, newRoomName);
             createRoom(newRoomName);
+            closeCreateMultiRoom();
           }}>
           Create Room
         </button>
