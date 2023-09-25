@@ -25,6 +25,11 @@ function createMainWindow() {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
   mainWindow = new BrowserWindow({
     title: "ProjectHub",
+    titleBarStyle: "hidden",
+    titleBarOverlay: {
+      color: "#0F8EEA",
+      symbolColor: "#FAFAFA",
+    },
     width: width,
     height: height,
     icon: path.join(__dirname, "./logos/logo.ico"),

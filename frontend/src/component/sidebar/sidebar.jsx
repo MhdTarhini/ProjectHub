@@ -1,16 +1,28 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./sidebar.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
 
-function Sidebar() {
+function Sidebar({ onSidebarClick }) {
   const { logout } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [isSidebarMinimized, setSidebarMinimized] = useState(false);
+
+  const location = useLocation();
+
+  const [isSidebarMinimized, setSidebarMinimized] = useState(
+    location.pathname !== "/v1"
+  );
+
+  useEffect(() => {
+    setSidebarMinimized(location.pathname !== "/v1");
+  }, [location.pathname]);
 
   const handleSidebarToggle = () => {
-    setSidebarMinimized(!isSidebarMinimized);
+    if (location.pathname !== "/v1") {
+      setSidebarMinimized(!isSidebarMinimized);
+    }
   };
+
   return (
     <div className={`sidebar-side ${isSidebarMinimized ? "minimized" : ""}`}>
       <div className="sidebar-options">
@@ -18,7 +30,7 @@ function Sidebar() {
           <div
             className={`item ${isSidebarMinimized ? "minimized" : ""}`}
             onClick={() => {
-              setSidebarMinimized(false);
+              setSidebarMinimized(!isSidebarMinimized);
             }}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -46,13 +58,14 @@ function Sidebar() {
               className={`name-item ${isSidebarMinimized ? "minimized" : ""}`}>
               Dashboard
             </div>
+            <div className={`name-item-tooltip`}>Dashboard</div>
           </div>
         </Link>
         <Link to={"/v1/projects-section"}>
           <div
             className={`item ${isSidebarMinimized ? "minimized" : ""}`}
             onClick={() => {
-              setSidebarMinimized(true);
+              // setSidebarMinimized(true);
             }}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -81,6 +94,7 @@ function Sidebar() {
               onClick={handleSidebarToggle}>
               Projects
             </div>
+            <div className={`name-item-tooltip`}>Projects</div>
           </div>
         </Link>
         <Link to={"/v1/tasks-section"}>
@@ -115,6 +129,7 @@ function Sidebar() {
               className={`name-item ${isSidebarMinimized ? "minimized" : ""}`}>
               Tasks
             </div>
+            <div className={`name-item-tooltip`}>Tasks</div>
           </div>
         </Link>
         <Link to={"/v1/files-section"}>
@@ -149,6 +164,7 @@ function Sidebar() {
               className={`name-item ${isSidebarMinimized ? "minimized" : ""}`}>
               Files
             </div>
+            <div className={`name-item-tooltip`}>Files</div>
           </div>
         </Link>
         <div
@@ -238,6 +254,7 @@ function Sidebar() {
               className={`name-item ${isSidebarMinimized ? "minimized" : ""}`}>
               Issues
             </div>
+            <div className={`name-item-tooltip`}>Issues</div>
           </div>
         </Link>
         <Link to={"/v1/chats-section"}>
@@ -272,6 +289,7 @@ function Sidebar() {
               className={`name-item ${isSidebarMinimized ? "minimized" : ""}`}>
               Chats
             </div>
+            <div className={`name-item-tooltip`}>Chats</div>
           </div>
         </Link>
         <div
@@ -310,12 +328,14 @@ function Sidebar() {
               className={`name-item ${isSidebarMinimized ? "minimized" : ""}`}>
               Setting
             </div>
+            <div className={`name-item-tooltip`}>Setting</div>
           </div>
         </Link>
         <div
           className={`item ${isSidebarMinimized ? "minimized" : ""}`}
           onClick={() => {
             logout();
+
             navigate("/");
           }}>
           <svg
@@ -343,6 +363,7 @@ function Sidebar() {
           <div className={`name-item ${isSidebarMinimized ? "minimized" : ""}`}>
             Logout
           </div>
+          <div className={`name-item-tooltip`}>Logout</div>
         </div>
         <div
           className={`line-space ${

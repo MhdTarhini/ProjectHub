@@ -112,6 +112,7 @@
     border-radius: 20px;
     border: 1px solid var(--stroke, #E8E8E8);
     background: #FFF;
+    padding: 20px;
 }
 
 #email::placeholder {
@@ -121,6 +122,7 @@
     font-weight: 400;
     line-height: normal;
     text-transform: lowercase;
+    padding: 0px;
 }
 
 .password-label {
@@ -140,6 +142,7 @@
     border-radius: 20px;
     border: 1px solid var(--stroke, #E8E8E8);
     background: #FFF;
+    padding: 20px;
 
 }
 
@@ -150,6 +153,7 @@
     font-weight: 400;
     line-height: normal;
     text-transform: capitalize;
+    padding: 0px;
 }
 
 .bottom {
@@ -246,7 +250,7 @@
 .project {
     color: #FFF;
     text-align: center;
-    font-family: Kanit;
+    font-family: sans-serif;
     font-size: 40px;
     font-style: normal;
     font-weight: 300;
@@ -256,7 +260,7 @@
 
 .hub {
     color: #FFF;
-    font-family: Kanit;
+    font-family: sans-serif;
     font-size: 40px;
     font-style: normal;
     font-weight: 700;

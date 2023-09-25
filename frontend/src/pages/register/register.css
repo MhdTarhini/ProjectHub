@@ -141,6 +141,13 @@
     background: #FFF;
 
 }
+.input-login {
+    padding: 20px
+}
+
+.input-login::placeholder {
+    padding: 0px
+}
 
 #password::placeholder {
     color: rgba(26, 26, 26, 0.75);
@@ -149,6 +156,7 @@
     font-weight: 400;
     line-height: normal;
     text-transform: capitalize;
+
 }
 
 .bottom {

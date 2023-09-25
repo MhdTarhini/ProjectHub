@@ -33,9 +33,22 @@
   }
 
   #part1 {
-      animation: fadeInMoveLeft 3s infinite;
+    animation: fadeInMoveLeft 2s infinite;
   }
 
   #part2 {
-      animation: fadeInMoveRight 3s infinite;
-  }
+    animation: fadeInMoveRight 2s infinite;
+    }
+    
+    .logo-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 98vw;
+        height: 85vh;
+    }
+    
+    .logo-container svg {
+        width: auto;
+        height: auto;
+    }

@@ -2,13 +2,14 @@
     display: flex;
     padding: 0px 0px 0px 27px;
     background: #EEEEEE;
-    
-        height: 88vh;
+    height: 88vh;
 
 }
 .left-side-chat {
     width: 330px;
     height: 550px;
+    margin-left: 20px;
+
 }
     
 .left-side-chat {
@@ -103,10 +104,9 @@
     
     .all {
         position: absolute;
-        ;
         font-size: 13px;
         color: #929292;
-        left: 100px;
+        left: 10px;
         top: 200px
     }
     
@@ -137,6 +137,7 @@
 .user-chat-contact-img {
     width: 50px;
     height: 50px;
+    border-radius: 50%;
 }
 .user-room-contact-img {
     width: 50px;
@@ -153,7 +154,22 @@
     flex-direction: column;
     padding: 20px 10px;
         margin-top: 18px;
-}
+    overflow-y: auto;
+    height: 500px;
+    
+    }
+    
+    .chat-part::-webkit-scrollbar {
+        width: 0;
+    }
+    
+    .chat-part::-khtml-scrollbar {
+        width: 0;
+    }
+    
+    .chat-part::-moz-scrollbar {
+        width: 0;
+    }
 .room-info-contact {
     display: flex;
     padding: 10px 20px 20px 10px;
@@ -164,11 +180,13 @@
 .right-side-chat {
     width: 800px;
     height: 580px;
+    margin-top: 5px;
+
 
 
 }
 .chat-empty{
-    height: 550px;
+    height: 500px;
         margin-left: 42px;
         margin-top: 12px;
         background-color: #F6F6F6;
@@ -289,11 +307,15 @@
 .user-name-message{
     font-size: 15px;
     font-weight: 700;
-    color: #E8E8E8;
 
 }
 
 
 .message-container {
     background-color: #E8E8E8;
+}
+
+.user-message .user-name-message{
+    color: #E8E8E8;
+
 }

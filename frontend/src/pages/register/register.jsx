@@ -185,6 +185,7 @@ function Register() {
                     setFristName(e.target.value);
                     setError(false);
                   }}
+                  className="input-login"
                 />
                 {error && <div className="error">{firstNameErrorMessage}</div>}
               </div>
@@ -200,6 +201,7 @@ function Register() {
                     setLastName(e.target.value);
                     setError(false);
                   }}
+                  className="input-login"
                 />
                 {error && <div className="error">{lastNameErrorMessage}</div>}
               </div>
@@ -219,6 +221,7 @@ function Register() {
                 setEmail(e.target.value);
                 setError(false);
               }}
+              className="input-login"
             />
             {error && <div className="error">{emailErrorMessage}</div>}
           </div>
@@ -236,6 +239,7 @@ function Register() {
                 setPassword(e.target.value);
                 setError(false);
               }}
+              className="input-login"
             />
             {error && <div className="error">{passwordErrorMessage}</div>}
           </div>

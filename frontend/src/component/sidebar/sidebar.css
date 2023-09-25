@@ -142,3 +142,22 @@ body {
 .line-space.minimized {
     width: 70px;
 }
+.name-item-tooltip {
+    position: absolute;
+    background-color: #5c5c5c;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    transform: translateX(10px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s;
+    margin-top: 55px;
+    font-size: 15px;
+}
+
+.item.minimized:hover .name-item-tooltip {
+    opacity: 1;
+    visibility: visible;
+}
