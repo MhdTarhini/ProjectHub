@@ -18,9 +18,11 @@ function CheckConflict({ onData, Pulldata, BranchData, branch }) {
   const [isRejectedId, setIsRejectedId] = useState([]);
   const [isAccepted, setIsAccepted] = useState(false);
   const [isDoneChecking, setIsDoneChecking] = useState(false);
+  const [isRejected, setIsRejected] = useState(false);
 
   function closeModal() {
     setmodelisOpen(false);
+    setConflitSvg("");
   }
 
   async function displayConflict(svg_data) {
@@ -31,8 +33,8 @@ function CheckConflict({ onData, Pulldata, BranchData, branch }) {
         "http://127.0.0.1:8000/api/file-section/check_conflict",
         data
       );
-      const conflictSVG = await response.data;
-      setConflitSvg(conflictSVG.data);
+      const conflictSVGData = await response.data;
+      setConflitSvg(conflictSVGData.data);
       setmodelisOpen(true);
     } catch (error) {
       console.error(error);
@@ -48,6 +50,8 @@ function CheckConflict({ onData, Pulldata, BranchData, branch }) {
         local_file_path = branchFile.path_dxf;
       }
     });
+    console.log(main_file_path);
+    console.log(local_file_path);
 
     window.electron.send(channels.Compare_Main_Data, {
       main_file_path,
@@ -80,10 +84,13 @@ function CheckConflict({ onData, Pulldata, BranchData, branch }) {
       setCompareResult(decodedData);
       displayConflict(decodedData);
     });
+  }, []);
+
+  useEffect(() => {
     if (Pulldata.length === isAcceptedId.length + isRejectedId.length) {
       setIsDoneChecking(true);
     }
-  }, [isAcceptedId, isRejectedId]);
+  }, [isRejected, isAccepted]);
 
   return (
     <>
@@ -179,6 +186,7 @@ function CheckConflict({ onData, Pulldata, BranchData, branch }) {
                 <div
                   className="reject"
                   onClick={() => {
+                    setIsRejected(true);
                     setIsRejectedId([...isRejectedId, seletedFile.id]);
                     closeModal();
                   }}>

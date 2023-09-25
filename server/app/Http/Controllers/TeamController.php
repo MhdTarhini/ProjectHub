@@ -83,4 +83,21 @@ class TeamController extends Controller
         ]);
 
     }
+    function addMembers(Request $request){
+
+          foreach($request->members as $member){
+            $add_members=new Member;
+            $add_members->team_id=$request->team;
+            $add_members->user_id=$member;
+            $add_members->save();
+          };
+
+          $members=Team::where("id",$request->team)->with('members.user')->get();
+
+            return response()->json([
+            'status' => 'success',
+            'data'=>$members
+        ]);
+
+    }
 }

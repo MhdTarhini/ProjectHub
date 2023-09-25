@@ -170,3 +170,7 @@
 .remove-member {
     cursor: pointer;
 }
+.project-status-loading {
+    position: absolute;
+    right: 670px;
+}

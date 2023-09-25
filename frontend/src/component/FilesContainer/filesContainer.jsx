@@ -324,7 +324,7 @@ function FilesContainer({
 
   useEffect(() => {
     handleGetFiles();
-  }, [branche, updateFile, updateFiles, isdeleted, isPushed]);
+  }, [branche, updateFile, updateFiles, isdeleted, isPushed, pullData]);
 
   useEffect(() => {
     window.electron.on(channels.Compare_Data_IsDone, (data) => {
@@ -362,13 +362,15 @@ function FilesContainer({
     // data.append("branch_id", branche.id);
     try {
       const response = await axios.delete(
-        `http://127.0.0.1:8000/api/file-section/delete_file/${file_id}`,
+        `http://127.0.0.1:8000/api/file-section/delete_file/${file_id}`
       );
       const deltedfile = await response.data;
       if (deltedfile.status === "success") {
         setIsdeleted(true);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   }
   return (
     <>

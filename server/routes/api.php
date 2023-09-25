@@ -50,6 +50,8 @@ Route::group(["middleware" => ["auth:api", 'cors']], function(){
             Route::post("update_status",[ProjectController::class,"updateStatus"]);
             Route::post("remove_member",[MemberController::class,"removeMember"]);
             Route::post("add_team",[TeamController::class,"addTeam"]);
+            Route::post('add_members', [TeamController::class, "addMembers"]);
+
         });
         Route::group(["prefix" => "issue-section"], function(){
             Route::post("add_edit_issue",[IssueController::class,"newIssue"]);

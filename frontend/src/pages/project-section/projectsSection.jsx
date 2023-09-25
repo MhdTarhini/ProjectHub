@@ -34,6 +34,7 @@ function ProjectsSection() {
     location: "",
   });
   const [createdProjectname, setCreatedProjectname] = useState("");
+  const [projectstatusID, setprojectstatusID] = useState("");
   const [createdProjectIsDone, setCreatedProjectIsDone] = useState(false);
   const [userMemberProjects, setUserMemberProjects] = useState([]);
   const [userManagerProjects, setUserManagerProjects] = useState([]);
@@ -274,7 +275,11 @@ function ProjectsSection() {
                           <td style={{ width: "200px", margin: "0" }}>
                             <div
                               style={{ display: "flex", alignItems: "center" }}>
-                              {isloading && <Loading />}
+                              {isloading && projectstatusID === item.id && (
+                                <div className="project-status-loading">
+                                  <Loading />
+                                </div>
+                              )}
                               <Menu
                                 as="div"
                                 style={{ width: "200px", margin: "0" }}>
@@ -327,6 +332,7 @@ function ProjectsSection() {
                                           onClick={() => {
                                             updateStatus(item.id, state.value);
                                             setIsloading(true);
+                                            setprojectstatusID(item.id);
                                           }}>
                                           <Menu.Item>
                                             {({ active }) => (
@@ -522,6 +528,7 @@ function ProjectsSection() {
                       className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
                       onClick={() => {
                         setOpen(false);
+                        setIsloading(false);
                       }}>
                       close
                     </button>

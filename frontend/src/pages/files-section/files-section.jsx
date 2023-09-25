@@ -48,6 +48,7 @@ function FilesSection() {
   const [pullData, setPullData] = useState([]);
   const [open, setOpen] = useState(false);
   const [CheckingConlfectFile, SetCheckingConlfectFile] = useState(false);
+  const [pullFilesIsDone, setPullFilesIsDone] = useState(false);
   const [pullMessage, setPullMessage] = useState([]);
   const [isdeleted, setIsdeleted] = useState(false);
   const [newBranchDone, setNewbranchDone] = useState(false);
@@ -116,7 +117,6 @@ function FilesSection() {
   async function newBranch() {
     const data = new FormData();
     selected.map((select) => {
-      console.log(select);
       selected_users_id.push(select.value);
     });
     data.append("members", selected_users_id);
@@ -142,6 +142,7 @@ function FilesSection() {
       const new_branche = await response.data;
       if (response.status === "success") {
         setNewbranchDone(true);
+        setModalBrancheOpen(false);
       }
     } catch (error) {
       console.error(error);
@@ -244,6 +245,7 @@ function FilesSection() {
         setPullData(response.data.data);
         setPullMessage(response.data);
         setOpen(true);
+        setPullFilesIsDone(true);
       }
     } catch (error) {
       console.error(error);
@@ -290,7 +292,7 @@ function FilesSection() {
       const decodedData = base64.decode(data);
       setGetSvg(decodedData);
     });
-    if (user.team_active == 0) {
+    if (user.team_active == null) {
       setIsManager(true);
     }
   }, []);

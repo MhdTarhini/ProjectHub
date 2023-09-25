@@ -25,6 +25,10 @@
     display: flex;
     flex-direction: column;
 }
+.icon-project-add {
+    display: flex;
+    gap: 10px
+}
 
 #description {
     width: 800px;
