@@ -62,7 +62,7 @@ function Login() {
         setPassword(null);
         setAuthMethod("google");
       })
-      .then(() => {
+      .then((email) => {
         handleLogin();
       })
       .catch((error) => {

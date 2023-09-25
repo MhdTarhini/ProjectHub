@@ -49,6 +49,7 @@ function FilesSection() {
   const [open, setOpen] = useState(false);
   const [CheckingConlfectFile, SetCheckingConlfectFile] = useState(false);
   const [pullMessage, setPullMessage] = useState([]);
+  const [isdeleted, setIsdeleted] = useState(false);
 
   const transformedData = teamMember.map((member) => ({
     label: `${member.user.first_name} ${member.user.last_name} - ${member.user.email}`,
@@ -219,6 +220,22 @@ function FilesSection() {
         setPullData(response.data.data);
         setPullMessage(response.data);
         setOpen(true);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function deleteBranch() {
+    const data = new FormData();
+    data.append("branch_id", selectedBranche.id);
+    try {
+      const response = await axios.delete(
+        "http://127.0.0.1:8000/api/file-section/delete_branch"
+      );
+      const deleteBranch = await response.data;
+      if (deleteBranch.status === "success") {
+        setIsdeleted(true);
       }
     } catch (error) {
       console.error(error);
@@ -401,7 +418,10 @@ function FilesSection() {
                                 ? "bg-gray-100 text-gray-900"
                                 : "text-gray-700",
                               "block px-4 py-2 text-sm flex items-center justify-center"
-                            )}>
+                            )}
+                            onClick={() => {
+                              deleteBranch();
+                            }}>
                             Delete Branch
                           </a>
                         )}

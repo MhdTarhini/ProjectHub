@@ -189,4 +189,21 @@ function accepteFile(Request $request){
         'status' => 'success',
      ]);
 }
+
+function deleteFile($file_id){
+      $file = File::where("id", $file_id)->first();
+
+    if ($file) {
+        $file->delete();
+    } else {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'File not found',
+        ]);
+    }
+
+    return response()->json([
+        'status' => 'success',
+    ]);
+}
 }

@@ -17,7 +17,7 @@ const Message = ({ text }) => {
   }, []);
 
   return (
-    <div className={`message ${showMessage ? "show" : ""}`}>
+    <div className={`message-popup ${showMessage ? "show" : ""}`}>
       <p>{text}</p>
     </div>
   );

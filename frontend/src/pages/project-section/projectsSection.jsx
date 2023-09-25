@@ -201,7 +201,7 @@ function ProjectsSection() {
 
   useEffect(() => {
     getProject();
-  }, []);
+  }, [createdProjectIsDone]);
 
   return (
     <>

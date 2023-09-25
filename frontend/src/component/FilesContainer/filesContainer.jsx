@@ -71,6 +71,7 @@ function FilesContainer({
   const [isDoneCommitMain, setIsDoneCommitMain] = useState(false);
   const [isManager, setIsManager] = useState(false);
   const [doneGetFiles, setDoneGetFiles] = useState(false);
+  const [isdeleted, setIsdeleted] = useState(false);
   const [isCheckingConlfectFile, SetCheckingConlfectFile] = useState(openCheck);
 
   function openModal() {
@@ -323,7 +324,7 @@ function FilesContainer({
 
   useEffect(() => {
     handleGetFiles();
-  }, [branche, updateFile, updateFiles]);
+  }, [branche, updateFile, updateFiles, isdeleted]);
 
   useEffect(() => {
     window.electron.on(channels.Compare_Data_IsDone, (data) => {
@@ -354,6 +355,21 @@ function FilesContainer({
       setIsManager(true);
     }
   }, []);
+
+  async function deletefile(file_id) {
+    // const data = new FormData();
+    // data.append("project_id", user.active);
+    // data.append("branch_id", branche.id);
+    try {
+      const response = await axios.delete(
+        `http://127.0.0.1:8000/api/file-section/delete_file/${file_id}`,
+      );
+      const deltedfile = await response.data;
+      if (deltedfile.status === "success") {
+        setIsdeleted(true);
+      }
+    } catch (error) {}
+  }
   return (
     <>
       {openCheck ? (
@@ -383,6 +399,7 @@ function FilesContainer({
               {isDoneCommitMain && (
                 <Message text={"File Is Commited To Main Branch"} />
               )}
+              {isdeleted && <Message text={"delete successful"} />}
               {branche.name === "main" && branche.id === user.main_branch ? (
                 doneGetFiles ? (
                   <div className="branches-in-main">
@@ -479,6 +496,7 @@ function FilesContainer({
                     closeCheckCommit();
                     closeModal();
                     setNoMainMatch(false);
+                    setIsCommited(false);
                   }}>
                   <Transition.Child
                     as={Fragment}
@@ -945,7 +963,11 @@ function FilesContainer({
                                   </>
                                 )}
                               </div>
-                              <button className="btn delete btn-delete-file">
+                              <button
+                                className="btn delete btn-delete-file"
+                                onClick={() => {
+                                  deletefile(openedfileDetails.id);
+                                }}>
                                 delete file
                               </button>
                             </div>

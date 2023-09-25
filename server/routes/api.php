@@ -36,11 +36,13 @@ Route::group(["middleware" => ["auth:api", 'cors']], function(){
             Route::get("get_commits/{file_id?}", [CommitController::class, "getFileCommit"]);
             Route::get("get_branches/{project_id?}", [BranchController::class, "getBranches"]);
             Route::post("new_branch", [BranchController::class, "addBranch"]);
+            Route::delete("delete_branch/{branhc_id?}", [BranchController::class, "deletedBranch"]);
             Route::post("push_local_commit", [CommitController::class, "pushlocalCommit"]);
             Route::post("main_commit", [CommitController::class, "addMainCommit"]);
             Route::get('download_file/{file_name?}', [FileController::class, "downloadFile"]);
             Route::post('pull_main', [FileController::class, "pullFromMain"]);
             Route::post('accepte_file', [FileController::class, "accepteFile"]);
+            Route::delete('delete_file/{file_id?}', [FileController::class, "deleteFile"]);
         });
         Route::group(["prefix" => "project-section"], function(){
             Route::post("new_project/{id?}",[ProjectController::class,"newProject"]);
