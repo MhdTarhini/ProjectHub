@@ -25,7 +25,7 @@ class FileController extends Controller
         ]);
 
         $isExiste = File::where("name", $request->name)
-                ->where("branch_id", $request->branche_id)
+                ->where("branche_id", $request->branche_id)
                 ->exists();
 
         if($isExiste){

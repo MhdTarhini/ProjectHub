@@ -425,7 +425,11 @@ function FilesContainer({
                                     setIsDoneCommitMain(false);
                                   }}>
                                   <img
-                                    src={file.path_svg}
+                                    src={
+                                      file.path_svg
+                                        ? file.path_svg
+                                        : "https://forums.synfig.org/uploads/default/original/2X/3/320a629e5c20a8f67d6378c5273cda8a9e2ff0bc.gif"
+                                    }
                                     className="file-section-card-img"
                                     alt={file.name}
                                   />

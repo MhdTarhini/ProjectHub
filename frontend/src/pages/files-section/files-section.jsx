@@ -140,9 +140,9 @@ function FilesSection() {
         data
       );
       const new_branche = await response.data;
-      if (response.status === "success") {
+      if (new_branche.status === "success") {
         setNewbranchDone(true);
-        setModalBrancheOpen(false);
+        closeBrancheModal();
       }
     } catch (error) {
       console.error(error);

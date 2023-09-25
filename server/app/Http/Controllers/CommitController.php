@@ -76,7 +76,7 @@ class CommitController extends Controller
         $request->validate([
         'svg_data' => 'required|string',
         ]);
-        $file_name = "check-Conflict";
+        $file_name = "check-Conflict". time();
         $svg = $file_name.".svg";
         $path = Storage::disk('public')->put($svg, $request->svg_data);
         $path_svg = "http://127.0.0.1:8000/storage/".$svg;
