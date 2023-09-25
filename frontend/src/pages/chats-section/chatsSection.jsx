@@ -42,8 +42,9 @@ function ChatsSection() {
   const [isMulti, setIsMulti] = useState(false);
   const [createMultiRoomIsOpen, setCreateMultiRoomIsOpen] = useState(false);
   const [seletedRoomInfo, setSeletedRoomInfo] = useState([]);
-  const { teamMember } = useContext(ProjectContext);
+  // const { teamMember } = useContext(ProjectContext);
   const [selected, setSelected] = useState([]);
+  const [teamMember, setTeamMember] = useState([]);
 
   axios.defaults.headers.common[
     "Authorization"
@@ -53,6 +54,19 @@ function ChatsSection() {
     label: `${member.user.first_name} ${member.user.last_name} - ${member.user.email}`,
     value: member.user.id,
   }));
+
+  async function getTeamMember() {
+    try {
+      const project_id = userData.active;
+      const response = await axios.get(
+        `http://127.0.0.1:8000/api/common/get_project_Member/${project_id}`
+      );
+      const teamData = await response.data.data;
+      setTeamMember(teamData);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   function closeCreateMultiRoom() {
     setCreateMultiRoomIsOpen(false);
@@ -73,6 +87,7 @@ function ChatsSection() {
   }
 
   useEffect(() => {
+    getTeamMember();
     getRooms();
   }, [isMulti]);
 

@@ -24,7 +24,22 @@ function IssuePost({ selectedPost, isSeleted }) {
   const [openNewMemberModel, setOpenNewMemberModel] = useState(false);
   const [newMemberError, setNewMemberError] = useState(false);
   const [newMemberErrorMessage, setnewMemberErrorMessage] = useState("");
-  const { teamMember } = useContext(ProjectContext);
+  const [teamMember, setTeamMember] = useState([]);
+  // const { teamMember } = useContext(ProjectContext);
+  const userData = JSON.parse(localStorage.getItem("user"));
+
+  async function getTeamMember() {
+    try {
+      const project_id = userData.active;
+      const response = await axios.get(
+        `http://127.0.0.1:8000/api/common/get_project_Member/${project_id}`
+      );
+      const teamData = await response.data.data;
+      setTeamMember(teamData);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const transformedData = teamMember.map((team) => ({
     label: `${team.user.first_name} ${team.user.last_name} - ${team.user.email}`,
@@ -133,6 +148,7 @@ function IssuePost({ selectedPost, isSeleted }) {
   }
 
   useEffect(() => {
+    getTeamMember();
     if (selectedPost?.contents) {
       const foundContent = selectedPost.contents.find(
         (content) => content.users?.id === selectedPost.user?.id

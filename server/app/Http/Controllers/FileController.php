@@ -24,6 +24,17 @@ class FileController extends Controller
         'branche_id' => 'required|integer', 
         ]);
 
+        $isExiste = File::where("name", $request->name)
+                ->where("branch_id", $request->branche_id)
+                ->exists();
+
+        if($isExiste){
+            return response()->json([
+                'status' => 'failed',
+                "message" => "name not valid"
+            ]);
+        }
+
         $file = $request->file('path_dxf');
         $content = file_get_contents($file->getRealPath());
 

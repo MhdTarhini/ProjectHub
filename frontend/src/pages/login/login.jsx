@@ -16,7 +16,7 @@ function Login() {
 
   const navigate = useNavigate();
 
-  async function handleLogin() {
+  async function handleLogin(email, password, authMethod) {
     const data = new FormData();
     data.append("email", email);
     data.append("password", password ? password : null);
@@ -61,9 +61,7 @@ function Login() {
         setEmail(result.user.email);
         setPassword(null);
         setAuthMethod("google");
-      })
-      .then((email) => {
-        handleLogin();
+        handleLogin(result.user.email, null, "google");
       })
       .catch((error) => {
         console.error("Error signing in with Google:", error.message);
@@ -153,7 +151,11 @@ function Login() {
             </div>
             <div className="forget-pass">forget password ?</div>
           </div>
-          <div className="login-btn" onClick={handleLogin}>
+          <div
+            className="login-btn"
+            onClick={() => {
+              handleLogin(email, password, authMethod);
+            }}>
             login
           </div>
           <div className="to-register">

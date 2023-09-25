@@ -324,7 +324,7 @@ function FilesContainer({
 
   useEffect(() => {
     handleGetFiles();
-  }, [branche, updateFile, updateFiles, isdeleted]);
+  }, [branche, updateFile, updateFiles, isdeleted, isPushed]);
 
   useEffect(() => {
     window.electron.on(channels.Compare_Data_IsDone, (data) => {

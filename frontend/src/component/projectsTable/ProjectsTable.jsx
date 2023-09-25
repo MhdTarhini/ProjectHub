@@ -12,7 +12,8 @@ import Message from "../common/Message/message";
 
 function ProjectsTable({ openedProject }) {
   const userData = JSON.parse(localStorage.getItem("user"));
-  const { allusers } = useContext(ProjectContext);
+  const [allusers, setallusers] = useState([]);
+  // const { allusers } = useContext(ProjectContext);
   const [isloading, setIsloading] = useState(false);
   const [projectName, setProjectName] = useState("");
   const [projectLocation, setProjectLocation] = useState("");
@@ -46,6 +47,18 @@ function ProjectsTable({ openedProject }) {
   const [selectedUser, setSelectedUser] = useState([]);
   const cancelButtonRef = useRef(null);
 
+  async function getAllUser() {
+    try {
+      const response = await axios.get(
+        `http://127.0.0.1:8000/api/common/get_all_users_not_active`
+      );
+      const users = await response.data.data;
+      setallusers(users);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   function handleProjectName(e) {
     setProjectName(e.target.value);
     setUpdateProjectErrorMessage({
@@ -67,7 +80,7 @@ function ProjectsTable({ openedProject }) {
   function handleTeamName(e) {
     setNewTeamName(e.target.value);
     setNewTeamNameErrorMessage("");
-     setCreateTeamError('');
+    setCreateTeamError("");
   }
   const transformedData = allusers
     .filter(
@@ -160,6 +173,7 @@ function ProjectsTable({ openedProject }) {
   }, [allusers, selected]);
 
   useEffect(() => {
+    getAllUser();
     const memberIds = [];
     openedProject.teams.forEach((team) => {
       team.members.forEach((person) => {

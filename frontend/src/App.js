@@ -33,26 +33,28 @@ initializeApp({
   measurementId: "G-BF9LZW2GDY",
 });
 function App() {
+  // const userData = localStorage.getItem("user");
+  // const isAuthenticated = !!userData;
 
   return (
     <AuthContextProvider>
-      <ProjectContextProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/v1" element={<OutletPage />}>
-              <Route index element={<Dashboard />} />
-              <Route path="projects-section" element={<ProjectsSection />} />
-              <Route path="tasks-section" element={<TasksSection />} />
-              <Route path="files-section" element={<FilesSection />} />
-              <Route path="issues-section" element={<IssuesSection />} />
-              <Route path="chats-section" element={<ChatsSection />} />
-              <Route path="settings" element={<SettingsPage />} />
-            </Route>
-            <Route path="/register" element={<Register />} />
-            <Route path="/" element={<Login />} />
-          </Routes>
-        </BrowserRouter>
-      </ProjectContextProvider>
+      {/* <ProjectContextProvider> */}
+      <BrowserRouter>
+        <Routes>
+          <Route path="/v1" element={<OutletPage />}>
+            <Route index element={<Dashboard />} />
+            <Route path="projects-section" element={<ProjectsSection />} />
+            <Route path="tasks-section" element={<TasksSection />} />
+            <Route path="files-section" element={<FilesSection />} />
+            <Route path="issues-section" element={<IssuesSection />} />
+            <Route path="chats-section" element={<ChatsSection />} />
+            <Route path="settings" element={<SettingsPage />} />
+          </Route>
+          <Route path="/register" element={<Register />} />
+          <Route path="/" element={<Login />} />
+        </Routes>
+      </BrowserRouter>
+      {/* </ProjectContextProvider> */}
     </AuthContextProvider>
   );
 }

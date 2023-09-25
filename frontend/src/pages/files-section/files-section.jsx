@@ -44,12 +44,29 @@ function FilesSection() {
   const [isManager, setIsManager] = useState(false);
   const [modalBrancheOpen, setModalBrancheOpen] = React.useState(false);
   const [selected, setSelected] = useState([]);
-  const { teamMember } = useContext(ProjectContext);
+  // const { teamMember } = useContext(ProjectContext);
   const [pullData, setPullData] = useState([]);
   const [open, setOpen] = useState(false);
   const [CheckingConlfectFile, SetCheckingConlfectFile] = useState(false);
   const [pullMessage, setPullMessage] = useState([]);
   const [isdeleted, setIsdeleted] = useState(false);
+  const [newBranchDone, setNewbranchDone] = useState(false);
+  const [teamMember, setTeamMember] = useState([]);
+  // const { teamMember } = useContext(ProjectContext);
+  //  const userData = JSON.parse(localStorage.getItem("user"));
+
+  async function getTeamMember() {
+    try {
+      const project_id = user.active;
+      const response = await axios.get(
+        `http://127.0.0.1:8000/api/common/get_project_Member/${project_id}`
+      );
+      const teamData = await response.data.data;
+      setTeamMember(teamData);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const transformedData = teamMember.map((member) => ({
     label: `${member.user.first_name} ${member.user.last_name} - ${member.user.email}`,
@@ -95,7 +112,8 @@ function FilesSection() {
   }
 
   let selected_users_id = [];
-  function newBranch() {
+
+  async function newBranch() {
     const data = new FormData();
     selected.map((select) => {
       console.log(select);
@@ -117,10 +135,14 @@ function FilesSection() {
     //   data.append("name", brancheName);
 
     try {
-      const response = axios.post(
+      const response = await axios.post(
         "http://127.0.0.1:8000/api/file-section/new_branch",
         data
       );
+      const new_branche = await response.data;
+      if (response.status === "success") {
+        setNewbranchDone(true);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -129,33 +151,33 @@ function FilesSection() {
   //   "Authorization"
   // ] = `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2d1ZXN0L2xvZ2luIiwiaWF0IjoxNjk1MDc3NTc4LCJleHAiOjE2OTUwODExNzgsIm5iZiI6MTY5NTA3NzU3OCwianRpIjoiTkVQdEh2S2pXM0tja3FBZCIsInN1YiI6IjMiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.eRiJHa4Od9CRuyyGnIry-WtA3xaUYpcGkfvDUUOwIw0`;
 
-  async function handleSubmitUpload() {
-    const data = new FormData();
-    data.append("name", fileName);
-    data.append("path_svg", getSvg);
-    data.append("path_dxf", file);
-    data.append("version", 1);
-    data.append("project_id", 1);
-    data.append("user_id", 3);
-    data.append("branche_id", selectedBranche.id);
-    try {
-      const response = axios.post(
-        "http://127.0.0.1:8000/api/file-section/new_branch",
-        data
-      );
-      const get_files = await response.data;
-      if (get_files.status === "success") {
-        setUpdateFile(!updateFile);
-        closeModal();
-        setfile([]);
-        setIsloading(false);
-      }
-    } catch (error) {
-      console.error(error);
-      setError(true);
-      setErrorMessage(error.response.data.message);
-    }
-  }
+  // async function handleSubmitUpload() {
+  //   const data = new FormData();
+  //   data.append("name", fileName);
+  //   data.append("path_svg", getSvg);
+  //   data.append("path_dxf", file);
+  //   data.append("version", 1);
+  //   data.append("project_id", 1);
+  //   data.append("user_id", 3);
+  //   data.append("branche_id", selectedBranche.id);
+  //   try {
+  //     const response = axios.post(
+  //       "http://127.0.0.1:8000/api/file-section/new_branch",
+  //       data
+  //     );
+  //     const get_files = await response.data;
+  //     if (get_files.status === "success") {
+  //       setUpdateFile(!updateFile);
+  //       closeModal();
+  //       setfile([]);
+  //       setIsloading(false);
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //     setError(true);
+  //     setErrorMessage(error.response.data.message);
+  //   }
+  // }
 
   // async function PullFromMain() {
   //   const data = new FormData();
@@ -185,7 +207,7 @@ function FilesSection() {
     data.append("path_dxf", file);
     data.append("version", 1);
     data.append("project_id", user.active);
-    data.append("user_id", 3);
+    data.append("user_id", user.user.id);
     data.append("branche_id", selectedBranche.id);
     try {
       const response = await axios.post(
@@ -198,9 +220,11 @@ function FilesSection() {
         closeModal();
         setfile([]);
         setIsloading(false);
+      } else {
+        setError(true);
+        setErrorMessage("name is not valid");
       }
     } catch (error) {
-      console.error(error);
       setError(true);
       setErrorMessage(error.response.data.message);
     }
@@ -227,11 +251,9 @@ function FilesSection() {
   }
 
   async function deleteBranch() {
-    const data = new FormData();
-    data.append("branch_id", selectedBranche.id);
     try {
       const response = await axios.delete(
-        "http://127.0.0.1:8000/api/file-section/delete_branch"
+        `http://127.0.0.1:8000/api/file-section/delete_branch/${selectedBranche.id}`
       );
       const deleteBranch = await response.data;
       if (deleteBranch.status === "success") {
@@ -259,7 +281,6 @@ function FilesSection() {
   }
 
   useEffect(() => {
-    getBranches();
     window.electron.on(channels.Extract_Data_IsDone, (data) => {
       setUploadSuccess(true);
     });
@@ -274,12 +295,17 @@ function FilesSection() {
     }
   }, []);
 
+  useEffect(() => {
+    getTeamMember();
+    getBranches();
+  }, [newBranchDone]);
+
   return (
     <>
       <div className="files-section">
         <div className="top-file-section">
           <div className="file-section-title">Files Section</div>
-          {!isManager && (
+          {selectedBranche.name !== "main" && (
             <div onClick={openModal} className="btn">
               New File
             </div>
@@ -363,38 +389,54 @@ function FilesSection() {
           </div>
           <div className="right-side-file-section">
             <div className="branch-option">
-              <Menu as="div" className=" text-left w-100 option-menu">
-                <div>
-                  <Menu.Button>
-                    <svg
-                      fill="#000000"
-                      version="1.1"
-                      id="Capa_1"
-                      width="30px"
-                      height="30px"
-                      viewBox="0 0 24.75 24.75">
-                      <g>
-                        <path
-                          d="M0,3.875c0-1.104,0.896-2,2-2h20.75c1.104,0,2,0.896,2,2s-0.896,2-2,2H2C0.896,5.875,0,4.979,0,3.875z M22.75,10.375H2
+              {selectedBranche.name !== "main" && (
+                <Menu as="div" className=" text-left w-100 option-menu">
+                  <div>
+                    <Menu.Button>
+                      <svg
+                        fill="#000000"
+                        version="1.1"
+                        id="Capa_1"
+                        width="30px"
+                        height="30px"
+                        viewBox="0 0 24.75 24.75">
+                        <g>
+                          <path
+                            d="M0,3.875c0-1.104,0.896-2,2-2h20.75c1.104,0,2,0.896,2,2s-0.896,2-2,2H2C0.896,5.875,0,4.979,0,3.875z M22.75,10.375H2
 		c-1.104,0-2,0.896-2,2c0,1.104,0.896,2,2,2h20.75c1.104,0,2-0.896,2-2C24.75,11.271,23.855,10.375,22.75,10.375z M22.75,18.875H2
 		c-1.104,0-2,0.896-2,2s0.896,2,2,2h20.75c1.104,0,2-0.896,2-2S23.855,18.875,22.75,18.875z"
-                        />
-                      </g>
-                    </svg>
-                  </Menu.Button>
-                </div>
-                <Transition
-                  as="div"
-                  enter="transition ease-out duration-100"
-                  enterFrom="transform opacity-0 scale-95"
-                  enterTo="transform opacity-100 scale-100"
-                  leave="transition ease-in duration-75"
-                  leaveFrom="transform opacity-100 scale-100"
-                  leaveTo="transform opacity-0 scale-95">
-                  <Menu.Items className=" absolute right-0 z-10 mt-2 w-60 origin-top-left divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                    <div className="py-1">
-                      {!isManager && (
-                        <Menu.Item onClick={PullFromMain}>
+                          />
+                        </g>
+                      </svg>
+                    </Menu.Button>
+                  </div>
+                  <Transition
+                    as="div"
+                    enter="transition ease-out duration-100"
+                    enterFrom="transform opacity-0 scale-95"
+                    enterTo="transform opacity-100 scale-100"
+                    leave="transition ease-in duration-75"
+                    leaveFrom="transform opacity-100 scale-100"
+                    leaveTo="transform opacity-0 scale-95">
+                    <Menu.Items className=" absolute right-0 z-10 mt-2 w-60 origin-top-left divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      <div className="py-1">
+                        {!isManager && (
+                          <Menu.Item onClick={PullFromMain}>
+                            {({ active }) => (
+                              <a
+                                href="#"
+                                className={classNames(
+                                  active
+                                    ? "bg-gray-100 text-gray-900"
+                                    : "text-gray-700",
+                                  "block px-4 py-2 text-sm flex items-center justify-center"
+                                )}>
+                                Pull From Main
+                              </a>
+                            )}
+                          </Menu.Item>
+                        )}
+                        <Menu.Item onClick={openBrancheModal}>
                           {({ active }) => (
                             <a
                               href="#"
@@ -403,35 +445,21 @@ function FilesSection() {
                                   ? "bg-gray-100 text-gray-900"
                                   : "text-gray-700",
                                 "block px-4 py-2 text-sm flex items-center justify-center"
-                              )}>
-                              Pull From Main
+                              )}
+                              onClick={() => {
+                                deleteBranch();
+                              }}>
+                              Delete Branch
                             </a>
                           )}
                         </Menu.Item>
-                      )}
-                      <Menu.Item onClick={openBrancheModal}>
-                        {({ active }) => (
-                          <a
-                            href="#"
-                            className={classNames(
-                              active
-                                ? "bg-gray-100 text-gray-900"
-                                : "text-gray-700",
-                              "block px-4 py-2 text-sm flex items-center justify-center"
-                            )}
-                            onClick={() => {
-                              deleteBranch();
-                            }}>
-                            Delete Branch
-                          </a>
-                        )}
-                      </Menu.Item>
-                    </div>
-                  </Menu.Items>
-                </Transition>
-              </Menu>
+                      </div>
+                    </Menu.Items>
+                  </Transition>
+                </Menu>
+              )}
             </div>
-            <div className="filter-file">
+            {/* <div className="filter-file">
               <svg
                 width="30px"
                 height="30px"
@@ -446,7 +474,7 @@ function FilesSection() {
                   strokeLinejoin="round"
                 />
               </svg>
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="hr"></div>

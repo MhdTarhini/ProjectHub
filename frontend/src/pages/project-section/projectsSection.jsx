@@ -27,6 +27,7 @@ function ProjectsSection() {
   const [projectLocation, setProjectLocation] = useState("");
   const [projectDescription, setProjectDescription] = useState("");
   const [newProjectError, setNewProjectError] = useState(false);
+  const [isUpdatedStatus, setIsUpdatedStatus] = useState(false);
   const [newProjectErrorMessage, setNewProjectErrorMessage] = useState({
     name: "",
     description: "",
@@ -90,40 +91,40 @@ function ProjectsSection() {
     });
   }
   async function newProject() {
-      let userDataRaw = localStorage.getItem("user");
-      const userData = JSON.parse(userDataRaw);
-      const data = new FormData();
-      data.append("name", projectName);
-      data.append("description", projectDescription);
-      data.append("location", projectLocation);
-      data.append("status", 2);
-      data.append("finished-at", null);
-      try {
-        const response = await axios.post(
-          "http://127.0.0.1:8000/api/project-section/new_project",
-          data
-        );
-        const new_project = await response.data;
-        if ((new_project.status = "success")) {
-          setIsloading(false);
-          closeProjectModal();
-          setCreatedProjectname(new_project.data.name);
-          setCreatedProjectIsDone(true);
-          userData.projects_Manager_id = [
-            ...userData.projects_Manager_id,
-            new_project.data.id,
-          ];
-          localStorage.setItem("user", JSON.stringify(userData));
-        }
-      } catch (error) {
+    let userDataRaw = localStorage.getItem("user");
+    const userData = JSON.parse(userDataRaw);
+    const data = new FormData();
+    data.append("name", projectName);
+    data.append("description", projectDescription);
+    data.append("location", projectLocation);
+    data.append("status", 2);
+    data.append("finished-at", null);
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/project-section/new_project",
+        data
+      );
+      const new_project = await response.data;
+      if ((new_project.status = "success")) {
         setIsloading(false);
-        setNewProjectError(true);
-        setNewProjectErrorMessage({
-          name: error.response.data.errors.name || "",
-          description: error.response.data.errors.description || "",
-          location: error.response.data.errors.location || "",
-        });
+        closeProjectModal();
+        setCreatedProjectname(new_project.data.name);
+        setCreatedProjectIsDone(true);
+        userData.projects_Manager_id = [
+          ...userData.projects_Manager_id,
+          new_project.data.id,
+        ];
+        localStorage.setItem("user", JSON.stringify(userData));
       }
+    } catch (error) {
+      setIsloading(false);
+      setNewProjectError(true);
+      setNewProjectErrorMessage({
+        name: error.response.data.errors.name || "",
+        description: error.response.data.errors.description || "",
+        location: error.response.data.errors.location || "",
+      });
+    }
     setProjectDescription("");
     setProjectName("");
     setProjectLocation("");
@@ -146,8 +147,6 @@ function ProjectsSection() {
     }
 
     if (!flag) {
-      console.log("api");
-
       const data = new FormData();
       data.append("project_id", project_id);
       data.append("status", status);
@@ -160,19 +159,16 @@ function ProjectsSection() {
         setProjectSavedStatus(get_status.data);
         if (get_status.data.status == 1) {
           userData.active = get_status.data.id;
-          console.log("if active from api");
         } else if (userData.active == get_status.data.id) {
-          console.log("if not active from api");
           userData.active = 0;
         }
-
         localStorage.setItem("user", JSON.stringify(userData));
         setIsloading(false);
+        setIsUpdatedStatus(true);
       } catch (error) {
         setIsloading(false);
         console.error(error);
       }
-      console.log(userData.active);
     }
   }
 
@@ -201,7 +197,7 @@ function ProjectsSection() {
 
   useEffect(() => {
     getProject();
-  }, [createdProjectIsDone]);
+  }, [createdProjectIsDone, isUpdatedStatus]);
 
   return (
     <>
