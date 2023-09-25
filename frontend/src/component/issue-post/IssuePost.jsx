@@ -175,90 +175,93 @@ function IssuePost({ selectedPost, isSeleted }) {
 
   return (
     <>
-      <div className="post-issue">
-        <div className="user-info-issue">
-          <img
-            src={selectedPost.user?.profile_img}
-            alt=""
-            className="user-img-issues"
-          />
-          <div className="user-details">
-            <div className="user-name-issue">
-              {`${selectedPost.user?.first_name} ${selectedPost.user?.last_name}`}
-            </div>
-            <div className="user-job-issue">{selectedPost.user?.email}</div>
-          </div>
-        </div>
-        <div className="issue-description">{selectedPost.description}</div>
-        <div className="issue-post-img">
-          {matchedContent && (
-            <>
-              <img
-                src={matchedContent.svg_path}
-                alt=""
-                className="post-image"
-              />
-              <div className="img-post-details">
-                <div className="img-description">
-                  {matchedContent.description}
-                </div>
-              </div>
-              <div className="points">
-                <div className="point"></div>
-                <div className="point"></div>
-                <div className="point"></div>
-              </div>
-            </>
-          )}
-        </div>
-        {selectedPost.comments?.map((comment) => (
-          <div key={comment.id} className="issue-post-comments">
-            <div className="comment">
-              <img
-                src={comment.users?.profile_img}
-                alt=""
-                className="user-img-issues"
-              />
-              <div className="right-side-comment">
-                <div className="user-info-comment">
-                  <div className="user-name-issue-comment">
-                    {`${comment.users?.first_name} ${comment.users?.last_name}`}
-                  </div>
-                  <div className="user-job-issue-comment">
-                    {comment.users?.email}
-                  </div>
-                </div>
-                <div className="content-comment">{comment?.content}</div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-      <div className="add-comment">
-        <input
-          type="text"
-          name="user-cpmment"
-          id="user-comment"
-          placeholder="Write your Comment..."
-          onChange={(e) => setUserComment(e.target.value)}
-        />
-        <div className="issue-post-comment">
-          <svg
-            width="35px"
-            height="35px"
-            viewBox="0 0 24 24"
-            fill="#ffffff"
-            className="svg-comment"
-            xmlns="http://www.w3.org/2000/svg"
-            onClick={addComment}>
-            <path
-              d="M11.5003 12H5.41872M5.24634 12.7972L4.24158 15.7986C3.69128 17.4424 3.41613 18.2643 3.61359 18.7704C3.78506 19.21 4.15335 19.5432 4.6078 19.6701C5.13111 19.8161 5.92151 19.4604 7.50231 18.7491L17.6367 14.1886C19.1797 13.4942 19.9512 13.1471 20.1896 12.6648C20.3968 12.2458 20.3968 11.7541 20.1896 11.3351C19.9512 10.8529 19.1797 10.5057 17.6367 9.81135L7.48483 5.24303C5.90879 4.53382 5.12078 4.17921 4.59799 4.32468C4.14397 4.45101 3.77572 4.78336 3.60365 5.22209C3.40551 5.72728 3.67772 6.54741 4.22215 8.18767L5.24829 11.2793C5.34179 11.561 5.38855 11.7019 5.407 11.8459C5.42338 11.9738 5.42321 12.1032 5.40651 12.231C5.38768 12.375 5.34057 12.5157 5.24634 12.7972Z"
-              stroke="#000000"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+      <div className="post-issue-section">
+        <div className="post-issue">
+          <div className="user-info-issue">
+            <img
+              src={selectedPost.user?.profile_img}
+              alt=""
+              className="user-img-issues"
             />
-          </svg>
+            <div className="user-details">
+              <div className="user-name-issue">
+                {`${selectedPost.user?.first_name} ${selectedPost.user?.last_name}`}
+              </div>
+              <div className="user-job-issue">{selectedPost.user?.email}</div>
+            </div>
+          </div>
+          <div className="issue-description">{selectedPost.description}</div>
+          <div className="issue-post-img">
+            {matchedContent && (
+              <>
+                <img
+                  src={matchedContent.svg_path}
+                  alt=""
+                  className="post-image"
+                />
+                <div className="img-post-details">
+                  <div className="img-description">
+                    {matchedContent.description}
+                  </div>
+                </div>
+                <div className="points">
+                  <div className="point"></div>
+                  <div className="point"></div>
+                  <div className="point"></div>
+                </div>
+              </>
+            )}
+          </div>
+          {selectedPost.comments?.map((comment) => (
+            <div key={comment.id} className="issue-post-comments">
+              <div className="comment">
+                <img
+                  src={comment.users?.profile_img}
+                  alt=""
+                  className="user-img-issues"
+                />
+                <div className="right-side-comment">
+                  <div className="user-info-comment">
+                    <div className="user-name-issue-comment">
+                      {`${comment.users?.first_name} ${comment.users?.last_name}`}
+                    </div>
+                    <div className="user-job-issue-comment">
+                      {comment.users?.email}
+                    </div>
+                  </div>
+                  <div className="content-comment">{comment?.content}</div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="add-comment">
+          <input
+            type="text"
+            name="user-cpmment"
+            id="user-comment"
+            placeholder="Write your Comment..."
+            value={userComment}
+            onChange={(e) => setUserComment(e.target.value)}
+          />
+          <div className="issue-post-comment">
+            <svg
+              width="35px"
+              height="35px"
+              viewBox="0 0 24 24"
+              fill="#ffffff"
+              className="svg-comment"
+              xmlns="http://www.w3.org/2000/svg"
+              onClick={addComment}>
+              <path
+                d="M11.5003 12H5.41872M5.24634 12.7972L4.24158 15.7986C3.69128 17.4424 3.41613 18.2643 3.61359 18.7704C3.78506 19.21 4.15335 19.5432 4.6078 19.6701C5.13111 19.8161 5.92151 19.4604 7.50231 18.7491L17.6367 14.1886C19.1797 13.4942 19.9512 13.1471 20.1896 12.6648C20.3968 12.2458 20.3968 11.7541 20.1896 11.3351C19.9512 10.8529 19.1797 10.5057 17.6367 9.81135L7.48483 5.24303C5.90879 4.53382 5.12078 4.17921 4.59799 4.32468C4.14397 4.45101 3.77572 4.78336 3.60365 5.22209C3.40551 5.72728 3.67772 6.54741 4.22215 8.18767L5.24829 11.2793C5.34179 11.561 5.38855 11.7019 5.407 11.8459C5.42338 11.9738 5.42321 12.1032 5.40651 12.231C5.38768 12.375 5.34057 12.5157 5.24634 12.7972Z"
+                stroke="#000000"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
         </div>
       </div>
       <div className="issue-media">

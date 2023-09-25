@@ -2,18 +2,16 @@
     display: flex;
     padding: 0px 0px 0px 27px;
     background: #EEEEEE;
-    height: 88vh;
+    height: 89.2vh;
 
 }
 .left-side-chat {
     width: 330px;
-    height: 550px;
+    height: 700px;
     margin-left: 20px;
 
 }
     
-.left-side-chat {
-}
     
 .top-left-side {
     display: flex;
@@ -56,7 +54,7 @@
         
 .bottom-left-side {
     width: 360px;
-    height: 550px;
+    height: 600px;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -106,7 +104,7 @@
         position: absolute;
         font-size: 13px;
         color: #929292;
-        left: 10px;
+        left: 110px;
         top: 200px
     }
     
@@ -153,23 +151,23 @@
     display: flex;
     flex-direction: column;
     padding: 20px 10px;
-        margin-top: 18px;
+    margin-top: 18px;
     overflow-y: auto;
-    height: 500px;
+    height: 630px;
     
-    }
+}
     
-    .chat-part::-webkit-scrollbar {
-        width: 0;
-    }
+.room-list::-webkit-scrollbar {
+    width: 0;
+}
     
-    .chat-part::-khtml-scrollbar {
-        width: 0;
-    }
+.room-list::-khtml-scrollbar {
+    width: 0;
+}
     
-    .chat-part::-moz-scrollbar {
-        width: 0;
-    }
+    .room-list::-moz-scrollbar {
+    width: 0;
+}
 .room-info-contact {
     display: flex;
     padding: 10px 20px 20px 10px;
@@ -179,11 +177,7 @@
 }
 .right-side-chat {
     width: 800px;
-    height: 580px;
-    margin-top: 5px;
-
-
-
+    height: 560px;
 }
 .chat-empty{
     height: 500px;
@@ -240,7 +234,7 @@
     position: absolute;
     display: flex;
     align-items: center;
-    top: 666px;
+    top: 715px;
         padding: 10px 10px 10px 10px;
         background-color: #F6F6F6;
         border-radius: 0px 0px 20px 20px;

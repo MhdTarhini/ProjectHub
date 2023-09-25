@@ -146,15 +146,6 @@ function ChatsSection() {
     setIsMulti(true);
   };
 
-  // const signInWithGoogle = async () => {
-  //   try {
-  //     const provider = new GoogleAuthProvider();
-  //     await signInWithPopup(auth, provider);
-  //   } catch (error) {
-  //     console.error("Error signing in:", error);
-  //   }
-  // };
-
   const sendMessageToRoom = async () => {
     if (selectedRoom) {
       await addDoc(collection(db, `rooms/${selectedRoom}/messages`), {
@@ -249,8 +240,6 @@ function ChatsSection() {
               <div className="room-list">
                 {rooms.map((room) =>
                   userRooms.map((userRoom) => {
-                    console.log(userRoom.Room_db_id);
-                    console.log(room.data.name);
                     if (room.data.name === userRoom.Room_db_id) {
                       return (
                         <>

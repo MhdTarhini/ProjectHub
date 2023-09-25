@@ -15,6 +15,7 @@ import CheckConflict from "../../component/CheckConflict/CheckConflict";
 import { Fragment } from "react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { Dialog } from "@headlessui/react";
+import Logo from "../../component/logo/Logo";
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -44,7 +45,6 @@ function FilesSection() {
   const [isManager, setIsManager] = useState(false);
   const [modalBrancheOpen, setModalBrancheOpen] = React.useState(false);
   const [selected, setSelected] = useState([]);
-  // const { teamMember } = useContext(ProjectContext);
   const [pullData, setPullData] = useState([]);
   const [open, setOpen] = useState(false);
   const [CheckingConlfectFile, SetCheckingConlfectFile] = useState(false);
@@ -53,8 +53,7 @@ function FilesSection() {
   const [isdeleted, setIsdeleted] = useState(false);
   const [newBranchDone, setNewbranchDone] = useState(false);
   const [teamMember, setTeamMember] = useState([]);
-  // const { teamMember } = useContext(ProjectContext);
-  //  const userData = JSON.parse(localStorage.getItem("user"));
+  const [showlogo, setShowlogo] = useState(true);
 
   async function getTeamMember() {
     try {
@@ -302,142 +301,82 @@ function FilesSection() {
     getBranches();
   }, [newBranchDone]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setShowlogo(false);
+    }, 3000);
+  }, []);
+
   return (
     <>
-      <div className="files-section">
-        <div className="top-file-section">
-          <div className="file-section-title">Files Section</div>
-          {selectedBranche.name !== "main" && (
-            <div onClick={openModal} className="btn">
-              New File
-            </div>
-          )}
-        </div>
-        <div className="hr"></div>
-        <div className="branches-filter">
-          <div className="branches">
-            <Menu
-              as="div"
-              className=" menu relative inline-block text-left w-100">
-              <div>
-                <Menu.Button
-                  style={{
-                    justifyContent: "space-between",
-                    width: "200px",
-                    padding: "10px 15px",
-                  }}
-                  className="inline-flex items-center w-full justify-center gap-x-1.5 rounded-md bg-white px-20 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-                  <div className="branch-naming">
-                    {selectedBranche.name ? (
-                      <div>{selectedBranche.name}</div>
-                    ) : (
-                      <div>Branches</div>
-                    )}
-                  </div>
-                  <ChevronDownIcon
-                    className="-mr-1 h-5 w-5 text-gray-400"
-                    aria-hidden="true"
-                  />
-                </Menu.Button>
+      {showlogo ? (
+        <Logo />
+      ) : (
+        <div className="files-section">
+          <div className="top-file-section">
+            <div className="file-section-title">Files Section</div>
+            {selectedBranche.name !== "main" && (
+              <div onClick={openModal} className="btn">
+                New File
               </div>
-              <Transition
-                as="div"
-                enter="transition ease-out duration-100"
-                enterFrom="transform opacity-0 scale-95"
-                enterTo="transform opacity-100 scale-100"
-                leave="transition ease-in duration-75"
-                leaveFrom="transform opacity-100 scale-100"
-                leaveTo="transform opacity-0 scale-95">
-                <Menu.Items className=" absolute left-0 mt-2 w-60 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                  {branches.map((branche) => (
-                    <div className="py-1 m" key={branche.id}>
-                      <Menu.Item onClick={() => setSelectedBranche(branche)}>
-                        {({ active }) => (
-                          <a
-                            href="#"
-                            className={classNames(
-                              active
-                                ? "bg-gray-100 text-gray-900"
-                                : "text-gray-700",
-                              "block px-4 py-2 text-sm flex items-center justify-center"
-                            )}>
-                            {branche.name}
-                          </a>
-                        )}
-                      </Menu.Item>
-                    </div>
-                  ))}
-                  {!isManager && (
-                    <div className="py-1">
-                      <Menu.Item onClick={openBrancheModal}>
-                        {({ active }) => (
-                          <a
-                            href="#"
-                            className={classNames(
-                              active
-                                ? "bg-gray-100 text-gray-900"
-                                : "text-gray-700",
-                              "block px-4 py-2 text-sm flex items-center justify-center"
-                            )}>
-                            add Branche
-                          </a>
-                        )}
-                      </Menu.Item>
-                    </div>
-                  )}
-                </Menu.Items>
-              </Transition>
-            </Menu>
+            )}
           </div>
-          <div className="right-side-file-section">
-            <div className="branch-option">
-              {selectedBranche.name !== "main" && (
-                <Menu as="div" className=" text-left w-100 option-menu">
-                  <div>
-                    <Menu.Button>
-                      <svg
-                        fill="#000000"
-                        version="1.1"
-                        id="Capa_1"
-                        width="30px"
-                        height="30px"
-                        viewBox="0 0 24.75 24.75">
-                        <g>
-                          <path
-                            d="M0,3.875c0-1.104,0.896-2,2-2h20.75c1.104,0,2,0.896,2,2s-0.896,2-2,2H2C0.896,5.875,0,4.979,0,3.875z M22.75,10.375H2
-		c-1.104,0-2,0.896-2,2c0,1.104,0.896,2,2,2h20.75c1.104,0,2-0.896,2-2C24.75,11.271,23.855,10.375,22.75,10.375z M22.75,18.875H2
-		c-1.104,0-2,0.896-2,2s0.896,2,2,2h20.75c1.104,0,2-0.896,2-2S23.855,18.875,22.75,18.875z"
-                          />
-                        </g>
-                      </svg>
-                    </Menu.Button>
-                  </div>
-                  <Transition
-                    as="div"
-                    enter="transition ease-out duration-100"
-                    enterFrom="transform opacity-0 scale-95"
-                    enterTo="transform opacity-100 scale-100"
-                    leave="transition ease-in duration-75"
-                    leaveFrom="transform opacity-100 scale-100"
-                    leaveTo="transform opacity-0 scale-95">
-                    <Menu.Items className=" absolute right-0 z-10 mt-2 w-60 origin-top-left divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+          <div className="hr"></div>
+          <div className="branches-filter">
+            <div className="branches">
+              <Menu
+                as="div"
+                className=" menu relative inline-block text-left w-100">
+                <div>
+                  <Menu.Button
+                    style={{
+                      justifyContent: "space-between",
+                      width: "200px",
+                      padding: "10px 15px",
+                    }}
+                    className="inline-flex items-center w-full justify-center gap-x-1.5 rounded-md bg-white px-20 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                    <div className="branch-naming">
+                      {selectedBranche.name ? (
+                        <div>{selectedBranche.name}</div>
+                      ) : (
+                        <div>Branches</div>
+                      )}
+                    </div>
+                    <ChevronDownIcon
+                      className="-mr-1 h-5 w-5 text-gray-400"
+                      aria-hidden="true"
+                    />
+                  </Menu.Button>
+                </div>
+                <Transition
+                  as="div"
+                  enter="transition ease-out duration-100"
+                  enterFrom="transform opacity-0 scale-95"
+                  enterTo="transform opacity-100 scale-100"
+                  leave="transition ease-in duration-75"
+                  leaveFrom="transform opacity-100 scale-100"
+                  leaveTo="transform opacity-0 scale-95">
+                  <Menu.Items className=" absolute left-0 mt-2 w-60 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    {branches.map((branche) => (
+                      <div className="py-1 m" key={branche.id}>
+                        <Menu.Item onClick={() => setSelectedBranche(branche)}>
+                          {({ active }) => (
+                            <a
+                              href="#"
+                              className={classNames(
+                                active
+                                  ? "bg-gray-100 text-gray-900"
+                                  : "text-gray-700",
+                                "block px-4 py-2 text-sm flex items-center justify-center"
+                              )}>
+                              {branche.name}
+                            </a>
+                          )}
+                        </Menu.Item>
+                      </div>
+                    ))}
+                    {!isManager && (
                       <div className="py-1">
-                        {!isManager && (
-                          <Menu.Item onClick={PullFromMain}>
-                            {({ active }) => (
-                              <a
-                                href="#"
-                                className={classNames(
-                                  active
-                                    ? "bg-gray-100 text-gray-900"
-                                    : "text-gray-700",
-                                  "block px-4 py-2 text-sm flex items-center justify-center"
-                                )}>
-                                Pull From Main
-                              </a>
-                            )}
-                          </Menu.Item>
-                        )}
                         <Menu.Item onClick={openBrancheModal}>
                           {({ active }) => (
                             <a
@@ -447,21 +386,90 @@ function FilesSection() {
                                   ? "bg-gray-100 text-gray-900"
                                   : "text-gray-700",
                                 "block px-4 py-2 text-sm flex items-center justify-center"
-                              )}
-                              onClick={() => {
-                                deleteBranch();
-                              }}>
-                              Delete Branch
+                              )}>
+                              add Branche
                             </a>
                           )}
                         </Menu.Item>
                       </div>
-                    </Menu.Items>
-                  </Transition>
-                </Menu>
-              )}
+                    )}
+                  </Menu.Items>
+                </Transition>
+              </Menu>
             </div>
-            {/* <div className="filter-file">
+            <div className="right-side-file-section">
+              <div className="branch-option">
+                {selectedBranche.name !== "main" && (
+                  <Menu as="div" className=" text-left w-100 option-menu">
+                    <div>
+                      <Menu.Button>
+                        <svg
+                          fill="#000000"
+                          version="1.1"
+                          id="Capa_1"
+                          width="30px"
+                          height="30px"
+                          viewBox="0 0 24.75 24.75">
+                          <g>
+                            <path
+                              d="M0,3.875c0-1.104,0.896-2,2-2h20.75c1.104,0,2,0.896,2,2s-0.896,2-2,2H2C0.896,5.875,0,4.979,0,3.875z M22.75,10.375H2
+		c-1.104,0-2,0.896-2,2c0,1.104,0.896,2,2,2h20.75c1.104,0,2-0.896,2-2C24.75,11.271,23.855,10.375,22.75,10.375z M22.75,18.875H2
+		c-1.104,0-2,0.896-2,2s0.896,2,2,2h20.75c1.104,0,2-0.896,2-2S23.855,18.875,22.75,18.875z"
+                            />
+                          </g>
+                        </svg>
+                      </Menu.Button>
+                    </div>
+                    <Transition
+                      as="div"
+                      enter="transition ease-out duration-100"
+                      enterFrom="transform opacity-0 scale-95"
+                      enterTo="transform opacity-100 scale-100"
+                      leave="transition ease-in duration-75"
+                      leaveFrom="transform opacity-100 scale-100"
+                      leaveTo="transform opacity-0 scale-95">
+                      <Menu.Items className=" absolute right-0 z-10 mt-2 w-60 origin-top-left divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <div className="py-1">
+                          {!isManager && (
+                            <Menu.Item onClick={PullFromMain}>
+                              {({ active }) => (
+                                <a
+                                  href="#"
+                                  className={classNames(
+                                    active
+                                      ? "bg-gray-100 text-gray-900"
+                                      : "text-gray-700",
+                                    "block px-4 py-2 text-sm flex items-center justify-center"
+                                  )}>
+                                  Pull From Main
+                                </a>
+                              )}
+                            </Menu.Item>
+                          )}
+                          <Menu.Item onClick={openBrancheModal}>
+                            {({ active }) => (
+                              <a
+                                href="#"
+                                className={classNames(
+                                  active
+                                    ? "bg-gray-100 text-gray-900"
+                                    : "text-gray-700",
+                                  "block px-4 py-2 text-sm flex items-center justify-center"
+                                )}
+                                onClick={() => {
+                                  deleteBranch();
+                                }}>
+                                Delete Branch
+                              </a>
+                            )}
+                          </Menu.Item>
+                        </div>
+                      </Menu.Items>
+                    </Transition>
+                  </Menu>
+                )}
+              </div>
+              {/* <div className="filter-file">
               <svg
                 width="30px"
                 height="30px"
@@ -477,21 +485,22 @@ function FilesSection() {
                 />
               </svg>
             </div> */}
+            </div>
+          </div>
+          <div className="hr"></div>
+
+          <div className="file-section-card">
+            <FilesContainer
+              branche={selectedBranche}
+              file={file}
+              updateFile={updateFile}
+              pullData={pullData}
+              onData={handleDataFromChild}
+              openCheck={CheckingConlfectFile}
+            />
           </div>
         </div>
-        <div className="hr"></div>
-
-        <div className="file-section-card">
-          <FilesContainer
-            branche={selectedBranche}
-            file={file}
-            updateFile={updateFile}
-            pullData={pullData}
-            onData={handleDataFromChild}
-            openCheck={CheckingConlfectFile}
-          />
-        </div>
-      </div>
+      )}
       <div className="model-container">
         <Modal
           isOpen={modalIsOpen}

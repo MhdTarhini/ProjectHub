@@ -1,6 +1,6 @@
 .issues-container {
     display: flex;
-    padding: 20px;
+    padding: 20px 20px 0px 20px;
     justify-content: space-between;
     gap: 20px;
     width: 1418px
@@ -9,9 +9,7 @@
     padding: 0px 0px 0px 0px;
     background: #FAFAFA;
 }
-.top-file-section {
-    margin-left: 20px
-}
+
 .issue-section-title {
     color: #000;
     font-size: 32px;
@@ -42,7 +40,7 @@
     border: 1px solid var(--stroke, #E8E8E8);
     background: #FFF;
     border-radius: 10px;
-    height: 72vh;
+    height: 530px;
 }
 
 
@@ -113,19 +111,19 @@
     align-items: flex-start;
     gap: 20px;
     overflow-y: auto;
-        height: 530px;
+    height: 530px;
     }
     
-    .post-issue::-webkit-scrollbar {
-        width: 0;
-    }
+.post-issue::-webkit-scrollbar {
+    width: 0;
+}
     
-    .post-issue::-khtml-scrollbar {
-        width: 0;
-    }
+.post-issue::-khtml-scrollbar {
+    width: 0;
+}
     
-    .post-issue::-moz-scrollbar {
-        width: 0;
+.post-issue::-moz-scrollbar {
+    width: 0;
 }
 
 .user-info-issue {
@@ -193,6 +191,7 @@ border: 1px solid var(--stroke, #E8E8E8);
 
 .post-image {
     width: 200px;
+    height: 180px;
     border-radius: 10px;
 }
 
@@ -354,6 +353,11 @@ border: 1px solid var(--stroke, #E8E8E8);
 #user-comment {
     width: 500px;
 }
+.post-issue-section {
+    display: flex;
+    flex-direction: column;
+    height: 530px;
+}
 
 
 .svg-comment {
@@ -364,9 +368,6 @@ border: 1px solid var(--stroke, #E8E8E8);
     display: flex;
     align-items: center;
     cursor: pointer;
-    position: absolute;
-        bottom: 30px;
-        left: 500px
 }
 
 .issue-media {
@@ -374,6 +375,8 @@ border: 1px solid var(--stroke, #E8E8E8);
     border: 1px solid var(--stroke, #E8E8E8);
     padding: 20px;
     border-radius: 10px;
+    height: 530px;
+        overflow: hidden;
 
 }
 
@@ -452,6 +455,7 @@ border: 1px solid var(--stroke, #E8E8E8);
     border: 1px solid var(--stroke, #E8E8E8);
     border-radius: 10px;
     cursor: pointer;
+    margin-bottom: 10px;
 }
 
 .media-card:hover {
@@ -465,7 +469,7 @@ border: 1px solid var(--stroke, #E8E8E8);
 }
 .media-list {
     overflow-y: auto;
-    height: 400px;
+    height: 385px;
 }
 
 .media-list::-webkit-scrollbar {

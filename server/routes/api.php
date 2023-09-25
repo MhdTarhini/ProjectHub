@@ -21,7 +21,7 @@ Route::group(["prefix" => "guest"], function(){
 });
 
 
-Route::group(["middleware" => ["auth:api", 'cors']], function(){
+Route::group(["middleware" => "auth:api"], function(){
         Route::post("logout", [AuthController::class, "logout"]);
         Route::post("refresh", [AuthController::class, "refresh"]);
         Route::get("profile", [AuthController::class, "profile"]);

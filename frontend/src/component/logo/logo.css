@@ -34,10 +34,12 @@
 
   #part1 {
     animation: fadeInMoveLeft 2s infinite;
+    background-color: rgb(119, 88, 46);
   }
 
   #part2 {
     animation: fadeInMoveRight 2s infinite;
+    background-color: rgb(212, 212, 212);
     }
     
     .logo-container {

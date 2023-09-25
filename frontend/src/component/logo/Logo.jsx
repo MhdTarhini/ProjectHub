@@ -5,42 +5,42 @@ function Logo() {
   return (
     <div className="logo-container">
       <svg
-        xmlns="http://www.w3.org/2000/svg"
         width="90"
         height="88"
-        viewBox="0 0 90 88"
-        fill="none">
+        viewBox="0 0 186 184"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg">
         <g id="part1">
           <path
-            d="M90 88L2.6144 88C1.17051 88 1.52588e-05 86.8295 1.52588e-05 85.3856L1.52588e-05 1.52588e-05L38.7623 1.52588e-05C40.2952 1.52588e-05 41.4992 1.31284 41.3669 2.84003L37.5 47.4768L90 88Z"
-            fill="url(#paint0_linear_143_830)"
+            d="M186 183.5L10 183.5C4.47715 183.5 0 179.023 0 173.5L0 0L75.1046 0C80.965 0 85.5693 5.01655 85.068 10.8554L77.5 99L186 183.5Z"
+            fill="url(#paint0_linear_0_1)"
           />
         </g>
         <g id="part2">
           <path
-            d="M0 0H84.7712C87.659 0 90 2.34099 90 5.22876V88H48.3871L55.4032 39.3242L0 0Z"
-            fill="url(#paint1_linear_143_830)"
+            d="M0 0H166C177.046 0 186 8.95431 186 20V183.5H100L114.5 82L0 0Z"
+            fill="url(#paint1_linear_0_1)"
           />
         </g>
         <defs>
           <linearGradient
-            id="paint0_linear_143_830"
-            x1="45"
-            y1="88"
-            x2="45"
-            y2="1.52588e-05"
+            id="paint0_linear_0_1"
+            x1="93"
+            y1="183.5"
+            x2="93"
+            y2="0"
             gradientUnits="userSpaceOnUse">
-            <stop stop-color="#0E5C94" />
+            <stop stop-color="#0E5C94" stop-opacity="0.29" />
             <stop offset="1" stop-color="#164B71" />
           </linearGradient>
           <linearGradient
-            id="paint1_linear_143_830"
-            x1="45"
+            id="paint1_linear_0_1"
+            x1="93"
             y1="0"
-            x2="45"
-            y2="88"
+            x2="93"
+            y2="183.5"
             gradientUnits="userSpaceOnUse">
-            <stop stop-color="#0F8EEA" stop-opacity="0.6" />
+            <stop stop-color="#88A1B4" stop-opacity="0.61" />
             <stop offset="1" stop-color="#0F8EEA" />
           </linearGradient>
         </defs>

@@ -6,6 +6,7 @@ import Input from "../../component/input/input";
 import axios from "axios";
 import Loading from "../../component/common/loading";
 import Message from "../../component/common/Message/message";
+import Logo from "../../component/logo/Logo";
 
 function IssuesSection() {
   const userData = JSON.parse(localStorage.getItem("user"));
@@ -28,6 +29,7 @@ function IssuesSection() {
   const [isSelected, setIsSelected] = useState(false);
   const [imageSrc, setImageSrc] = useState(null);
   const [selectedPostId, setSelectedPostId] = useState(null);
+  const [showlogo, setShowlogo] = useState(true);
 
   const handleImageChange = (e) => {
     setNewIssueImage(e.target.files[0]);
@@ -105,146 +107,161 @@ function IssuesSection() {
   useEffect(() => {
     getIssuesPosts();
   }, [isDoneCreateNewIssue]);
+  useEffect(() => {
+    setTimeout(() => {
+      setShowlogo(false);
+    }, 3000);
+  }, []);
 
   return (
-    <div className="issues-section">
-      {isDoneCreateNewIssue && <Message text={`New Issue Is Created`} />}
-      <div className="top-file-section">
-        <div className="issue-section-title">Issues Section</div>
-        <div
-          className="btn"
-          onClick={() => {
-            setIsOpen(true);
-          }}>
-          New Issue
-        </div>
-      </div>
-      <div className="hr"></div>
-      <div className="issues-container">
-        <div className="user-issues-container">
-          {allIssuesPosts.map((IssuePost) => {
-            return (
-              <div key={IssuePost.id}>
-                <div
-                  className={`user-issues-titles ${
-                    selectedPostId === IssuePost.id ? "selected" : ""
-                  }`}
-                  onClick={() => {
-                    setSelectedPost(IssuePost);
-                    setIsSelected(true);
-                    if (selectedPostId === IssuePost.id) {
-                      setSelectedPostId(null);
-                    } else {
-                      setSelectedPostId(IssuePost.id);
-                    }
-                  }}>
-                  <div className="issue-name">{IssuePost.title}</div>
-                  <div className="issue-sub-title">{IssuePost.description}</div>
-                </div>
-                <div className="line-space-title"></div>
-              </div>
-            );
-          })}
-        </div>
-        <IssuePost selectedPost={selectedPost} isSeleted={isSelected} />
-      </div>
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        ariaHideApp={false}
-        className={`new-issue-model ${imageIsUploaded ? "" : "noImage"}`}
-        style={{ overlay: { background: "rgb(0 0 0 / 15%)" } }}>
-        <h2 className="model-title">Upload New File</h2>
-        <div className="upload-file-form">
-          <div className="model-issue-conatainer">
-            <Input
-              label={"File Name"}
-              name={"file-name"}
-              type={"text"}
-              onchange={handleIssueTitle}
-            />
-            {isNewError && <div className="error">{newErrorTitle}</div>}
-            <textarea
-              className="teaxt-are-dexription"
-              placeholder="Description"
-              onChange={handleIssueDescription}
-            />
-            {isNewError && <div className="error">{newErrorDescription}</div>}
-          </div>
-
-          {imageIsUploaded ? (
-            <div>
-              <img
-                src={imageSrc}
-                alt="Uploaded Preview"
-                style={{ maxWidth: "300px", maxHeight: "300px" }}
-              />
-              <textarea
-                className="textarea-image-decription"
-                placeholder="Description"
-                onChange={(e) => {
-                  setIssueImageDescription(e.target.value);
-                }}
-              />
-            </div>
-          ) : (
-            <div className="input-new-image">
-              <label htmlFor="issue-image" className="issue-image-label">
-                <svg
-                  width="25px"
-                  height="25px"
-                  viewBox="-2 0 32 32"
-                  version="1.1">
-                  <title>arrow-bottom</title>
-                  <desc>Created with Sketch Beta.</desc>
-                  <defs></defs>
-                  <g
-                    id="Page-1"
-                    stroke="none"
-                    stroke-width="1"
-                    fill="none"
-                    fill-rule="evenodd">
-                    <g
-                      id="Icon-Set"
-                      transform="translate(-519.000000, -931.000000)"
-                      fill="rgb(0 0 0 / 85%)">
-                      <path
-                        d="M543,935 L540,935 L540,937 L543,937 C544.104,937 545,937.896 545,939 L545,959 C545,960.104 544.104,961 543,961 L523,961 C521.896,961 521,960.104 521,959 L521,939 C521,937.896 521.896,937 523,937 L526,937 L526,935 L523,935 C520.791,935 519,936.791 519,939 L519,959 C519,961.209 520.791,963 523,963 L543,963 C545.209,963 547,961.209 547,959 L547,939 C547,936.791 545.209,935 543,935 L543,935 Z M525.343,949.758 L532.242,956.657 C532.451,956.865 532.728,956.954 533,956.939 C533.272,956.954 533.549,956.865 533.758,956.657 L540.657,949.758 C541.048,949.367 541.048,948.733 540.657,948.343 C540.267,947.953 539.633,947.953 539.242,948.343 L534,953.586 L534,932 C534,931.447 533.553,931 533,931 C532.448,931 532,931.447 532,932 L532,953.586 L526.757,948.343 C526.367,947.953 525.733,947.953 525.343,948.343 C524.952,948.733 524.952,949.367 525.343,949.758 L525.343,949.758 Z"
-                        id="arrow-bottom"></path>
-                    </g>
-                  </g>
-                </svg>
-                Upload Image
-                {isloading && <Loading />}
-              </label>
-              <input
-                type="file"
-                name="issue-image"
-                id="issue-image"
-                onChange={(e) => {
-                  handleImageChange(e);
-                  setImageIsUploaded(true);
-                }}
-              />
-            </div>
-          )}
-          <div className="btns-new-file">
-            <button className="btn close-btn" onClick={closeModal}>
-              close
-            </button>
-
-            <button
+    <>
+      {showlogo ? (
+        <Logo />
+      ) : (
+        <div className="issues-section">
+          {isDoneCreateNewIssue && <Message text={`New Issue Is Created`} />}
+          <div className="top-file-section">
+            <div className="issue-section-title">Issues Section</div>
+            <div
               className="btn"
               onClick={() => {
-                handleAddNewIssue();
-                setIsloading(true);
+                setIsOpen(true);
               }}>
-              Create
-            </button>
+              New Issue
+            </div>
           </div>
+          <div className="hr"></div>
+          <div className="issues-container">
+            <div className="user-issues-container">
+              {allIssuesPosts.map((IssuePost) => {
+                return (
+                  <div key={IssuePost.id}>
+                    <div
+                      className={`user-issues-titles ${
+                        selectedPostId === IssuePost.id ? "selected" : ""
+                      }`}
+                      onClick={() => {
+                        setSelectedPost(IssuePost);
+                        setIsSelected(true);
+                        if (selectedPostId === IssuePost.id) {
+                          setSelectedPostId(null);
+                        } else {
+                          setSelectedPostId(IssuePost.id);
+                        }
+                      }}>
+                      <div className="issue-name">{IssuePost.title}</div>
+                      <div className="issue-sub-title">
+                        {IssuePost.description}
+                      </div>
+                    </div>
+                    <div className="line-space-title"></div>
+                  </div>
+                );
+              })}
+            </div>
+            <IssuePost selectedPost={selectedPost} isSeleted={isSelected} />
+          </div>
+          <Modal
+            isOpen={modalIsOpen}
+            onRequestClose={closeModal}
+            ariaHideApp={false}
+            className={`new-issue-model ${imageIsUploaded ? "" : "noImage"}`}
+            style={{ overlay: { background: "rgb(0 0 0 / 15%)" } }}>
+            <h2 className="model-title">Upload New File</h2>
+            <div className="upload-file-form">
+              <div className="model-issue-conatainer">
+                <Input
+                  label={"File Name"}
+                  name={"file-name"}
+                  type={"text"}
+                  onchange={handleIssueTitle}
+                />
+                {isNewError && <div className="error">{newErrorTitle}</div>}
+                <textarea
+                  className="teaxt-are-dexription"
+                  placeholder="Description"
+                  onChange={handleIssueDescription}
+                />
+                {isNewError && (
+                  <div className="error">{newErrorDescription}</div>
+                )}
+              </div>
+
+              {imageIsUploaded ? (
+                <div>
+                  <img
+                    src={imageSrc}
+                    alt="Uploaded Preview"
+                    style={{ maxWidth: "300px", maxHeight: "300px" }}
+                  />
+                  <textarea
+                    className="textarea-image-decription"
+                    placeholder="Description"
+                    onChange={(e) => {
+                      setIssueImageDescription(e.target.value);
+                    }}
+                  />
+                </div>
+              ) : (
+                <div className="input-new-image">
+                  <label htmlFor="issue-image" className="issue-image-label">
+                    <svg
+                      width="25px"
+                      height="25px"
+                      viewBox="-2 0 32 32"
+                      version="1.1">
+                      <title>arrow-bottom</title>
+                      <desc>Created with Sketch Beta.</desc>
+                      <defs></defs>
+                      <g
+                        id="Page-1"
+                        stroke="none"
+                        stroke-width="1"
+                        fill="none"
+                        fill-rule="evenodd">
+                        <g
+                          id="Icon-Set"
+                          transform="translate(-519.000000, -931.000000)"
+                          fill="rgb(0 0 0 / 85%)">
+                          <path
+                            d="M543,935 L540,935 L540,937 L543,937 C544.104,937 545,937.896 545,939 L545,959 C545,960.104 544.104,961 543,961 L523,961 C521.896,961 521,960.104 521,959 L521,939 C521,937.896 521.896,937 523,937 L526,937 L526,935 L523,935 C520.791,935 519,936.791 519,939 L519,959 C519,961.209 520.791,963 523,963 L543,963 C545.209,963 547,961.209 547,959 L547,939 C547,936.791 545.209,935 543,935 L543,935 Z M525.343,949.758 L532.242,956.657 C532.451,956.865 532.728,956.954 533,956.939 C533.272,956.954 533.549,956.865 533.758,956.657 L540.657,949.758 C541.048,949.367 541.048,948.733 540.657,948.343 C540.267,947.953 539.633,947.953 539.242,948.343 L534,953.586 L534,932 C534,931.447 533.553,931 533,931 C532.448,931 532,931.447 532,932 L532,953.586 L526.757,948.343 C526.367,947.953 525.733,947.953 525.343,948.343 C524.952,948.733 524.952,949.367 525.343,949.758 L525.343,949.758 Z"
+                            id="arrow-bottom"></path>
+                        </g>
+                      </g>
+                    </svg>
+                    Upload Image
+                    {isloading && <Loading />}
+                  </label>
+                  <input
+                    type="file"
+                    name="issue-image"
+                    id="issue-image"
+                    onChange={(e) => {
+                      handleImageChange(e);
+                      setImageIsUploaded(true);
+                    }}
+                  />
+                </div>
+              )}
+              <div className="btns-new-file">
+                <button className="btn close-btn" onClick={closeModal}>
+                  close
+                </button>
+
+                <button
+                  className="btn"
+                  onClick={() => {
+                    handleAddNewIssue();
+                    setIsloading(true);
+                  }}>
+                  Create
+                </button>
+              </div>
+            </div>
+          </Modal>
         </div>
-      </Modal>
-    </div>
+      )}
+    </>
   );
 }
 
