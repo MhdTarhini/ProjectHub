@@ -446,7 +446,7 @@ function FilesSection() {
                               )}
                             </Menu.Item>
                           )}
-                          <Menu.Item onClick={openBrancheModal}>
+                          <Menu.Item>
                             {({ active }) => (
                               <a
                                 href="#"

@@ -201,17 +201,9 @@
     }
 
 }
-.file-name-details {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
 
 .share-button {
-    position: absolute;
-    top: 10px;
-    left: 580px;
-    opacity: 0.4;
+
     cursor: pointer;
 }
 
