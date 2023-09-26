@@ -20,8 +20,10 @@
     flex-wrap: wrap;
     gap: 20px;
     padding: 20px;
+    padding-left: 70px;
         height: 580px;
             overflow-y: auto;
+
         }
         
         .dashboard-container::-webkit-scrollbar {
@@ -185,5 +187,91 @@ box-shadow: 0px 4px 4px 0px rgba(174, 174, 174, 0.25);
     background: #faf9f9;
 }
 .top-chat-icon{
-    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid var(--stroke, #E8E8E8);
+    background: #F8F8F8;
 }
+.chat-list-card-container{
+    display: flex;
+    flex-direction: column;
+height: 230px;
+overflow-y: auto;
+}
+
+.chat-list-card-container::-webkit-scrollbar {
+    display: none; 
+}
+.chat-list-card-container:-webkit-scrollbar {
+       width: 0;
+}
+    
+.chat-list-card-container::-khtml-scrollbar {
+    width: 0;
+}
+    
+.chat-list-card-container::-moz-scrollbar {
+    width: 0;
+}
+.chat-list-card-item{
+    display: flex;
+    padding: 10px;
+align-items: flex-start;
+gap: 16px;
+border-radius: 6px;
+border-bottom: 1px solid #E2E2E2;
+box-shadow: 0px 4px 4px 0px rgba(174, 174, 174, 0.25);
+}
+.room-title-card{
+    color: rgba(15, 23, 42, 0.88);
+font-family: Inter;
+font-size: 14px;
+font-style: normal;
+font-weight: 600;
+line-height: 20px; 
+}
+.room-content-card{
+    color: #747474;
+font-family: Inter;
+font-size: 12px;
+font-style: normal;
+font-weight: 400;
+line-height: 20px;
+}
+
+.notification-card{
+    display: flex;
+    flex-direction: column;
+}
+.top-notoication-card{
+display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid var(--stroke, #E8E8E8);
+    background: #F8F8F8;
+}
+.notification-title{
+     color: #000;
+        font-family: Inter;
+        font-size: 18px;
+        font-style: normal;
+        font-weight:700;
+        line-height: normal;
+        margin-bottom: 5px;
+    }
+
+.notification-list-item{
+    display: flex;
+padding: 10px;
+align-items: flex-start;
+gap: 16px;
+border-radius: 6px;
+border: 1px solid #E5E7EB;
+background: #FFF;
+cursor: pointer;
+box-shadow: 0px 4px 4px 0px rgba(174, 174, 174, 0.25);
+}
+

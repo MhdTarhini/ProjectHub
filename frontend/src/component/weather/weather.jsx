@@ -60,20 +60,59 @@ function WeatherWidget() {
   }, [city]);
 
   return (
-    <div className="weather-widget" style={widgetStyle}>
+    <>
       {weatherData && (
-        <div>
-          <h2>{currentDate}</h2>
-          <small className="date"></small>
-          <div className="time">
-            <Clock format={"HH:mm"} ticking={true} timezone={"lb"} />
+        <div class="container mx-autos">
+          <div class="w-80 h-full">
+            <div class="bg-white p-6 rounded-2xl border-2 border-gray-50">
+              <div class="flex flex-col">
+                <div>
+                  <h2 class="font-bold text-gray-600 text-center">
+                    Beirut, {weatherData.name}
+                  </h2>
+                </div>
+                <div class="my-6">
+                  <div class="flex flex-row space-x-4 items-center">
+                    <div id="icon">
+                      <span>
+                        <svg
+                          class="w-20 h-20 fill-stroke text-yellow-400"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg">
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                      </span>
+                    </div>
+                    <div id="temp">
+                      <h4 class="text-4xl">{weatherData.main.temp}°C</h4>
+                      <p class="text-xs text-gray-500">
+                        {weatherData.weather[0].description}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="w-full place-items-end text-right border-t-2 border-gray-100 mt-2">
+                  <a href="#" class="text-indigo-600 font-medium">
+                    <Clock format={"HH:mm"} ticking={true} timezone={"lb"} />
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
-          <p>{weatherData.weather[0].description}</p>
-          <p>{weatherData.main.temp}°C</p>
         </div>
       )}
-    </div>
+    </>
   );
 }
 
 export default WeatherWidget;
+
+
+
+

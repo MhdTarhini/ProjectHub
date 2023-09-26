@@ -190,7 +190,9 @@ function Dashboard() {
             </div>
           </div>
         </div>
-        <WeatherWidget />
+        <div className="dashboard-card">
+          <WeatherWidget />
+        </div>
         <div className="dashboard-card">
           <div className="chat-card">
             <div className="top-chat-icon">
@@ -216,6 +218,65 @@ function Dashboard() {
                   />
                 </g>
               </svg>
+            </div>
+            <div className="chat-list-card-container">
+              <div className="chat-list-card-item">
+                <img src="" alt="" srcset="" />
+                <div className="room-info-card">
+                  <div className="room-title-card">Room 1</div>
+                  <div className="room-content-card">
+                    Hello sir , today we have to many tasks..
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="dashboard-card">
+          <div className="notification-card">
+            <div className="top-notoication-card">
+              <div className="notification-title">Notification</div>
+              <svg
+                width="26px"
+                height="26px"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <circle
+                  cx="19"
+                  cy="5"
+                  r="3"
+                  stroke="#1C274C"
+                  stroke-width="1.5"
+                />
+                <path
+                  d="M7 14H16"
+                  stroke="#1C274C"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M7 17.5H13"
+                  stroke="#1C274C"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M2 12C2 16.714 2 19.0711 3.46447 20.5355C4.92893 22 7.28595 22 12 22C16.714 22 19.0711 22 20.5355 20.5355C22 19.0711 22 16.714 22 12V10.5M13.5 2H12C7.28595 2 4.92893 2 3.46447 3.46447C2.49073 4.43821 2.16444 5.80655 2.0551 8"
+                  stroke="#1C274C"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </div>
+            <div className="notification-list-item">
+              <div className="card-content-file">
+                <div className="middel">
+                  <img src="" alt="" srcset="" />
+                  <div className="file-recent-name">file</div>
+                </div>
+                <div className="user-name-file">pushed by mohamad</div>
+              </div>
             </div>
           </div>
         </div>
