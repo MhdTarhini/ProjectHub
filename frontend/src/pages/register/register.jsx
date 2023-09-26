@@ -88,26 +88,31 @@ function Register() {
           xmlns="http://www.w3.org/2000/svg"
           className="top-svg">
           <path
+            className="rectangle rectangle1"
             d="M72 300C72 311.046 63.0457 320 52 320H0L0 0H72L72 300Z"
             fill="#3521B5"
             fillOpacity="0.6"
           />
           <path
+            className="rectangle rectangle2"
             d="M144 227C144 238.046 135.046 247 124 247H72L72 0H144L144 227Z"
             fill="#3521B5"
             fillOpacity="0.6"
           />
           <path
+            className="rectangle rectangle3"
             d="M216 154C216 165.046 207.046 174 196 174H144V0H216L216 154Z"
             fill="#3521B5"
             fillOpacity="0.6"
           />
           <path
+            className="rectangle rectangle4"
             d="M288 81C288 92.0457 279.046 101 268 101L216 101V0L288 0V81Z"
             fill="#3521B5"
             fillOpacity="0.6"
           />
           <path
+            className="rectangle rectangle5"
             d="M360 8C360 19.0457 351.046 28 340 28L288 28V0L360 0V8Z"
             fill="#3521B5"
             fillOpacity="0.6"
@@ -124,26 +129,31 @@ function Register() {
           xmlns="http://www.w3.org/2000/svg"
           className="bottom-svg-register">
           <path
+            className="rectangle rectangle1"
             d="M288 20C288 8.95431 296.954 0 308 0H360V320H288V20Z"
             fill="#3521B5"
             fillOpacity="0.6"
           />
           <path
+            className="rectangle rectangle2"
             d="M216 93C216 81.9543 224.954 73 236 73H288V320H216V93Z"
             fill="#3521B5"
             fillOpacity="0.6"
           />
           <path
+            className="rectangle rectangle3"
             d="M144 166C144 154.954 152.954 146 164 146H216V320H144V166Z"
             fill="#3521B5"
             fillOpacity="0.6"
           />
           <path
+            className="rectangle rectangle4"
             d="M72 239C72 227.954 80.9543 219 92 219H144V320H72V239Z"
             fill="#3521B5"
             fillOpacity="0.6"
           />
           <path
+            className="rectangle rectangle5s"
             d="M0 312C0 300.954 8.95431 292 20 292H72V320H0V312Z"
             fill="#3521B5"
             fillOpacity="0.6"

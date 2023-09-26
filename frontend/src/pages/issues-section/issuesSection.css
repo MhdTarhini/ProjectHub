@@ -40,7 +40,7 @@
     border: 1px solid var(--stroke, #E8E8E8);
     background: #FFF;
     border-radius: 10px;
-    height: 530px;
+    height: 600px;
 }
 
 
@@ -111,7 +111,7 @@
     align-items: flex-start;
     gap: 20px;
     overflow-y: auto;
-    height: 530px;
+    height: 600px;
     }
     
 .post-issue::-webkit-scrollbar {
@@ -356,7 +356,7 @@ border: 1px solid var(--stroke, #E8E8E8);
 .post-issue-section {
     display: flex;
     flex-direction: column;
-    height: 530px;
+    height: 600px;
 }
 
 
@@ -375,7 +375,7 @@ border: 1px solid var(--stroke, #E8E8E8);
     border: 1px solid var(--stroke, #E8E8E8);
     padding: 20px;
     border-radius: 10px;
-    height: 530px;
+    height: 600px;
         overflow: hidden;
 
 }
@@ -469,7 +469,7 @@ border: 1px solid var(--stroke, #E8E8E8);
 }
 .media-list {
     overflow-y: auto;
-    height: 385px;
+    height: 405px;
 }
 
 .media-list::-webkit-scrollbar {

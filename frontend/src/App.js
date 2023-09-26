@@ -7,21 +7,13 @@ import Login from "./pages/login/login";
 import FilesSection from "./pages/files-section/files-section";
 import "./utilities.css";
 import { AuthContextProvider } from "./context/authContext";
-import { ProjectContextProvider } from "./context/ProjectContext";
 import ProjectsSection from "./pages/project-section/projectsSection";
 import TasksSection from "./pages/tasks-section/tasksSection";
 import IssuesSection from "./pages/issues-section/issuesSection";
 import ChatsSection from "./pages/chats-section/chatsSection";
 import SettingsPage from "./pages/settings-page/settingsPage";
-// import firebase from "firebase/app";
-// import "firebase/auth";
-// import "firebase/firestore";
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
 
-import { useAuthState } from "react-firebase-hooks/auth";
-import { useCollectionData } from "react-firebase-hooks/firestore";
+import { initializeApp } from "firebase/app";
 
 initializeApp({
   apiKey: "AIzaSyDsB1iitOEJl9_95lfdpU4jHNi4eS4VCvs",
@@ -33,12 +25,8 @@ initializeApp({
   measurementId: "G-BF9LZW2GDY",
 });
 function App() {
-  // const userData = localStorage.getItem("user");
-  // const isAuthenticated = !!userData;
-
   return (
     <AuthContextProvider>
-      {/* <ProjectContextProvider> */}
       <BrowserRouter>
         <Routes>
           <Route path="/v1" element={<OutletPage />}>
@@ -54,7 +42,6 @@ function App() {
           <Route path="/" element={<Login />} />
         </Routes>
       </BrowserRouter>
-      {/* </ProjectContextProvider> */}
     </AuthContextProvider>
   );
 }

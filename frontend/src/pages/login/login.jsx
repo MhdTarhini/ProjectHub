@@ -197,32 +197,174 @@ function Login() {
                 xmlns="http://www.w3.org/2000/svg"
                 className="top-svg">
                 <path
+                  className="rectangle rectangle1"
                   d="M72 300C72 311.046 63.0457 320 52 320H0L0 0H72L72 300Z"
                   fill="#3521B5"
                   fillOpacity="0.6"
                 />
                 <path
+                  className="rectangle rectangle2"
                   d="M144 227C144 238.046 135.046 247 124 247H72L72 0H144L144 227Z"
                   fill="#3521B5"
                   fillOpacity="0.6"
                 />
                 <path
+                  className="rectangle rectangle3"
                   d="M216 154C216 165.046 207.046 174 196 174H144V0H216L216 154Z"
                   fill="#3521B5"
                   fillOpacity="0.6"
                 />
                 <path
+                  className="rectangle rectangle4"
                   d="M288 81C288 92.0457 279.046 101 268 101L216 101V0L288 0V81Z"
                   fill="#3521B5"
                   fillOpacity="0.6"
                 />
                 <path
+                  className="rectangle rectangle5"
                   d="M360 8C360 19.0457 351.046 28 340 28L288 28V0L360 0V8Z"
                   fill="#3521B5"
                   fillOpacity="0.6"
                 />
               </svg>
-              <img src="./login-display.svg" alt="sss" className="mid-svg" />
+              <img
+                src="./login-display.svg"
+                alt="sss"
+                className="mid-svg"
+                style={{ zIndex: "1" }}
+              />
+              <div class="line-container">
+                <svg
+                  width="364"
+                  height="140"
+                  viewBox="0 0 364 140"
+                  xmlns="http://www.w3.org/2000/svg"
+                  style={{
+                    position: "absolute",
+                    right: "340px",
+                    top: "181px",
+                  }}>
+                  <line
+                    class="animated-line"
+                    x1="1.47246"
+                    y1="138.386"
+                    x2="363.472"
+                    y2="2.38623"
+                    stroke="white"
+                    stroke-opacity="0.5"
+                    stroke-width="3"
+                  />
+                </svg>
+                <svg
+                  width="34"
+                  height="259"
+                  viewBox="0 0 34 259"
+                  xmlns="http://www.w3.org/2000/svg"
+                  style={{
+                    position: "absolute",
+                    right: "670px",
+                    top: "318px",
+                  }}>
+                  <line
+                    class="animated-line"
+                    x1="32.5108"
+                    y1="257.97"
+                    x2="1.51079"
+                    y2="0.97004"
+                    stroke="white"
+                    stroke-opacity="0.5"
+                    stroke-width="3"
+                  />
+                </svg>
+                <svg
+                  width="82"
+                  height="50"
+                  viewBox="0 0 82 50"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  style={{
+                    position: "absolute",
+                    right: "270px",
+                    top: "415px",
+                  }}>
+                  <line
+                    class="animated-line"
+                    x1="0.759824"
+                    y1="1.49709"
+                    x2="80.7598"
+                    y2="48.4971"
+                    stroke="white"
+                    stroke-opacity="0.5"
+                    stroke-width="3"
+                  />
+                </svg>
+                <svg
+                  width="25"
+                  height="141"
+                  viewBox="0 0 25 141"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  style={{
+                    position: "absolute",
+                    right: "260px",
+                    top: "488px",
+                  }}>
+                  <line
+                    class="animated-line"
+                    x1="23.4816"
+                    y1="1.0249"
+                    x2="1.48156"
+                    y2="140.025"
+                    stroke="white"
+                    stroke-opacity="0.5"
+                    stroke-width="3"
+                  />
+                </svg>
+                <svg
+                  width="89"
+                  height="95"
+                  viewBox="0 0 89 95"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  style={{
+                    position: "absolute",
+                    right: "267px",
+                    top: "550px",
+                  }}>
+                  <line
+                    class="animated-line"
+                    x1="1.09579"
+                    y1="1.76608"
+                    x2="87.0958"
+                    y2="93.7661"
+                    stroke="white"
+                    stroke-opacity="0.5"
+                    stroke-width="3"
+                  />
+                </svg>
+                <svg
+                  width="381"
+                  height="65"
+                  viewBox="0 0 381 65"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  style={{
+                    position: "absolute",
+                    right: "265px",
+                    top: "580px",
+                  }}>
+                  <line
+                    class="animated-line"
+                    x1="0.237746"
+                    y1="2.30937"
+                    x2="380.238"
+                    y2="63.3094"
+                    stroke="white"
+                    stroke-opacity="0.5"
+                    stroke-width="3"
+                  />
+                </svg>
+              </div>
               <svg
                 width="360"
                 height="320"
@@ -231,26 +373,31 @@ function Login() {
                 xmlns="http://www.w3.org/2000/svg"
                 className="bottom-svg">
                 <path
+                  className="rectangle rectangle1"
                   d="M288 20C288 8.95431 296.954 0 308 0H360V320H288V20Z"
                   fill="#3521B5"
                   fillOpacity="0.6"
                 />
                 <path
+                  className="rectangle rectangle2"
                   d="M216 93C216 81.9543 224.954 73 236 73H288V320H216V93Z"
                   fill="#3521B5"
                   fillOpacity="0.6"
                 />
                 <path
+                  className="rectangle rectangle3"
                   d="M144 166C144 154.954 152.954 146 164 146H216V320H144V166Z"
                   fill="#3521B5"
                   fillOpacity="0.6"
                 />
                 <path
+                  className="rectangle rectangle4"
                   d="M72 239C72 227.954 80.9543 219 92 219H144V320H72V239Z"
                   fill="#3521B5"
                   fillOpacity="0.6"
                 />
                 <path
+                  className="rectangle rectangle5"
                   d="M0 312C0 300.954 8.95431 292 20 292H72V320H0V312Z"
                   fill="#3521B5"
                   fillOpacity="0.6"

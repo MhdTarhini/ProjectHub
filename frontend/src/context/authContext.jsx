@@ -6,7 +6,7 @@ export const AuthContextProvider = ({ children }) => {
     const user = JSON.parse(localStorage.getItem("user"));
     axios.defaults.headers.common[
       "Authorization"
-    ] = `Bearer ${user.user.token}`;
+    ] = `Bearer ${user?.user?.token}`;
     const logout = async () => {
       await axios.post("http://127.0.0.1:8000/api/logout");
       localStorage.clear();

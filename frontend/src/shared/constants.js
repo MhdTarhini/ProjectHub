@@ -10,5 +10,6 @@ module.exports = {
     Get_Details_IsDone: "Get_Details_IsDone",
     Covert_Data_to_svg: "Covert_Data_to_svg",
     Covert_Data_to_svg_IsDone: "Covert_Data_to_svg_IsDone",
+    RELOAD: "Reload",
   },
 };

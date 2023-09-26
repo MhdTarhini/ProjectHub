@@ -62,7 +62,7 @@ export default class DemoApp extends React.Component {
   };
 
   handleDateSelect = (selectInfo) => {
-    let title = prompt("Please enter a new title for your event");
+    let title = alert("Please enter a new title for your event");
     let calendarApi = selectInfo.view.calendar;
 
     calendarApi.unselect();

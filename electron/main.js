@@ -13,15 +13,6 @@ process.env.NODE_ENV = "dev";
 const isDev = process.env.NODE_ENV !== "production";
 
 function createMainWindow() {
-  // const startUrl =
-  //   process.env.ELECTRON_START_URL ||
-  //   url.format({
-  //     pathname: path.join(__dirname, "../index.html"),
-  //     protocol: "file:",
-  //     slashes: true,
-  //   });
-  // mainWindow = new BrowserWindow({ width: 800, height: 600 });
-  // mainWindow.loadURL(startUrl);
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
   mainWindow = new BrowserWindow({
     title: "ProjectHub",
@@ -46,15 +37,6 @@ function createMainWindow() {
   if (isDev) {
     mainWindow.webContents.openDevTools();
   }
-
-  // mainWindow.webContents.on("did-fail-load", () => {
-  //   if (process.env.NODE_ENV === "dev") {
-  //     mainWindow.loadURL("http://localhost:3000");
-  //     // mainWindow.loadFile(
-  //     //   path.join(__dirname, "../frontend/public/index.html")
-  //     // );
-  //   }
-  // });
 
   mainWindow.loadURL("http://localhost:3000");
 }

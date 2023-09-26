@@ -21,7 +21,7 @@
     gap: 20px;
     padding: 20px;
     padding-left: 70px;
-        height: 580px;
+        height: 620px;
             overflow-y: auto;
 
         }
@@ -273,5 +273,18 @@ border: 1px solid #E5E7EB;
 background: #FFF;
 cursor: pointer;
 box-shadow: 0px 4px 4px 0px rgba(174, 174, 174, 0.25);
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.dashboard-card {
+  animation: fadeIn 1s forwards;
+  opacity: 0;
 }
 
