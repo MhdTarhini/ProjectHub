@@ -20,7 +20,25 @@
     flex-wrap: wrap;
     gap: 20px;
     padding: 20px;
-}
+        height: 580px;
+            overflow-y: auto;
+        }
+        
+        .dashboard-container::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .dashboard-container:-webkit-scrollbar {
+            width: 0;
+        }
+        
+        .dashboard-container::-khtml-scrollbar {
+            width: 0;
+        }
+        
+        .dashboard-container::-moz-scrollbar {
+            width: 0;
+        }
 
 .dashboard-card {
     width: 350px;
@@ -165,4 +183,7 @@ box-shadow: 0px 4px 4px 0px rgba(174, 174, 174, 0.25);
 }
 .card-file:hover{
     background: #faf9f9;
+}
+.top-chat-icon{
+    
 }

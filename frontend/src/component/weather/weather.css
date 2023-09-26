@@ -1,0 +1,61 @@
+.weather-widget {
+    width: 350px;
+    padding: 20px 30px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0px 5px 25px rgba(114, 114, 114, 0.1);
+    backdrop-filter: blur(10px);
+    font-weight: 700;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.weather-widget h2 {
+    font-size: 28px;
+    margin: 0 0 5px;
+    color: #000000;
+    text-align: center;
+}
+
+.date {
+    display: block;
+    text-align: center;
+    margin: 5px 0 20px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #000000;
+    letter-spacing: 1.2px;
+}
+
+.time {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    color: #131212;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.time i {
+    margin-right: 10px;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+p {
+    margin: 5px 0;
+    color: #000000;
+    font-size: 18px;
+    text-align: center;
+}
+
+p:last-child {
+    font-size: 28px;
+    font-weight: bold;
+    color: #444;
+}
+
+.fa-sun {
+    background-image: url("https: //cdn-icons-png.flaticon.com/512/1400/1400310.png");
+    background-size: "cover",
+}
