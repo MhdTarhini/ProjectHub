@@ -21,7 +21,6 @@ Route::group(["prefix" => "guest"], function(){
     Route::post("register", [AuthController::class, "register"]);
 });
 
-Route::get("open_ai",[OpenAIController::class,"prompt"]);
 
 
 
@@ -47,6 +46,8 @@ Route::group(["middleware" => "auth:api"], function(){
             Route::post('pull_main', [FileController::class, "pullFromMain"]);
             Route::post('accepte_file', [FileController::class, "accepteFile"]);
             Route::delete('delete_file/{file_id?}', [FileController::class, "deleteFile"]);
+            Route::post("open_ai",[OpenAIController::class,"prompt"]);
+
         });
         Route::group(["prefix" => "project-section"], function(){
             Route::post("new_project/{id?}",[ProjectController::class,"newProject"]);
