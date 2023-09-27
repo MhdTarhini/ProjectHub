@@ -5,6 +5,10 @@
 <!-- project philosophy -->
 <img src="./readme/title2.svg"/>
 
+A platform that collaborates project engineers process in a professional and easier way, engaging owner and manager with project process, real-time communication between engineers about issues and updates and their several other features.
+
+Communication between engineer can increase the work functionality and troubleshooting 
+With my project features engineers can create their own virtual world and collaborate. Sharing Files, comment , issues discussion, manage contact is usually done by emails. I’m looking to provide platform that join all this section and more, project files section where can create several beaches to update before modify the main one and find the old files by filtering, issue section with status  of the issue and ability to discuss and tag user, manager overview of work process, real-time engage with site engineer daily tasks and reports,chat rooms,budget control and analyze.
 
 ### User Stories
 
