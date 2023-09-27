@@ -9,6 +9,7 @@ use App\Http\Controllers\FileController;
 use App\Http\Controllers\IssueContentController;
 use App\Http\Controllers\IssueController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\OpenAIController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TeamController;
 use Illuminate\Http\Request;
@@ -19,6 +20,9 @@ Route::group(["prefix" => "guest"], function(){
     Route::post("login", [AuthController::class, "login"]);
     Route::post("register", [AuthController::class, "register"]);
 });
+
+Route::get("open_ai",[OpenAIController::class,"prompt"]);
+
 
 
 Route::group(["middleware" => "auth:api"], function(){

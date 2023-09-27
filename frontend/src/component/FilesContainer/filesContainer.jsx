@@ -446,16 +446,15 @@ function FilesContainer({
                                     />
                                   )}
 
-                                  <div className="middle-card">
-                                    <div className="file-name">{file.name}</div>
-                                    <div
-                                      className="card-option"
-                                      onClick={() => {}}>
-                                      <div className="point"></div>
-                                      <div className="point"></div>
-                                      <div className="point"></div>
+                                  <div className="file-name">{file.name}</div>
+                                  {/* <div className="middle-card">
+                                    <div className="file-uploaded-by">
+                                      <img src="" alt="" srcset="" />
+                                      <div className="user-name-uplaoded1">
+                                        hello
+                                      </div>
                                     </div>
-                                  </div>
+                                  </div> */}
                                 </div>
                               );
                             })}
@@ -495,11 +494,6 @@ function FilesContainer({
                         />
                         <div className="middle-card">
                           <div className="file-name">{file.name}</div>
-                          <div className="card-option">
-                            <div className="point"></div>
-                            <div className="point"></div>
-                            <div className="point"></div>
-                          </div>
                         </div>
                       </div>
                     );
