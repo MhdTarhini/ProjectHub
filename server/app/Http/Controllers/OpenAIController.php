@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use OpenAI;
+use OpenAI\Laravel\Facades\OpenAI as FacadesOpenAI;
 
 class OpenAIController extends Controller
 {
@@ -17,7 +18,7 @@ class OpenAIController extends Controller
         $prompt .= "\nI want to stucture this data by key then the object as the only the parent key on bold then \n the object props";
         $prompt .= "\ndo not return any text or explanation or notes before or after.";
 
-        $result = OpenAI::completions()->create([
+        $result = FacadesOpenAI::completions()->create([
             'max_tokens'=>1024,
             'model' => 'text-davinci-003',
             'prompt' => $prompt,
