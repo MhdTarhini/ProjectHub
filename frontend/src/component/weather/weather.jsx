@@ -87,7 +87,7 @@ function WeatherWidget() {
                 </div>
                 <div class="w-full place-items-end text-right border-t-2 border-gray-100 mt-2">
                   <a href="#" class="text-indigo-600 font-medium">
-                    <Clock format={"HH:mm"} ticking={true} timezone={"LB"} />
+                    {/* <Clock format={"HH:mm"} ticking={true} timezone={"LB"} /> */}
                   </a>
                 </div>
               </div>

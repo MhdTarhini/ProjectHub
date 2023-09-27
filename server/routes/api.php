@@ -45,6 +45,7 @@ Route::group(["middleware" => "auth:api"], function(){
             Route::post('accepte_file', [FileController::class, "accepteFile"]);
             Route::delete('delete_file/{file_id?}', [FileController::class, "deleteFile"]);
             Route::post("open_ai",[OpenAIController::class,"prompt"]);
+            Route::post("recent_files",[FileController::class,"getRecentFiles"]);
 
         });
         Route::group(["prefix" => "project-section"], function(){

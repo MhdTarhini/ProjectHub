@@ -65,32 +65,10 @@ class FileController extends Controller
     function getFiles(Request $request) {
 
         $request->validate([
-        'branche_id' => 'required|string|max:255',
         'project_id' => 'required|string|max:255',
         ]);
 
         $files=Branch::where("project_id",$request->project_id)->with("files")->get();
-        // $isMain = Branch::where("project_id",$request->project_id)->where('id', $request->branche_id)
-        //                 ->where('name', "main")->first();
-
-        // if($isMain){
-        //     $projectTeamIds = Team::where('project_id', $request->project_id)->pluck('id');
-
-        //     $branchIds = Branch::whereIn('team_id', $projectTeamIds)
-        //             ->where('project_id', $request->project_id)
-        //             ->pluck('id');
-
-        //     // $get_files = File::with(['user', 'project','branche'])
-        //     //         ->whereIn('branche_id', $branchIds)
-        //     //         ->where('project_id', $request->project_id)
-        //     //         ->get();
-        //     $get_files=Branch::whereIn("id",$branchIds)->with("files")->get();
-        // }else{
-        //     $get_files = File::with(["user","project"])->where('branche_id', $request->branche_id)
-        //         ->where('project_id', $request->project_id)
-        //         ->get();
-        // }
-
 
         return response()->json([
             'status' => 'success',
@@ -220,5 +198,25 @@ function deleteFile($file_id){
         'status' => 'success',
         'data'=>$file
     ]);
+}
+
+function getRecentFiles(Request $request){
+    if($request->role==="manager"){
+        $Files=Branch::where("project_id",$request->project_id)->with('files.user')->offset(0)
+                        ->limit(5)
+                        ->get();
+          return response()->json([
+        'status' => 'success',
+        'data'=>$Files
+    ]);
+    }else{
+         $Files=Branch::where("project_id",$request->project_id)->where("team_id",$request->team_id)->with('files.user')->offset(0)
+                        ->limit(5)
+                        ->get();
+          return response()->json([
+        'status' => 'success',
+        'data'=>$Files
+    ]);
+    }
 }
 }

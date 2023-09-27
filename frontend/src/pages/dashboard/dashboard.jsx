@@ -2,10 +2,39 @@ import React, { useContext, useEffect, useState } from "react";
 import "./dashboard.css";
 import WeatherWidget from "../../component/weather/weather";
 import Logo from "../../component/logo/Logo";
+import axios from "axios";
 
 function Dashboard() {
+  const user = JSON.parse(localStorage.getItem("user"));
+  axios.defaults.headers.common["Authorization"] = `Bearer ${user.user.token}`;
   const [value, onChange] = useState(new Date());
   const [showlogo, setShowlogo] = useState(true);
+  const [recentFiles, setRecentFiles] = useState([]);
+
+  async function getRecentFiles() {
+    let role = "user";
+    if (user.projects_Manager_id.includes(user.active)) {
+      role = "manager";
+    }
+    const data = new FormData();
+    data.append("project_id", user.active);
+    data.append("role", role);
+    data.append("team_id", user.team_active);
+    try {
+      const response = await axios.post(
+        `http://127.0.0.1:8000/api/file-section/recent_files`,
+        data
+      );
+      const recentFiles = await response.data;
+      setRecentFiles(recentFiles.data);
+      console.log(recentFiles);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  useEffect(() => {
+    getRecentFiles();
+  }, []);
 
   useEffect(() => {
     setTimeout(() => {
@@ -80,39 +109,116 @@ function Dashboard() {
               <div className="file-recent-card">
                 <div className="card-title">Recent Files</div>
                 <div className="card-recent-file-list">
-                  <div className="card-file">
-                    <img src="" alt="" srcset="" />
-                    <div className="card-content-file">
-                      <div className="user-name-file">mohamad</div>
-                      <div className="middel">
-                        <img src="" alt="" srcset="" />
-                        <div className="file-recent-name">file</div>
-                      </div>
-                      <div className="uploaded_at">07/05/20033</div>
-                    </div>
-                  </div>
-                  <div className="card-file">
-                    <img src="" alt="" srcset="" />
-                    <div className="card-content-file">
-                      <div className="user-name-file">mohamad</div>
-                      <div className="middel">
-                        <img src="" alt="" srcset="" />
-                        <div className="file-recent-name">file</div>
-                      </div>
-                      <div className="uploaded_at">07/05/20033</div>
-                    </div>
-                  </div>
-                  <div className="card-file">
-                    <img src="" alt="" srcset="" />
-                    <div className="card-content-file">
-                      <div className="user-name-file">mohamad</div>
-                      <div className="middel">
-                        <img src="" alt="" srcset="" />
-                        <div className="file-recent-name">file</div>
-                      </div>
-                      <div className="uploaded_at">07/05/20033</div>
-                    </div>
-                  </div>
+                  {recentFiles.map((branch) => {
+                    return branch.files.map((file) => {
+                      return (
+                        <div className="card-file">
+                          <img
+                            src={file.user?.profile_img}
+                            alt=""
+                            srcset=""
+                            className="image-user"
+                          />
+                          <div className="card-content-file">
+                            <div className="user-name-file">
+                              {`${file.user?.first_name} ${file.user?.last_name}`}
+                            </div>
+                            <div className="middle">
+                              <img
+                                src={file.path_svg}
+                                alt=""
+                                srcset=""
+                                className="svg-img-card-dashboard"
+                              />
+                              <div className="file-recent-name">
+                                {file.name}
+                              </div>
+                            </div>
+                            <div className="uploaded_at">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                viewBox="0 0 16 16"
+                                fill="none">
+                                <path
+                                  d="M12.6667 2.66675H3.33335C2.59697 2.66675 2.00002 3.2637 2.00002 4.00008V13.3334C2.00002 14.0698 2.59697 14.6667 3.33335 14.6667H12.6667C13.4031 14.6667 14 14.0698 14 13.3334V4.00008C14 3.2637 13.4031 2.66675 12.6667 2.66675Z"
+                                  stroke="#64748B"
+                                  stroke-width="1.33333"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                                <path
+                                  d="M10.6667 1.33325V3.99992"
+                                  stroke="#64748B"
+                                  stroke-width="1.33333"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                                <path
+                                  d="M5.33331 1.33325V3.99992"
+                                  stroke="#64748B"
+                                  stroke-width="1.33333"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                                <path
+                                  d="M2.00002 6.66675H14"
+                                  stroke="#64748B"
+                                  stroke-width="1.33333"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                                <path
+                                  d="M5.33331 9.33325H5.34331"
+                                  stroke="#64748B"
+                                  stroke-width="1.33333"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                                <path
+                                  d="M8.00002 9.33325H8.01002"
+                                  stroke="#64748B"
+                                  stroke-width="1.33333"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                                <path
+                                  d="M10.6667 9.33325H10.6767"
+                                  stroke="#64748B"
+                                  stroke-width="1.33333"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                                <path
+                                  d="M5.33331 11.9999H5.34331"
+                                  stroke="#64748B"
+                                  stroke-width="1.33333"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                                <path
+                                  d="M8.00002 11.9999H8.01002"
+                                  stroke="#64748B"
+                                  stroke-width="1.33333"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                                <path
+                                  d="M10.6667 11.9999H10.6767"
+                                  stroke="#64748B"
+                                  stroke-width="1.33333"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                              </svg>
+                              {file.created_at.split("T")[0]}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    });
+                  })}
                 </div>
               </div>
             </div>
