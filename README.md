@@ -12,9 +12,9 @@ With my project features engineers can create their own virtual world and collab
 
 ### User Stories
 
-As a user, I want to upload my files so that I can share them with team members.
-As a user, I want to create a new branch so that I can post my team files separately.
-As a user, I want to download files so that I can save them locally.
+- As a user, I want to upload my files so that I can share them with team members.
+- As a user, I want to create a new branch so that I can post my team files separately.
+- As a user, I want to download files so that I can save them locally.
 As a user, I want to post my issue so that I can share it.
 As a user, I want to filter the issue section so that I can search for specific objects.
 As a user, I want to tag specific members related to my issue so that I can be more direct.
