@@ -9,6 +9,7 @@ use App\Models\Team;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use OpenAI\Resources\Files;
 
 class FileController extends Controller
 {
@@ -57,6 +58,7 @@ class FileController extends Controller
         $file->save();
         return response()->json([
             'status' => 'success',
+            "data"=>$file
         ]);
     }
 
@@ -67,31 +69,32 @@ class FileController extends Controller
         'project_id' => 'required|string|max:255',
         ]);
 
-        $isMain = Branch::where("project_id",$request->project_id)->where('id', $request->branche_id)
-                        ->where('name', "main")->first();
+        $files=Branch::where("project_id",$request->project_id)->with("files")->get();
+        // $isMain = Branch::where("project_id",$request->project_id)->where('id', $request->branche_id)
+        //                 ->where('name', "main")->first();
 
-        if($isMain){
-            $projectTeamIds = Team::where('project_id', $request->project_id)->pluck('id');
+        // if($isMain){
+        //     $projectTeamIds = Team::where('project_id', $request->project_id)->pluck('id');
 
-            $branchIds = Branch::whereIn('team_id', $projectTeamIds)
-                    ->where('project_id', $request->project_id)
-                    ->pluck('id');
+        //     $branchIds = Branch::whereIn('team_id', $projectTeamIds)
+        //             ->where('project_id', $request->project_id)
+        //             ->pluck('id');
 
-            // $get_files = File::with(['user', 'project','branche'])
-            //         ->whereIn('branche_id', $branchIds)
-            //         ->where('project_id', $request->project_id)
-            //         ->get();
-            $get_files=Branch::whereIn("id",$branchIds)->with("files")->get();
-        }else{
-            $get_files = File::with(["user","project"])->where('branche_id', $request->branche_id)
-                ->where('project_id', $request->project_id)
-                ->get();
-        }
+        //     // $get_files = File::with(['user', 'project','branche'])
+        //     //         ->whereIn('branche_id', $branchIds)
+        //     //         ->where('project_id', $request->project_id)
+        //     //         ->get();
+        //     $get_files=Branch::whereIn("id",$branchIds)->with("files")->get();
+        // }else{
+        //     $get_files = File::with(["user","project"])->where('branche_id', $request->branche_id)
+        //         ->where('project_id', $request->project_id)
+        //         ->get();
+        // }
 
 
         return response()->json([
             'status' => 'success',
-            'data' =>$get_files,
+            'data' =>$files,
         ]);
     }
     function getdxfFileData($id) {
@@ -215,6 +218,7 @@ function deleteFile($file_id){
 
     return response()->json([
         'status' => 'success',
+        'data'=>$file
     ]);
 }
 }

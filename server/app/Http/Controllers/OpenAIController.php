@@ -12,7 +12,7 @@ class OpenAIController extends Controller
 
        $prompt = "Given the following construction data:\n";
        $prompt .= "$request->data\n";
-       $prompt .= "reformat the data as a small paraghraph with a list of point describing the floor plan include:\n";
+       $prompt .= "format the data as a small paraghraph text with a list of point describing the floor base on the file name plan include:\n";
        $prompt .= "key (e.g., 'Slab') in font bold \n";
        $prompt .= "meantion the parent key only one time and don't be repeative ";
        $prompt .= "then displaying the props including L*W or L, Area and qunatity (Only If the quantity is greater than 1)\n";

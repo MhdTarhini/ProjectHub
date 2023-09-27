@@ -111,16 +111,7 @@ def getDataDetails(data):
             process(entity)
             saveData(entity,process(entity))
 
-
-    try:
-        with requests.post('http://127.0.0.1:8000/api/open_ai', data=dxf_details, stream=True) as response:
-            if response.status_code == 200:
-                print(response.text)
-            else:
-                print(f"Error with status code: {response.status_code}")
-    except Exception as e:
-        print(f"An error occurred: {e}")
-
+    print(dxf_details)
 
 if __name__ == "__main__":
     for line in sys.stdin:

@@ -108,7 +108,7 @@ class CommitController extends Controller
 
             return response()->json([
                     'status' => 'success',
-                    'message' => "commited",
+                    'message' => $file,
                 ]);
         }else{
             return response()->json([

@@ -40,7 +40,7 @@ function FilesSection() {
     name: "main",
   });
   const [modalIsOpen, setIsOpen] = React.useState(false);
-  const [updateFile, setUpdateFile] = useState(false);
+  const [updateFile, setUpdateFile] = useState([]);
   const [isLoading, setIsloading] = useState(false);
   const [isManager, setIsManager] = useState(false);
   const [modalBrancheOpen, setModalBrancheOpen] = React.useState(false);
@@ -54,6 +54,7 @@ function FilesSection() {
   const [newBranchDone, setNewbranchDone] = useState(false);
   const [teamMember, setTeamMember] = useState([]);
   const [showlogo, setShowlogo] = useState(true);
+  const [transformedData, setTransformedData] = useState([]);
 
   async function getTeamMember() {
     try {
@@ -68,10 +69,14 @@ function FilesSection() {
     }
   }
 
-  const transformedData = teamMember.map((member) => ({
-    label: `${member.user.first_name} ${member.user.last_name} - ${member.user.email}`,
-    value: member.user.id,
-  }));
+  useEffect(() => {
+    setTransformedData(
+      teamMember.map((member) => ({
+        label: `${member.user.first_name} ${member.user.last_name} - ${member.user.email}`,
+        value: member.user.id,
+      }))
+    );
+  }, []);
 
   function openModal() {
     setIsOpen(true);
@@ -216,7 +221,7 @@ function FilesSection() {
       );
       const get_files = await response.data;
       if (get_files.status === "success") {
-        setUpdateFile(!updateFile);
+        setUpdateFile(get_files.data);
         closeModal();
         setfile([]);
         setIsloading(false);
@@ -299,7 +304,7 @@ function FilesSection() {
   useEffect(() => {
     getTeamMember();
     getBranches();
-  }, [newBranchDone]);
+  }, []);
 
   useEffect(() => {
     setTimeout(() => {

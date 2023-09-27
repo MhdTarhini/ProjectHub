@@ -39,6 +39,7 @@ function FilesContainer({
   const [commitMessage, setCommitMessage] = useState("");
   const [FileDetails, setFileDetails] = useState("");
   const [detailsSuccess, setDetailsSuccess] = useState(false);
+  const [goAI, setGoAI] = useState(false);
   const [conflictSvg, setConflitSvg] = useState("");
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [CheckCommitIsOpen, setCheckCommitIsOpen] = React.useState(false);
@@ -74,6 +75,11 @@ function FilesContainer({
   const [isdeleted, setIsdeleted] = useState(false);
   const [isCheckingConlfectFile, SetCheckingConlfectFile] = useState(openCheck);
   const [showImage, setShowImage] = useState(true);
+  const [detailsAI, setDetailsAI] = useState("");
+  const [getDetails, setGetDetails] = useState(false);
+  const [branchFiles, setBranchFiles] = useState([]);
+  const [deletedFile, setDeletedFile] = useState([]);
+  const [modalDeleteOpen, setModalDeleteOpen] = useState(false);
 
   function openModal() {
     setIsloading(false);
@@ -103,6 +109,9 @@ function FilesContainer({
     setCheckFileIsOpen(false);
     setIsloading(false);
   }
+  function closeDeleteModal() {
+    setModalDeleteOpen(false);
+  }
 
   async function downloadFile(file_name) {
     try {
@@ -110,7 +119,6 @@ function FilesContainer({
         `http://127.0.0.1:8000/api/file-section/download_file/${file_name}`
       );
       const content = response;
-      console.log(response);
     } catch (error) {
       console.error(error);
     }
@@ -145,6 +153,23 @@ function FilesContainer({
     } catch (error) {
       setMainError(true);
       setMainErrorMessage(error.response.data.message);
+    }
+  }
+
+  async function getAIResponse(data) {
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/file-section/open_ai",
+        {
+          data: data,
+        }
+      );
+      const reponseai = await response.data;
+      if (reponseai.status === "success") {
+        setDetailsAI(reponseai.data);
+      }
+    } catch (error) {
+      console.error(error);
     }
   }
 
@@ -238,6 +263,7 @@ function FilesContainer({
   }
 
   function getDxfData(file_dxf) {
+    console.log("here");
     setDetailsSuccess(false);
     window.electron.send(channels.Get_Details, { file_dxf });
   }
@@ -312,6 +338,7 @@ function FilesContainer({
         setIsPushed(true);
         setIsloading(false);
         setIsDone(true);
+        setBranchFiles.files?.push(IsPushed.data);
       }
     } catch (error) {
       setLocalError(true);
@@ -324,8 +351,20 @@ function FilesContainer({
   };
 
   useEffect(() => {
+    getFiles.map((branch) => {
+      if (branch.id === branche.id) {
+        setBranchFiles(branch);
+      }
+    });
+  }, [branche]);
+
+  useEffect(() => {
+    branchFiles.files?.push(updateFile);
+  }, [updateFile]);
+
+  useEffect(() => {
     handleGetFiles();
-  }, [branche, updateFile, updateFiles, isdeleted, isPushed, pullData]);
+  }, [pullData]);
 
   useEffect(() => {
     window.electron.on(channels.Compare_Data_IsDone, (data) => {
@@ -341,10 +380,11 @@ function FilesContainer({
       setMainCompareSuccess(true);
       setIsloading(false);
     });
-    window.electron.on(channels.Get_Details_IsDone, (data) => {
+    const windows = window.electron.on(channels.Get_Details_IsDone, (data) => {
       setFileDetails(data);
       setDetailsSuccess(true);
       setIsloading(false);
+      getAIResponse(data);
     });
     window.electron.on(channels.Covert_Data_to_svg_IsDone, (data) => {
       const decodedData = base64.decode(data);
@@ -356,11 +396,9 @@ function FilesContainer({
       setIsManager(true);
     }
   }, []);
+  useEffect(() => {}, []);
 
   async function deletefile(file_id) {
-    // const data = new FormData();
-    // data.append("project_id", user.active);
-    // data.append("branch_id", branche.id);
     try {
       const response = await axios.delete(
         `http://127.0.0.1:8000/api/file-section/delete_file/${file_id}`
@@ -368,6 +406,10 @@ function FilesContainer({
       const deltedfile = await response.data;
       if (deltedfile.status === "success") {
         setIsdeleted(true);
+        setDeletedFile(deltedfile.data);
+        branchFiles = branchFiles.filter(
+          (file) => file.id !== deletedFile.data.id
+        );
       }
     } catch (error) {
       console.error(error);
@@ -423,9 +465,11 @@ function FilesContainer({
                                   className="card"
                                   key={file.id}
                                   onClick={() => {
+                                    setFileDetails("");
                                     setOpenedFileDetails(file);
                                     setSeletedFile(file.path_svg);
                                     openFileModal();
+                                    // setGetDetails(true);
                                     getDxfData(file.path_dxf);
                                     getfileCommit(file.id);
                                     getMainFilePath(file.name);
@@ -472,7 +516,7 @@ function FilesContainer({
                 )
               ) : (
                 <div className="card-container">
-                  {getFiles.map((file) => {
+                  {branchFiles?.files?.map((file) => {
                     return (
                       <div
                         className="card"
@@ -482,6 +526,7 @@ function FilesContainer({
                           setSeletedFile(file.path_svg);
                           openFileModal();
                           setOpen(true);
+                          // setGetDetails(true);
                           getDxfData(file.path_dxf);
                           getfileCommit(file.id);
                           getMainFilePath(file.name);
@@ -696,7 +741,7 @@ function FilesContainer({
                                   </div>
                                   <div className="hr-details"></div>
                                   <div className="show-file-details">
-                                    {FileDetails}
+                                    {detailsAI}
                                   </div>
                                   <div className="hr-details"></div>
                                   {!isManager && (
@@ -1000,6 +1045,7 @@ function FilesContainer({
                               <button
                                 className="btn delete btn-delete-file"
                                 onClick={() => {
+                                  setModalDeleteOpen(true);
                                   deletefile(openedfileDetails.id);
                                 }}>
                                 delete file
@@ -1082,6 +1128,29 @@ function FilesContainer({
         ) : (
           <Loading />
         )}
+      </Modal>
+      <Modal
+        isOpen={modalDeleteOpen}
+        onRequestClose={closeDeleteModal}
+        ariaHideApp={false}
+        className="new-file-model branche-model"
+        style={{ overlay: { background: "rgb(0 0 0 / 15%)" } }}>
+        <h2 className="model-title">Add New Branche</h2>
+        <div className="btns-new-file">
+          <button className="btn close-btn" onClick={closeDeleteModal}>
+            Cancel
+          </button>
+          <button
+            className="btn"
+            onClick={() => {
+              deletefile(openedfileDetails.id);
+              setModalDeleteOpen(false);
+              setOpen(false);
+              closeCheckFile();
+            }}>
+            Delete
+          </button>
+        </div>
       </Modal>
     </>
   );
