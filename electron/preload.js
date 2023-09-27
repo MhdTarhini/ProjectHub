@@ -9,4 +9,7 @@ contextBridge.exposeInMainWorld("electron", {
       callback(...args);
     });
   },
+  remove: (channel) => {
+    ipcRenderer.removeListener(channel, (...args) => {});
+  },
 });

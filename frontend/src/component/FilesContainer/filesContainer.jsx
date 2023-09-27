@@ -156,17 +156,18 @@ function FilesContainer({
     }
   }
 
-  async function getAIResponse(data) {
+  async function getAIResponse() {
     try {
       const response = await axios.post(
         "http://127.0.0.1:8000/api/file-section/open_ai",
         {
-          data: data,
+          data: FileDetails,
         }
       );
       const reponseai = await response.data;
       if (reponseai.status === "success") {
         setDetailsAI(reponseai.data);
+        setFileDetails("");
       }
     } catch (error) {
       console.error(error);
@@ -204,7 +205,6 @@ function FilesContainer({
     }
   }
   async function getMainFilePath(file_name) {
-    // downloadFile();
     const data = new FormData();
     data.append("project_id", user.active);
     data.append("team_id", user.team_active);
@@ -380,11 +380,11 @@ function FilesContainer({
       setMainCompareSuccess(true);
       setIsloading(false);
     });
-    const windows = window.electron.on(channels.Get_Details_IsDone, (data) => {
+    window.electron.on(channels.Get_Details_IsDone, (data) => {
       setFileDetails(data);
       setDetailsSuccess(true);
       setIsloading(false);
-      getAIResponse(data);
+      getAIResponse();
     });
     window.electron.on(channels.Covert_Data_to_svg_IsDone, (data) => {
       const decodedData = base64.decode(data);
@@ -421,6 +421,9 @@ function FilesContainer({
     }, 2000);
   }, []);
 
+  console.log(branche);
+  console.log(getFiles);
+
   return (
     <>
       {openCheck ? (
@@ -432,15 +435,15 @@ function FilesContainer({
         />
       ) : (
         <div>
-          {!branche && !getFiles ? (
+          {branche.name === null ? (
             <div>
-              <div className="issue-post-empty">
-                <div className="empty-title">Create Your Own Journery</div>
+              <div className="Files-empty">
+                <div className="empty-title">Collaborate and Share</div>
                 <div className="empty-text">
-                  Looks like there are no Project yet. Start your own Projects
-                  and get insights from the community.
+                  Looks like there are no Branches or Files yet. Upload your
+                  Work and share it with other.
                 </div>
-                <button className="btn empty-button">Create New Project</button>
+                <button className="btn empty-button">Upload New Files</button>
               </div>
             </div>
           ) : (
@@ -459,39 +462,40 @@ function FilesContainer({
                         <div className="teams-branches">
                           <div className="team-branch-main">{branch?.name}</div>
                           <div className="files-card">
-                            {branch.files?.map((file) => {
-                              return (
-                                <div
-                                  className="card"
-                                  key={file.id}
-                                  onClick={() => {
-                                    setFileDetails("");
-                                    setOpenedFileDetails(file);
-                                    setSeletedFile(file.path_svg);
-                                    openFileModal();
-                                    // setGetDetails(true);
-                                    getDxfData(file.path_dxf);
-                                    getfileCommit(file.id);
-                                    getMainFilePath(file.name);
-                                    setIsDoneCommitMain(false);
-                                  }}>
-                                  {showImage ? (
-                                    <img
-                                      src="https://forums.synfig.org/uploads/default/original/2X/3/320a629e5c20a8f67d6378c5273cda8a9e2ff0bc.gif"
-                                      alt=""
-                                      srcset=""
-                                      className="image-loading-card"
-                                    />
-                                  ) : (
-                                    <img
-                                      src={file.path_svg}
-                                      className="file-section-card-img"
-                                      alt={file.name}
-                                    />
-                                  )}
+                            {branch.files.length > 0 ? (
+                              branch.files?.map((file) => {
+                                return (
+                                  <div
+                                    className="card"
+                                    key={file.id}
+                                    onClick={() => {
+                                      setFileDetails("");
+                                      setOpenedFileDetails(file);
+                                      setSeletedFile(file.path_svg);
+                                      openFileModal();
+                                      // setGetDetails(true);
+                                      getDxfData(file.path_dxf);
+                                      getfileCommit(file.id);
+                                      getMainFilePath(file.name);
+                                      setIsDoneCommitMain(false);
+                                    }}>
+                                    {showImage ? (
+                                      <img
+                                        src="https://forums.synfig.org/uploads/default/original/2X/3/320a629e5c20a8f67d6378c5273cda8a9e2ff0bc.gif"
+                                        alt=""
+                                        srcset=""
+                                        className="image-loading-card"
+                                      />
+                                    ) : (
+                                      <img
+                                        src={file.path_svg}
+                                        className="file-section-card-img"
+                                        alt={file.name}
+                                      />
+                                    )}
 
-                                  <div className="file-name">{file.name}</div>
-                                  {/* <div className="middle-card">
+                                    <div className="file-name">{file.name}</div>
+                                    {/* <div className="middle-card">
                                     <div className="file-uploaded-by">
                                       <img src="" alt="" srcset="" />
                                       <div className="user-name-uplaoded1">
@@ -499,9 +503,20 @@ function FilesContainer({
                                       </div>
                                     </div>
                                   </div> */}
+                                  </div>
+                                );
+                              })
+                            ) : (
+                              <div>
+                                <div className="issue-post-empty">
+                                  <div className="empty-title">No files</div>
+                                  <div className="empty-text">
+                                    Alwats keep your branches organized and
+                                    usefull.
+                                  </div>
                                 </div>
-                              );
-                            })}
+                              </div>
+                            )}
                           </div>
                         </div>
                       );

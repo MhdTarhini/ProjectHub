@@ -21,13 +21,6 @@
     flex-direction: column;
     gap: 20px
 }
-.issue-post-empty {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 600px;
-}
 
 .issue-post-empty {
     display: flex;
@@ -35,8 +28,8 @@
     align-items: center;
     justify-content: center;
     padding: 40px 20px;
-    background-color: #f7f9fc;
     border-radius: 8px;
+    width: 600px;
 }
 
 .empty-icon {

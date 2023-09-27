@@ -17,7 +17,6 @@ def getDataDetails(data):
                     for chunk in response.iter_content(chunk_size=1024):
                         if chunk:
                             local_file.write(chunk)
-                print(f"File downloaded as {local_filename}")
             else:
                 print(f"Error with status code: {response.status_code}")
         except Exception as e:

@@ -44,8 +44,8 @@
     border-radius: 10px;
     z-index: 0;
     color: white;
-        background-color: #07a6f0;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #07a6f0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .image-loading-card {
@@ -54,10 +54,8 @@
     border-radius: 10px;
 }
 .card:hover {
-    transform: translateY(10px) scale(1.1);
+    transform: translateY(10px) scale(1.05);
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
-
-
 }
 
 .file-section-card-img {
@@ -68,18 +66,14 @@
     border-radius: 10px;
      transform-origin: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-
+}
     
-    }
-    
-
-
 .middle-card {
     display: flex;
     flex-direction: column;
     width: 100%;
     align-items: flex-start;
-        gap: 15px;
+    gap: 15px;
 }
 
 .card-option {
@@ -104,10 +98,11 @@
     color: #ffffff;
     font-size: 14px;
     font-style: normal;
-    font-weight: 700;
+    font-weight: 600;
     line-height: 20px;
-        margin-left: 5px;
-        margin-top: 5px;
+    margin-left: 5px;
+    margin-top: 5px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .uploaded-by {
@@ -461,4 +456,13 @@
 .files-card {
     display: flex;
     gap: 20px;
+}
+.Files-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    border-radius: 8px;
+    width: 1300px;
 }

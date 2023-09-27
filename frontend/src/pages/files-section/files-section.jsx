@@ -16,6 +16,7 @@ import { Fragment } from "react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { Dialog } from "@headlessui/react";
 import Logo from "../../component/logo/Logo";
+import Message from "../../component/common/Message/message";
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -37,7 +38,7 @@ function FilesSection() {
   const [errorMessage, setErrorMessage] = useState("");
   const [selectedBranche, setSelectedBranche] = useState({
     id: user.main_branch ? user.main_branch : 0,
-    name: "main",
+    name: user.main_branch ? "main" : null,
   });
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [updateFile, setUpdateFile] = useState([]);
@@ -55,6 +56,8 @@ function FilesSection() {
   const [teamMember, setTeamMember] = useState([]);
   const [showlogo, setShowlogo] = useState(true);
   const [transformedData, setTransformedData] = useState([]);
+  const [noBranchMessage, setNoBranchMessage] = useState(false);
+  const [newBranchError, setNewBranchError] = useState("");
 
   async function getTeamMember() {
     try {
@@ -95,6 +98,7 @@ function FilesSection() {
   function closeBrancheModal() {
     setModalBrancheOpen(false);
     setIsloading(false);
+    setNewBranchError("");
   }
   function handleUpload(e) {
     const file_uploaded = e.target.files[0];
@@ -127,17 +131,6 @@ function FilesSection() {
     data.append("project_id", user.active);
     data.append("name", brancheName);
 
-    // let selected_users_id = [3, 4];
-    // function newBranch() {
-    //   const data = new FormData();
-    //   selected.map((select) => {
-    //     console.log(select);
-    //     selected_users_id.push(select.value);
-    //   });
-    //   data.append("members", selected_users_id);
-    //   data.append("project_id", 1);
-    //   data.append("name", brancheName);
-
     try {
       const response = await axios.post(
         "http://127.0.0.1:8000/api/file-section/new_branch",
@@ -150,56 +143,9 @@ function FilesSection() {
       }
     } catch (error) {
       console.error(error);
+      setNewBranchError(error.response.data.message);
     }
   }
-  // axios.defaults.headers.common[
-  //   "Authorization"
-  // ] = `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2d1ZXN0L2xvZ2luIiwiaWF0IjoxNjk1MDc3NTc4LCJleHAiOjE2OTUwODExNzgsIm5iZiI6MTY5NTA3NzU3OCwianRpIjoiTkVQdEh2S2pXM0tja3FBZCIsInN1YiI6IjMiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.eRiJHa4Od9CRuyyGnIry-WtA3xaUYpcGkfvDUUOwIw0`;
-
-  // async function handleSubmitUpload() {
-  //   const data = new FormData();
-  //   data.append("name", fileName);
-  //   data.append("path_svg", getSvg);
-  //   data.append("path_dxf", file);
-  //   data.append("version", 1);
-  //   data.append("project_id", 1);
-  //   data.append("user_id", 3);
-  //   data.append("branche_id", selectedBranche.id);
-  //   try {
-  //     const response = axios.post(
-  //       "http://127.0.0.1:8000/api/file-section/new_branch",
-  //       data
-  //     );
-  //     const get_files = await response.data;
-  //     if (get_files.status === "success") {
-  //       setUpdateFile(!updateFile);
-  //       closeModal();
-  //       setfile([]);
-  //       setIsloading(false);
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //     setError(true);
-  //     setErrorMessage(error.response.data.message);
-  //   }
-  // }
-
-  // async function PullFromMain() {
-  //   const data = new FormData();
-  //   data.append("team_id", 1);
-  //   data.append("branch_id", selectedBranche.id);
-  //   try {
-  //     const response = await axios.post(
-  //       "http://127.0.0.1:8000/api/file-section/pull_main",
-  //       data
-  //     );
-  //     const pull_files = await response.data;
-  //     if (pull_files.status === "success") {
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }
 
   const handleDataFromChild = () => {
     SetCheckingConlfectFile(false);
@@ -264,8 +210,11 @@ function FilesSection() {
       const deleteBranch = await response.data;
       if (deleteBranch.status === "success") {
         setIsdeleted(true);
+      } else {
+        setNoBranchMessage(true);
       }
     } catch (error) {
+      setNoBranchMessage(true);
       console.error(error);
     }
   }
@@ -296,7 +245,7 @@ function FilesSection() {
       const decodedData = base64.decode(data);
       setGetSvg(decodedData);
     });
-    if (user.team_active == null) {
+    if (user.projects_Manager_id.includes(user.active)) {
       setIsManager(true);
     }
   }, []);
@@ -319,12 +268,14 @@ function FilesSection() {
       ) : (
         <div className="files-section">
           <div className="top-file-section">
+            {noBranchMessage && <Message text={"NO Branch Founded"} />}
             <div className="file-section-title">Files Section</div>
-            {selectedBranche.name !== "main" && (
-              <div onClick={openModal} className="btn">
-                New File
-              </div>
-            )}
+            {selectedBranche.name !== "main" ||
+              (user.projects_Member_id.length < 1 && (
+                <div onClick={openModal} className="btn">
+                  New File
+                </div>
+              ))}
           </div>
           <div className="hr"></div>
           <div className="branches-filter">
@@ -435,7 +386,7 @@ function FilesSection() {
                       leaveTo="transform opacity-0 scale-95">
                       <Menu.Items className=" absolute right-0 z-10 mt-2 w-60 origin-top-left divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                         <div className="py-1">
-                          {!isManager && (
+                          {!isManager && user.projects_Member_id.length > 1 && (
                             <Menu.Item onClick={PullFromMain}>
                               {({ active }) => (
                                 <a
@@ -583,6 +534,7 @@ function FilesSection() {
           className="new-file-model branche-model"
           style={{ overlay: { background: "rgb(0 0 0 / 15%)" } }}>
           <h2 className="model-title">Add New Branche</h2>
+          {newBranchError && <div className="error">{newBranchError}</div>}
           <Input
             label={"Branch Name"}
             name={"branch-name"}
