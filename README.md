@@ -43,7 +43,7 @@ With my project features engineers can create their own virtual world and collab
 ### Mockups
 | Login screen  | Menu Screen | Order Screen |
 | ---| ---| ---|
-| ![Landing](./readme/login_page.png.png) | ![fsdaf](./readme/demo/1440x1024.png) | ![fsdaf](./readme/demo/1440x1024.png) |
+| ![Landing](./readme/login_page.png) | ![fsdaf](./readme/demo/1440x1024.png) | ![fsdaf](./readme/demo/1440x1024.png) |
 
 <br><br>
 
