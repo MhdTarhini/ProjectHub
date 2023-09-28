@@ -15,14 +15,14 @@ use App\Http\Controllers\TeamController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::group(["prefix" => "guest"], function(){
+Route::group(["prefix" => "guest","middleware" => ["cors"]], function(){
     Route::get("unauthorized", [AuthController::class, "unauthorized"])->name("unauthorized");
     Route::post("login", [AuthController::class, "login"]);
     Route::post("register", [AuthController::class, "register"]);
 });
 
 
-Route::group(["middleware" => "auth:api"], function(){
+Route::group(["middleware" => ["auth:api", 'cors']], function(){
         Route::post("logout", [AuthController::class, "logout"]);
         Route::post("refresh", [AuthController::class, "refresh"]);
         Route::get("profile", [AuthController::class, "profile"]);
@@ -46,6 +46,8 @@ Route::group(["middleware" => "auth:api"], function(){
             Route::delete('delete_file/{file_id?}', [FileController::class, "deleteFile"]);
             Route::post("open_ai",[OpenAIController::class,"prompt"]);
             Route::post("recent_files",[FileController::class,"getRecentFiles"]);
+            Route::get("get_main_commit/{project_id?}",[CommitController::class,"getMainCommit"]);
+            Route::post("accepte_push/{project_id?}",[CommitController::class,"acceptePush"]);
 
         });
         Route::group(["prefix" => "project-section"], function(){

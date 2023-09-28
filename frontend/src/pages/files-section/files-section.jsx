@@ -269,12 +269,12 @@ function FilesSection() {
         <div className="files-section">
           <div className="top-file-section">
             <div className="file-section-title">Files Section</div>
-            {selectedBranche.name !== "main" || !user.active ? (
+            {selectedBranche.name === "main" || user.active === 0 ? (
+              <div></div>
+            ) : (
               <div onClick={openModal} className="btn">
                 New File
               </div>
-            ) : (
-              <div></div>
             )}
           </div>
           <div className="hr"></div>

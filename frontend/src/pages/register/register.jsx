@@ -63,6 +63,7 @@ function Register() {
 
     signInWithPopup(auth, provider)
       .then((result) => {
+        console.log(result.user);
         console.log(result.user.email);
         setEmail(result.user.email);
         setFristName(result.user.displayName.split(" ")[0]);

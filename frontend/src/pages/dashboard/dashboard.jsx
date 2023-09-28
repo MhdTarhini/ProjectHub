@@ -4,6 +4,7 @@ import WeatherWidget from "../../component/weather/weather";
 import Logo from "../../component/logo/Logo";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Message from "../../component/common/Message/message";
 
 function Dashboard() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -13,6 +14,8 @@ function Dashboard() {
   const [recentFiles, setRecentFiles] = useState([]);
   const [recentRooms, setRecentRoom] = useState([]);
   const [isManager, setIsManager] = useState(false);
+  const [mainCommit, setMainCommit] = useState([]);
+  const [donePush, setDonePush] = useState(false);
 
   async function getRecentFiles() {
     let role = "user";
@@ -37,20 +40,16 @@ function Dashboard() {
   }
 
   async function handleAcceptPushToMain() {
-    const data = new FormData();
-    data.append("project_id", user.active);
-    data.append("team_id", user.team_active);
-    // try {
-    //   // const response = await axios.post(
-    //   //   `http://127.0.0.1:8000/api/file-/recent_files`,
-    //   //   data
-    //   // );
-    //   const recentFiles = await response.data;
-    //   setRecentFiles(recentFiles.data);
-    //   console.log(recentFiles);
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    try {
+      const response = await axios.get(
+        `http://127.0.0.1:8000/api/file-section/get_main_commit/${user.active}`
+      );
+      const mainCommitData = await response.data;
+      setMainCommit(mainCommitData.data);
+      console.log(mainCommitData);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async function getRecentRooms() {
@@ -64,9 +63,31 @@ function Dashboard() {
       console.log(error);
     }
   }
+  async function AcceptePush(commit_id) {
+    const data = new FormData();
+    data.append("commit_id", commit_id);
+
+    try {
+      const response = await axios.post(
+        `http://127.0.0.1:8000/api/file-section/accepte_push`,
+        data
+      );
+      const commitPushed = await response.data;
+      console.log(commitPushed.data);
+      if (commitPushed.status === "success") {
+        setDonePush(true);
+        mainCommit = mainCommit.filter(
+          (commit) => commit.id !== commitPushed.data.id
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
   useEffect(() => {
     getRecentFiles();
     getRecentRooms();
+    handleAcceptPushToMain();
     if (user.projects_Manager_id.includes(user.active)) {
       setIsManager(true);
     }
@@ -84,6 +105,7 @@ function Dashboard() {
         <Logo />
       ) : (
         <div className="dashboard-section">
+          {donePush && <Message text="File is pushed" />}
           <div className="dashboard-title">Dashboard</div>
           <div className="dashboard-container">
             <div className=" dashboard-card">
@@ -325,7 +347,7 @@ function Dashboard() {
               </div>
             </div>
             {isManager && (
-              <div className="dashboard-card">
+              <div className="notification-card-conatainer">
                 <div className="notification-card">
                   <div className="top-notoication-card">
                     <div className="notification-title">Notification</div>
@@ -362,15 +384,51 @@ function Dashboard() {
                       />
                     </svg>
                   </div>
-                  <div className="notification-list-item">
-                    <div className="card-content-file">
-                      <div className="middel">
-                        <img src="" alt="" srcset="" />
-                        <div className="file-recent-name">file</div>
-                      </div>
-                      <div className="user-name-file">pushed by mohamad</div>
-                    </div>
-                  </div>
+                  {mainCommit.length > 0 ? (
+                    mainCommit.map((commit) => {
+                      return (
+                        <div className="notification-list-item">
+                          <div className="card-content-file">
+                            <div className="middel">
+                              <img
+                                src={commit.compare_path_svg}
+                                alt=""
+                                srcset=""
+                                className="img-commit-not"
+                              />
+                            </div>
+                            <div className="right-not-side">
+                              <div className="file-recent-name">
+                                {commit.message}
+                              </div>
+                              <div className="btns-not">
+                                <div
+                                  className="btn"
+                                  onClick={() => AcceptePush(commit.id)}>
+                                  Accepte
+                                </div>
+                                <div className="btn close-commit">Ignore</div>
+                              </div>
+                              <div className="user-info-card-not">
+                                <div className="user-name-file">
+                                  pushed by{" "}
+                                  {`${commit.user?.first_name} ${commit.user?.last_name}`}
+                                </div>
+                                <img
+                                  src={commit.user?.profile_img}
+                                  alt=""
+                                  srcset=""
+                                  className="image-user"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <div className="no-recent-files">No notification</div>
+                  )}
                 </div>
               </div>
             )}

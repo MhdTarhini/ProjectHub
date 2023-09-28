@@ -177,7 +177,7 @@ function Sidebar({ onSidebarClick }) {
           </div>
           <div className="team-member-images">
             <img
-              src="./download.jpg"
+              src="http://127.0.0.1:8000/uploads/assets/download.jpg"
               alt=""
               srcSet=""
               className={`member-image image-1 ${
@@ -185,7 +185,7 @@ function Sidebar({ onSidebarClick }) {
               }`}
             />
             <img
-              src="./FjU2lkcWYAgNG6d.jpg"
+              src="http://127.0.0.1:8000/uploads/assets/FjU2lkcWYAgNG6d.jpg"
               alt=""
               srcSet=""
               className={`member-image image-2 ${
@@ -193,7 +193,7 @@ function Sidebar({ onSidebarClick }) {
               }`}
             />
             <img
-              src="./istockphoto-1399788030-170667a.jpg"
+              src="http://127.0.0.1:8000/uploads/assets/istockphoto-1399788030-170667a.jpg"
               alt=""
               srcSet=""
               className={`member-image image-3 ${
@@ -201,7 +201,7 @@ function Sidebar({ onSidebarClick }) {
               }`}
             />
             <img
-              src="./profile.jpg"
+              src="http://127.0.0.1:8000/uploads/assets/profile.jpg"
               alt=""
               srcSet=""
               className={`member-image image-4 ${
@@ -209,7 +209,7 @@ function Sidebar({ onSidebarClick }) {
               }`}
             />
             <img
-              src="./UNJ05AV8_400x400.jpg "
+              src="http://127.0.0.1:8000/uploads/assets/UNJ05AV8_400x400.jpg "
               alt=""
               srcSet=""
               className={`member-image image-5 ${

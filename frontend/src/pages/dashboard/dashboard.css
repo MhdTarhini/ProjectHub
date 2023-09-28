@@ -351,7 +351,6 @@ gap: 16px;
 border-radius: 6px;
 border: 1px solid #E5E7EB;
 background: #FFF;
-cursor: pointer;
 box-shadow: 0px 4px 4px 0px rgba(174, 174, 174, 0.25);
 }
 @keyframes fadeIn {
@@ -382,7 +381,10 @@ box-shadow: 0px 4px 4px 0px rgba(174, 174, 174, 0.25);
     }
     
     .card-content-file {
+        display: flex;
         flex: 1;
+        gap: 7px;
+            padding: 0px 10px 7px 10px;
 }
 
 .file-recent-name {
@@ -444,4 +446,45 @@ box-shadow: 0px 4px 4px 0px rgba(174, 174, 174, 0.25);
     .room-image-card {
         width: 50px;
         height: 50px;
+}
+.notification-card-conatainer {
+    width: 550px;
+    height: 270px;
+    flex-shrink: 0;
+    border-radius: 5px;
+    border: 1.5px solid var(--stroke, #E8E8E8);
+    background: #FFF;
+}
+
+.img-commit-not {
+    transform: rotate(90deg) scale(1.3);
+    width: 200px;
+    height: 200px;
+    margin-left: 30px;
+}
+
+.close-commit {
+    background-color: red !important;
+}
+
+.right-not-side {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-left: 50px;
+}
+
+
+
+.user-info-card-not {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-end;
+    color: white;
+}
+
+.btns-not {
+    display: flex;
+    gap: 20px;
 }

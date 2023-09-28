@@ -6,6 +6,7 @@ const Message = ({ text }) => {
 
   const showMessageWithDelay = () => {
     setShowMessage(true);
+    console.log("messaage");
 
     setTimeout(() => {
       setShowMessage(false);
@@ -15,6 +16,7 @@ const Message = ({ text }) => {
   useEffect(() => {
     showMessageWithDelay();
   }, []);
+
 
   return (
     <div className={`message-popup ${showMessage ? "show" : ""}`}>

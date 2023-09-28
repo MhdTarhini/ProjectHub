@@ -191,6 +191,7 @@ function ProjectsTable({ openedProject }) {
   }
 
   async function createTeam() {
+    setCreatingTeamIsDone(false);
     try {
       const response = await axios.post(
         "http://127.0.0.1:8000/api/project-section/add_team",
@@ -205,6 +206,9 @@ function ProjectsTable({ openedProject }) {
       setCreatedTeamName(added_team.data.name);
       openedProject.teams.push(added_team.data);
       setCreatingTeamLoading(false);
+      setTimeout(() => {
+        setUpdateProjectIsDone(false);
+      }, 3000);
     } catch (error) {
       setCreatingTeamLoading(false);
       setCreateTeamError(error.response.data.message);
@@ -239,13 +243,8 @@ function ProjectsTable({ openedProject }) {
 
   return (
     <>
+      {/* {updateProjectIsDone && <Message text={`Project Is Updated`} />} */}
       <div className="py-14 sm:py-32 memebers-details">
-        {updateProjectIsDone && (
-          <Message text={`${updatedProjectName} Project Is Updated`} />
-        )}
-        {creatingTeamIsDone && (
-          <Message text={`${createdTeamName} Team Is Created`} />
-        )}
         <div className="mx-auto grid max-w-7xl gap-x-8 px-6 lg:px-8 xl:grid-auto-columns">
           <div className="max-w-2xl">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
@@ -385,6 +384,9 @@ function ProjectsTable({ openedProject }) {
                   </div>
                 </div>
                 <div className="line-edit"></div>
+                {creatingTeamIsDone && (
+                  <Message text={`${createdTeamName} Team Is Created`} />
+                )}
               </div>
               <h2 className="model-title new-project-model-title">Add Team</h2>
               <div>
@@ -553,6 +555,7 @@ function ProjectsTable({ openedProject }) {
                         className="btn empty-button"
                         onClick={() => {
                           setOpenProjectSetting(true);
+                          setEditingProject(openedProject);
                         }}>
                         Create New Team
                       </button>

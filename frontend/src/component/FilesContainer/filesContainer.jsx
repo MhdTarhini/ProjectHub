@@ -142,6 +142,7 @@ function FilesContainer({
     data.append("compare_path_svg", compare_Svg);
     data.append("version", version);
     data.append("status", status);
+    data.append("team_id", user.team_active);
     try {
       const response = await axios.post(
         `http://127.0.0.1:8000/api/file-section/main_commit`,

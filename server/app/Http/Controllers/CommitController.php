@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Branch;
 use App\Models\Commit;
 use App\Models\File;
+use App\Models\Team;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -157,6 +159,8 @@ class CommitController extends Controller
         $dxf = $commit_unique_id.".dxf";
         $path_dxf = Storage::disk('public')->put($dxf, $request->new_path_dxf);
 
+        $team_main_branch=Branch::where("team_id",$request->team_id)->first();
+
 
 
         $commit=new Commit;
@@ -169,11 +173,52 @@ class CommitController extends Controller
         $commit->user_id = Auth::id();
         $commit->file_id =$fileId;
         $commit->commit_unique_id =$commit_unique_id;
+        $commit->branch_main_id =$team_main_branch->id;
 
         
         $commit->save();
         return response()->json([
             'status' => 'success',
         ]);
+    }
+
+    function getMainCommit($project_id){
+        $team=Team::where("project_id",$project_id)->pluck('id');
+        $mainBranch=Branch::whereIn("team_id",$team)->pluck("id");
+        $mainCommit=Commit::whereIn("branch_main_id",$mainBranch)->where("status",0)->with("user")->orderBy('id', 'DESC')->get();
+         return response()->json([
+            'status' => 'success',
+            'data'=>$mainCommit
+        ]);
+    }
+    function acceptePush(Request $request){
+
+        $commit_content=Commit::where("id",$request->commit_id)->first();
+        $commit_content->status=1;
+    if($commit_content){
+        $file=File::where("id",$commit_content->file_id)->first();
+        if($file){
+            $file->path_dxf=$commit_content->new_path_dxf;
+            $file->path_svg=$commit_content->new_path_svg;
+            $file->user_id=$commit_content->user_id;
+            $file->version=$file->version+1;
+            $file->save();
+
+            return response()->json([
+                    'status' => 'success',
+                    'message' => $file,
+                ]);
+        }else{
+            return response()->json([
+                    'status' => 'failed',
+                    'message' => "file not foud",
+                ]);
+        }
+
+    }return response()->json([
+                    'status' => 'failed',
+                    'message' => "commit not foud",
+                ]);
+
     }
 }

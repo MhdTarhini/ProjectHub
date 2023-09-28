@@ -17,19 +17,19 @@ function WeatherWidget() {
       weatherData &&
       weatherData.weather[0].main.toLowerCase().includes("clouds")
     ) {
-      setSvg("./clouds.svg");
+      setSvg("http://127.0.0.1:8000/uploads/assets/clouds.svg");
     }
     if (
       weatherData &&
       weatherData.weather[0].main.toLowerCase().includes("rain")
     ) {
-      setSvg("./rain.svg");
+      setSvg("http://127.0.0.1:8000/uploads/assets/rain.svg");
     }
     if (
       weatherData &&
       weatherData.weather[0].main.toLowerCase().includes("clear")
     ) {
-      setSvg("./sun.svg");
+      setSvg("http://127.0.0.1:8000/uploads/assets/sun.svg");
     }
   }, [weatherData]);
 
@@ -86,9 +86,16 @@ function WeatherWidget() {
                   </div>
                 </div>
                 <div class="w-full place-items-end text-right border-t-2 border-gray-100 mt-2">
-                  <a href="#" class="text-indigo-600 font-medium">
-                    {/* <Clock format={"HH:mm"} ticking={true} timezone={"LB"} /> */}
-                  </a>
+                  <div href="#" class="text-indigo-600 font-medium">
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-around",
+                      }}>
+                      <div>{currentDate}</div>
+                      {currentTime}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

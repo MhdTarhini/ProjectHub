@@ -80,10 +80,10 @@ body {
 }
 .member-image{
     position: absolute;
-    width: 36px;
-    height: 41px;    
+    width: 40px;
+        height: 40px;
     flex-shrink: 0;
-    border-radius: 50px;
+    border-radius: 50%;
     transition: width 0.8s ease-in-out;
 
 }
