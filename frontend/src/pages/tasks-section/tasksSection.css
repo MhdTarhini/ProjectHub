@@ -1,0 +1,9 @@
+.task-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: #FAFAFA;
+    width: 100vw;
+    height: 100vh;
+    padding: 0px 0px 0px 87px;
+}

@@ -1,5 +1,5 @@
-#root,
-#root div:only-child,
+
 .gantt-container {
-    height: 100%;
+    height: 100vh;
 }
+

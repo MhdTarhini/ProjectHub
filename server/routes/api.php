@@ -11,6 +11,7 @@ use App\Http\Controllers\IssueController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\OpenAIController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\TaskContorller;
 use App\Http\Controllers\TeamController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -70,6 +71,11 @@ Route::group(["middleware" => ["auth:api", 'cors']], function(){
         Route::group(["prefix" => "chat-section"], function(){
             Route::post("add_room",[ChatRoomController::class,"newRoom"]);
             Route::get("get_rooms",[ChatRoomController::class,"getRooms"]);
+            
+        });
+        Route::group(["prefix" => "task-section"], function(){
+            
+            Route::post("uplaod_tasks",[TaskContorller::class,"uploadTasks"]);
             
         });
 

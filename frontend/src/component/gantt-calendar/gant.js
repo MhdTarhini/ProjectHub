@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { gantt } from "dhtmlx-gantt";
 import "dhtmlx-gantt/codebase/dhtmlxgantt.css";
 import "./Gantt.css";
+import zoomConfig from "./zoom";
 
 export default class Gantt extends Component {
   // instance of gantt.dataProcessor
@@ -77,9 +78,8 @@ export default class Gantt extends Component {
 
   componentDidMount() {
     gantt.config.date_format = "%Y-%m-%d %H:%i";
-    gantt.config.start_date = "2023-09-26";
-    gantt.config.start_date = "2024-09-26";
     const { tasks } = this.props;
+    // gantt.ext.zoom.init(zoomConfig);
     gantt.init(this.ganttContainer);
     this.initGanttDataProcessor();
     gantt.parse(tasks);
@@ -100,7 +100,10 @@ export default class Gantt extends Component {
         ref={(input) => {
           this.ganttContainer = input;
         }}
-        style={{ width: "100%", height: "100%" }}></div>
+        style={{
+          width: "100vw",
+          height: "100vh",
+        }}></div>
     );
   }
 }
