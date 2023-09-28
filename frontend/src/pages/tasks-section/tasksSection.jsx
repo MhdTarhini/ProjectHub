@@ -8,38 +8,33 @@ const data = {
     {
       id: 1,
       text: "Task #1",
-      start_date: "2020-02-12",
-      duration: 3,
-      progress: 0.6,
+      start_date: "2023-09-12",
+      end_date: "2023-09-14",
     },
 
     {
       id: 2,
       text: "Task #2",
-      start_date: "2020-02-16",
-      duration: 3,
-      progress: 0.4,
+      start_date: "2023-09-16",
+      end_date: "2023-09-18",
     },
     {
       id: 3,
-      text: "Task #3",
-      start_date: "2020-02-13",
-      duration: 3,
-      progress: 0.4,
+      text: "Task #44",
+      start_date: "2023-09-14",
+      end_date: "2023-09-15",
     },
     {
       id: 4,
-      text: "Task #4",
-      start_date: "2020-02-12",
-      end_date: "2020-02-15",
-      duration: 3,
-      progress: 0.4,
+      text: "Task #44",
+      start_date: "2023-09-11",
+      end_date: "2023-09-14",
     },
   ],
   links: [
-    { id: 1, source: 1, target: 2, type: "0" },
-    { id: 2, source: 2, target: 3, type: "0" },
-    { id: 3, source: 1, target: 4, type: "0" },
+    { source: 1, target: 2, type: "0" },
+    { source: 2, target: 3, type: "1" },
+    { source: 1, target: 4, type: "2" },
   ],
 };
 class TasksSection extends Component {
@@ -66,7 +61,7 @@ class TasksSection extends Component {
         : "";
     let message = `${type} ${action}: ${text}`;
     if (type === "link" && action !== "delete") {
-      message += ` ( source: ${item.source}, target: ${item.target} )`;
+      message += ` ( source: ${item.source}, target: ${item.target}, type: ${item.type})`;
     }
     this.addMessage(message);
   };

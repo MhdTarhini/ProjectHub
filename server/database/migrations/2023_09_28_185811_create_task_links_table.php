@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tasks', function (Blueprint $table) {
+        Schema::create('task_links', function (Blueprint $table) {
             $table->id();
              $table->unsignedBigInteger('calendar_id');
             $table->foreign('calendar_id')->references('id')->on('calendars');
-            $table->string('name');
-            $table->string('start_date');
-            $table->string('end_date');
+            $table->string('source');
+            $table->string('target');
+            $table->string('type');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tasks');
+        Schema::dropIfExists('task_links');
     }
 };
