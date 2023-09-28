@@ -32,9 +32,9 @@ export default class DemoApp extends React.Component {
             dayMaxEvents={true}
             weekends={this.state.weekendsVisible}
             initialEvents={INITIAL_EVENTS}
-            select={this.handleDateSelect}
+            // select={this.handleDateSelect}
             eventContent={renderEventContent}
-            eventClick={this.handleEventClick}
+            // eventClick={this.handleEventClick}
             eventsSet={this.handleEvents}
           />
         </div>

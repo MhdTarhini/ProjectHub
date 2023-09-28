@@ -203,6 +203,7 @@ function ProjectsTable({ openedProject }) {
       const added_team = await response.data;
       setCreatingTeamIsDone(true);
       setCreatedTeamName(added_team.data.name);
+      openedProject.teams.push(added_team.data);
       setCreatingTeamLoading(false);
     } catch (error) {
       setCreatingTeamLoading(false);

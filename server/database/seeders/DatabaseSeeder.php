@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
             'email'=>"joe@gmail.com",
             'password'=>Hash::make('1234567'),
             'role_id'=>1,
+            "authMethod"=>"email",
         ]));
         DB::table("users")->insert(([
             'first_name'=>"mohamad",
@@ -40,6 +41,7 @@ class DatabaseSeeder extends Seeder
             'email'=>"mohamad@gmail.com",
             'password'=>Hash::make('1234567'),
             'role_id'=>1,
+            "authMethod"=>"email",
             'profile_img'=>"http://127.0.0.1:8000/uploads/users_image/default.png"
 
         ]));
@@ -69,6 +71,7 @@ class DatabaseSeeder extends Seeder
             'email'=>"lara@gmail.com",
             'password'=>Hash::make('1234567'),
             'role_id'=>1,
+            "authMethod"=>"email",
             'profile_img'=>"http://127.0.0.1:8000/uploads/users_image/default.png"
 
 
@@ -79,6 +82,7 @@ class DatabaseSeeder extends Seeder
             'email'=>"hassan@gmail.com",
             'password'=>Hash::make('1234567'),
             'role_id'=>1,
+            "authMethod"=>"email",
             'profile_img'=>"http://127.0.0.1:8000/uploads/users_image/default.png"
 
 
@@ -89,6 +93,7 @@ class DatabaseSeeder extends Seeder
             'email'=>"loren@gmail.com",
             'password'=>Hash::make('1234567'),
             'role_id'=>1,
+            "authMethod"=>"email",
             'profile_img'=>"http://127.0.0.1:8000/uploads/users_image/default.png"
 
 

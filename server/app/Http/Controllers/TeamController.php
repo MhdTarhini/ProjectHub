@@ -75,11 +75,11 @@ class TeamController extends Controller
         $add_branch_member->branche_id=$add_branch->id;
         $add_branch_member->save();
 
-
+        $newTeam=$add_team->with("members.user")->first();
 
         return response()->json([
             'status' => 'success',
-            'data'=>$add_team,
+            'data'=>$newTeam,
         ]);
 
     }

@@ -6,7 +6,7 @@ const API_KEY = "913693fccf5e0b46fcfeb08e50f8a074";
 
 function WeatherWidget() {
   const [weatherData, setWeatherData] = useState(null);
-  const [city, setCity] = useState("Lebanon");
+  const [city, setCity] = useState("Beirut,Lebanon");
   const [currentDate, setCurrentDate] = useState("");
   const [currentTime, setCurrentTime] = useState("");
   const [isDaytime, setIsDaytime] = useState(true);
@@ -69,7 +69,7 @@ function WeatherWidget() {
               <div class="flex flex-col">
                 <div>
                   <h2 class="font-bold text-gray-600 text-center">
-                    Beirut, {weatherData.name}
+                    {weatherData.name}, Lebanon
                   </h2>
                 </div>
                 <div class="my-6">
@@ -81,7 +81,7 @@ function WeatherWidget() {
                     </div>
                     <div id="temp">
                       <h4 class="text-4xl">{weatherData.main.temp}°C</h4>
-                      <p class="">{weatherData.weather[0].description}</p>
+                      <p class="p">{weatherData.weather[0].description}</p>
                     </div>
                   </div>
                 </div>

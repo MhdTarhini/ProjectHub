@@ -80,6 +80,7 @@ function FilesContainer({
   const [branchFiles, setBranchFiles] = useState([]);
   const [deletedFile, setDeletedFile] = useState([]);
   const [modalDeleteOpen, setModalDeleteOpen] = useState(false);
+  const [goCheckConflict, setGoCheckConflict] = useState(false);
 
   function openModal() {
     setIsloading(false);
@@ -263,7 +264,6 @@ function FilesContainer({
   }
 
   function getDxfData(file_dxf) {
-    console.log("here");
     setDetailsSuccess(false);
     window.electron.send(channels.Get_Details, { file_dxf });
   }
@@ -295,6 +295,7 @@ function FilesContainer({
     }
   }
   async function displayConflict(svg_data) {
+    setGoCheckConflict(false);
     const data = new FormData();
     data.append("svg_data", svg_data);
     try {
@@ -378,6 +379,7 @@ function FilesContainer({
       setMainCompareResult(decodedData);
       displayConflict(decodedData);
       setMainCompareSuccess(true);
+      setGoCheckConflict(true);
       setIsloading(false);
     });
     window.electron.on(channels.Get_Details_IsDone, (data) => {
@@ -396,7 +398,6 @@ function FilesContainer({
       setIsManager(true);
     }
   }, []);
-  useEffect(() => {}, []);
 
   async function deletefile(file_id) {
     try {
@@ -454,72 +455,73 @@ function FilesContainer({
                 <Message text={"File Is Commited To Main Branch"} />
               )}
               {isdeleted && <Message text={"delete successful"} />}
-              {branche.name === "main" && branche.id === user.main_branch ? (
+              {branche.name === "main" ? (
                 doneGetFiles ? (
                   <div className="branches-in-main">
                     {getFiles?.map((branch) => {
-                      return (
-                        <div className="teams-branches">
-                          <div className="team-branch-main">{branch?.name}</div>
-                          <div className="files-card">
-                            {branch.files.length > 0 ? (
-                              branch.files?.map((file) => {
-                                return (
-                                  <div
-                                    className="card"
-                                    key={file.id}
-                                    onClick={() => {
-                                      setFileDetails("");
-                                      setOpenedFileDetails(file);
-                                      setSeletedFile(file.path_svg);
-                                      openFileModal();
-                                      // setGetDetails(true);
-                                      getDxfData(file.path_dxf);
-                                      getfileCommit(file.id);
-                                      getMainFilePath(file.name);
-                                      setIsDoneCommitMain(false);
-                                    }}>
-                                    {showImage ? (
-                                      <img
-                                        src="https://forums.synfig.org/uploads/default/original/2X/3/320a629e5c20a8f67d6378c5273cda8a9e2ff0bc.gif"
-                                        alt=""
-                                        srcset=""
-                                        className="image-loading-card"
-                                      />
-                                    ) : (
-                                      <img
-                                        src={file.path_svg}
-                                        className="file-section-card-img"
-                                        alt={file.name}
-                                      />
-                                    )}
+                      if (branch.name !== "main") {
+                        if (branch.team !== null) {
+                          return (
+                            <div className="teams-branches">
+                              <div className="team-branch-main">
+                                {branch?.name}
+                              </div>
+                              <div className="files-card">
+                                {branch.files.length > 0 ? (
+                                  branch.files?.map((file) => {
+                                    return (
+                                      <div
+                                        className="card"
+                                        key={file.id}
+                                        onClick={() => {
+                                          setFileDetails("");
+                                          setOpenedFileDetails(file);
+                                          setSeletedFile(file.path_svg);
+                                          openFileModal();
+                                          getDxfData(file.path_dxf);
+                                          getfileCommit(file.id);
+                                          getMainFilePath(file.name);
+                                          setIsDoneCommitMain(false);
+                                        }}>
+                                        {showImage ? (
+                                          <img
+                                            src="https://forums.synfig.org/uploads/default/original/2X/3/320a629e5c20a8f67d6378c5273cda8a9e2ff0bc.gif"
+                                            alt=""
+                                            srcset=""
+                                            className="image-loading-card"
+                                          />
+                                        ) : (
+                                          <img
+                                            src={file.path_svg}
+                                            className="file-section-card-img"
+                                            alt={file.name}
+                                          />
+                                        )}
 
-                                    <div className="file-name">{file.name}</div>
-                                    {/* <div className="middle-card">
-                                    <div className="file-uploaded-by">
-                                      <img src="" alt="" srcset="" />
-                                      <div className="user-name-uplaoded1">
-                                        hello
+                                        <div className="file-name">
+                                          {file.name}
+                                        </div>
+                                      </div>
+                                    );
+                                  })
+                                ) : (
+                                  <div>
+                                    <div className="issue-post-empty">
+                                      <div className="empty-title">
+                                        No files
+                                      </div>
+                                      <div className="empty-text">
+                                        Alwats keep your branches organized and
+                                        usefull.
                                       </div>
                                     </div>
-                                  </div> */}
                                   </div>
-                                );
-                              })
-                            ) : (
-                              <div>
-                                <div className="issue-post-empty">
-                                  <div className="empty-title">No files</div>
-                                  <div className="empty-text">
-                                    Alwats keep your branches organized and
-                                    usefull.
-                                  </div>
-                                </div>
+                                )}
                               </div>
-                            )}
-                          </div>
-                        </div>
-                      );
+                            </div>
+                          );
+                        }
+                      }
                     })}
                   </div>
                 ) : (
@@ -830,6 +832,7 @@ function FilesContainer({
                                               : "on-procress"
                                           }`}
                                           onClick={() => {
+                                            setGoCheckConflict(true);
                                             displayConflict(CompareResult);
                                             closeCheckFile();
                                             openModal();

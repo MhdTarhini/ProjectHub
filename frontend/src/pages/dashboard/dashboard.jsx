@@ -3,6 +3,7 @@ import "./dashboard.css";
 import WeatherWidget from "../../component/weather/weather";
 import Logo from "../../component/logo/Logo";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 function Dashboard() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -10,6 +11,8 @@ function Dashboard() {
   const [value, onChange] = useState(new Date());
   const [showlogo, setShowlogo] = useState(true);
   const [recentFiles, setRecentFiles] = useState([]);
+  const [recentRooms, setRecentRoom] = useState([]);
+  const [isManager, setIsManager] = useState(false);
 
   async function getRecentFiles() {
     let role = "user";
@@ -32,8 +35,41 @@ function Dashboard() {
       console.log(error);
     }
   }
+
+  async function handleAcceptPushToMain() {
+    const data = new FormData();
+    data.append("project_id", user.active);
+    data.append("team_id", user.team_active);
+    // try {
+    //   // const response = await axios.post(
+    //   //   `http://127.0.0.1:8000/api/file-/recent_files`,
+    //   //   data
+    //   // );
+    //   const recentFiles = await response.data;
+    //   setRecentFiles(recentFiles.data);
+    //   console.log(recentFiles);
+    // } catch (error) {
+    //   console.log(error);
+    // }
+  }
+
+  async function getRecentRooms() {
+    try {
+      const response = await axios.get(
+        `http://127.0.0.1:8000/api/chat-section/get_rooms`
+      );
+      const recentRooms = await response.data;
+      setRecentRoom(recentRooms.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
   useEffect(() => {
     getRecentFiles();
+    getRecentRooms();
+    if (user.projects_Manager_id.includes(user.active)) {
+      setIsManager(true);
+    }
   }, []);
 
   useEffect(() => {
@@ -106,120 +142,129 @@ function Dashboard() {
               </div>
             </div>
             <div className="dashboard-card">
+              <div className="card-title-files">Recent Files</div>
               <div className="file-recent-card">
-                <div className="card-title">Recent Files</div>
-                <div className="card-recent-file-list">
-                  {recentFiles.map((branch) => {
-                    return branch.files.map((file) => {
-                      return (
-                        <div className="card-file">
-                          <img
-                            src={file.user?.profile_img}
-                            alt=""
-                            srcset=""
-                            className="image-user"
-                          />
-                          <div className="card-content-file">
-                            <div className="user-name-file">
-                              {`${file.user?.first_name} ${file.user?.last_name}`}
-                            </div>
-                            <div className="middle">
-                              <img
-                                src={file.path_svg}
-                                alt=""
-                                srcset=""
-                                className="svg-img-card-dashboard"
-                              />
-                              <div className="file-recent-name">
-                                {file.name}
+                {recentFiles.length > 0 ? (
+                  <div className="card-recent-file-list">
+                    {recentFiles.map((branch) => {
+                      return branch.files.map((file) => {
+                        return (
+                          <div className="card-file">
+                            <img
+                              src={file.path_svg}
+                              alt=""
+                              srcset=""
+                              className="svg-img-card-dashboard"
+                            />
+                            <div className="card-face card-back">
+                              <div className="card-content-file">
+                                <div className="user-info-card">
+                                  <img
+                                    src={file.user?.profile_img}
+                                    alt=""
+                                    srcset=""
+                                    className="image-user"
+                                  />
+                                  <div className="user-name-file">
+                                    {`${file.user?.first_name} ${file.user?.last_name}`}
+                                  </div>
+                                </div>
+
+                                <div className="middle">
+                                  <div className="file-recent-name">
+                                    {file.name}
+                                  </div>
+                                  <div className="uploaded_at">
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      width="16"
+                                      height="16"
+                                      viewBox="0 0 16 16"
+                                      fill="none">
+                                      <path
+                                        d="M12.6667 2.66675H3.33335C2.59697 2.66675 2.00002 3.2637 2.00002 4.00008V13.3334C2.00002 14.0698 2.59697 14.6667 3.33335 14.6667H12.6667C13.4031 14.6667 14 14.0698 14 13.3334V4.00008C14 3.2637 13.4031 2.66675 12.6667 2.66675Z"
+                                        stroke="#64748B"
+                                        stroke-width="1.33333"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                      />
+                                      <path
+                                        d="M10.6667 1.33325V3.99992"
+                                        stroke="#64748B"
+                                        stroke-width="1.33333"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                      />
+                                      <path
+                                        d="M5.33331 1.33325V3.99992"
+                                        stroke="#64748B"
+                                        stroke-width="1.33333"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                      />
+                                      <path
+                                        d="M2.00002 6.66675H14"
+                                        stroke="#64748B"
+                                        stroke-width="1.33333"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                      />
+                                      <path
+                                        d="M5.33331 9.33325H5.34331"
+                                        stroke="#64748B"
+                                        stroke-width="1.33333"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                      />
+                                      <path
+                                        d="M8.00002 9.33325H8.01002"
+                                        stroke="#64748B"
+                                        stroke-width="1.33333"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                      />
+                                      <path
+                                        d="M10.6667 9.33325H10.6767"
+                                        stroke="#64748B"
+                                        stroke-width="1.33333"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                      />
+                                      <path
+                                        d="M5.33331 11.9999H5.34331"
+                                        stroke="#64748B"
+                                        stroke-width="1.33333"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                      />
+                                      <path
+                                        d="M8.00002 11.9999H8.01002"
+                                        stroke="#64748B"
+                                        stroke-width="1.33333"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                      />
+                                      <path
+                                        d="M10.6667 11.9999H10.6767"
+                                        stroke="#64748B"
+                                        stroke-width="1.33333"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                      />
+                                    </svg>
+                                    {file.created_at.split("T")[0]}
+                                  </div>
+                                </div>
                               </div>
                             </div>
-                            <div className="uploaded_at">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="16"
-                                height="16"
-                                viewBox="0 0 16 16"
-                                fill="none">
-                                <path
-                                  d="M12.6667 2.66675H3.33335C2.59697 2.66675 2.00002 3.2637 2.00002 4.00008V13.3334C2.00002 14.0698 2.59697 14.6667 3.33335 14.6667H12.6667C13.4031 14.6667 14 14.0698 14 13.3334V4.00008C14 3.2637 13.4031 2.66675 12.6667 2.66675Z"
-                                  stroke="#64748B"
-                                  stroke-width="1.33333"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                                <path
-                                  d="M10.6667 1.33325V3.99992"
-                                  stroke="#64748B"
-                                  stroke-width="1.33333"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                                <path
-                                  d="M5.33331 1.33325V3.99992"
-                                  stroke="#64748B"
-                                  stroke-width="1.33333"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                                <path
-                                  d="M2.00002 6.66675H14"
-                                  stroke="#64748B"
-                                  stroke-width="1.33333"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                                <path
-                                  d="M5.33331 9.33325H5.34331"
-                                  stroke="#64748B"
-                                  stroke-width="1.33333"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                                <path
-                                  d="M8.00002 9.33325H8.01002"
-                                  stroke="#64748B"
-                                  stroke-width="1.33333"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                                <path
-                                  d="M10.6667 9.33325H10.6767"
-                                  stroke="#64748B"
-                                  stroke-width="1.33333"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                                <path
-                                  d="M5.33331 11.9999H5.34331"
-                                  stroke="#64748B"
-                                  stroke-width="1.33333"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                                <path
-                                  d="M8.00002 11.9999H8.01002"
-                                  stroke="#64748B"
-                                  stroke-width="1.33333"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                                <path
-                                  d="M10.6667 11.9999H10.6767"
-                                  stroke="#64748B"
-                                  stroke-width="1.33333"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                              </svg>
-                              {file.created_at.split("T")[0]}
-                            </div>
                           </div>
-                        </div>
-                      );
-                    });
-                  })}
-                </div>
+                        );
+                      });
+                    })}
+                  </div>
+                ) : (
+                  <div className="no-recent-files">No Revent Files</div>
+                )}
               </div>
             </div>
             <div className="dashboard-card">
@@ -251,67 +296,84 @@ function Dashboard() {
                     </g>
                   </svg>
                 </div>
-                <div className="chat-list-card-container">
-                  <div className="chat-list-card-item">
-                    <img src="" alt="" srcset="" />
-                    <div className="room-info-card">
-                      <div className="room-title-card">Room 1</div>
-                      <div className="room-content-card">
-                        Hello sir , today we have to many tasks..
+                {recentRooms.length > 0 ? (
+                  <div className="chat-list-card-container">
+                    {recentRooms.map((room) => {
+                      return (
+                        <Link to={"/v1/chats-section"}>
+                          <div className="chat-list-card-item">
+                            <img
+                              src={room.room_image}
+                              alt=""
+                              srcset=""
+                              className="room-image-card"
+                            />
+                            <div className="room-info-card">
+                              <div className="room-title-card">{room.name}</div>
+                              <div className="room-content-card">
+                                Hello sir , today we have to many tasks..
+                              </div>
+                            </div>
+                          </div>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <div className="no-recent-files">No Rooms</div>
+                )}
+              </div>
+            </div>
+            {isManager && (
+              <div className="dashboard-card">
+                <div className="notification-card">
+                  <div className="top-notoication-card">
+                    <div className="notification-title">Notification</div>
+                    <svg
+                      width="26px"
+                      height="26px"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg">
+                      <circle
+                        cx="19"
+                        cy="5"
+                        r="3"
+                        stroke="#1C274C"
+                        stroke-width="1.5"
+                      />
+                      <path
+                        d="M7 14H16"
+                        stroke="#1C274C"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                      />
+                      <path
+                        d="M7 17.5H13"
+                        stroke="#1C274C"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                      />
+                      <path
+                        d="M2 12C2 16.714 2 19.0711 3.46447 20.5355C4.92893 22 7.28595 22 12 22C16.714 22 19.0711 22 20.5355 20.5355C22 19.0711 22 16.714 22 12V10.5M13.5 2H12C7.28595 2 4.92893 2 3.46447 3.46447C2.49073 4.43821 2.16444 5.80655 2.0551 8"
+                        stroke="#1C274C"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </div>
+                  <div className="notification-list-item">
+                    <div className="card-content-file">
+                      <div className="middel">
+                        <img src="" alt="" srcset="" />
+                        <div className="file-recent-name">file</div>
                       </div>
+                      <div className="user-name-file">pushed by mohamad</div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="dashboard-card">
-              <div className="notification-card">
-                <div className="top-notoication-card">
-                  <div className="notification-title">Notification</div>
-                  <svg
-                    width="26px"
-                    height="26px"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <circle
-                      cx="19"
-                      cy="5"
-                      r="3"
-                      stroke="#1C274C"
-                      stroke-width="1.5"
-                    />
-                    <path
-                      d="M7 14H16"
-                      stroke="#1C274C"
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                    />
-                    <path
-                      d="M7 17.5H13"
-                      stroke="#1C274C"
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                    />
-                    <path
-                      d="M2 12C2 16.714 2 19.0711 3.46447 20.5355C4.92893 22 7.28595 22 12 22C16.714 22 19.0711 22 20.5355 20.5355C22 19.0711 22 16.714 22 12V10.5M13.5 2H12C7.28595 2 4.92893 2 3.46447 3.46447C2.49073 4.43821 2.16444 5.80655 2.0551 8"
-                      stroke="#1C274C"
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                    />
-                  </svg>
-                </div>
-                <div className="notification-list-item">
-                  <div className="card-content-file">
-                    <div className="middel">
-                      <img src="" alt="" srcset="" />
-                      <div className="file-recent-name">file</div>
-                    </div>
-                    <div className="user-name-file">pushed by mohamad</div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            )}
           </div>
         </div>
       )}
