@@ -264,6 +264,9 @@
 }
 
 .top-login {
+    display: flex;
+        align-items: center;
+        gap: 20px
 }
 
 .project {
