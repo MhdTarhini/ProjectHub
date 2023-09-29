@@ -56,8 +56,8 @@ class TaskContorller extends Controller
 
     }
 
-    public function getTasks($id="null"){
-        $user_calendar=Calendar::where("user_id",$id)->pluck("id");
+    public function getTasks($id,$project_id){
+        $user_calendar=Calendar::where("user_id",$id)->where("project_id",$project_id)->pluck("id");
         $user_task=Task::where("calendar_id",$user_calendar)->get();
         $user_link=TaskLink::where("calendar_id",$user_calendar)->get();
 
@@ -74,5 +74,18 @@ class TaskContorller extends Controller
         ]);
     }
 
+    function checkCalendar($project_id){
+        $user=Auth::user();
+        $taskExists=Calendar::where("user_id",$user->id)->where("project_id",$project_id)->exists();
+        if($taskExists){
+            return response()->json([
+                "status" => "success",
+            ]);
+        }else{
+            return response()->json([
+                "status" => "failed",
+            ]);
+        }
+        }
   
 }

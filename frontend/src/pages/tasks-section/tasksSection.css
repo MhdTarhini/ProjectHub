@@ -36,3 +36,71 @@
     .save-tasks {
         margin: 10px;
 }
+.logo-tasks {
+    position: absolute;
+    top: 180px;
+    left: 750px;
+    gap: 10px;
+}
+
+.create-task-calendar {
+    position: absolute;
+    top: 350px;
+    left: 550px;
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 500px;
+}
+
+.calendar-icon {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 20px;
+}
+
+.calendar-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.calendar-text {
+    font-size: 16px;
+    color: #777;
+    text-align: center;
+    max-width: 400px;
+    margin-bottom: 20px;
+}
+
+.btn.calendar-button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn.calendar-button:hover {
+    background-color: #0056b3;
+}
+
+.logo-tasks,
+.create-task-calendar,
+.calendar-media {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.5s ease-out;
+}
+
+.animate-logo,
+.animate-calendar,
+.animate-media {
+    opacity: 1;
+    transform: translateY(0);
+}

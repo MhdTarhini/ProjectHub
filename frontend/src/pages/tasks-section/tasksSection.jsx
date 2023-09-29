@@ -13,6 +13,8 @@ const TasksSection = () => {
   const [currentZoom, setCurrentZoom] = useState("Days");
   const [data, setdata] = useState({ data: [], links: [] });
   const [showlogo, setShowlogo] = useState(true);
+  const [isExists, setIsExists] = useState(true);
+  const [isAnimation, setIsAnimation] = useState(false);
 
   const logDataUpdate = (type, action, item, id) => {
     if (type === "task") {
@@ -53,14 +55,55 @@ const TasksSection = () => {
     }
   }
 
+  async function checkCalender() {
+    try {
+      const response = await axios.get(
+        `http://127.0.0.1:8000/api/task-section/checkCalender/${user.ative}`
+      );
+      const ExistsCalender = await response.data;
+      if (ExistsCalender.status === "success") {
+        setIsExists(true);
+        setShowlogo(false);
+      } else {
+        setIsExists(false);
+        setShowlogo(false);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  async function CreateGantt() {
+    const data = new formData();
+    data.append("");
+    try {
+      const response = await axios.post(
+        `http://127.0.0.1:8000/api/task-section/checkCalender/${user.ative}`
+      );
+      const ExistsCalender = await response.data;
+      if (ExistsCalender.status === "success") {
+        setIsExists(true);
+        setShowlogo(false);
+      } else {
+        setIsExists(false);
+        setShowlogo(false);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   const handleZoomChange = (zoom) => {
     setCurrentZoom(zoom);
   };
 
   useEffect(() => {
+    checkCalender();
+  }, []);
+
+  useEffect(() => {
     setTimeout(() => {
-      setShowlogo(false);
-    }, 3000);
+      setIsAnimation(true);
+    }, 800);
   }, []);
 
   return (
@@ -68,23 +111,60 @@ const TasksSection = () => {
       {showlogo ? (
         <Logo />
       ) : (
-        <div className="task-section">
-          <div className="top-side-tasks">
-            <div className="zoom-bar">
-              <Toolbar zoom={currentZoom} onZoomChange={handleZoomChange} />
+        <>
+          {isExists ? (
+            <div>
+              <div className="task-section">
+                <div className="top-side-tasks">
+                  <div className="zoom-bar">
+                    <Toolbar
+                      zoom={currentZoom}
+                      onZoomChange={handleZoomChange}
+                    />
+                  </div>
+                  <div className="btn save-tasks" onClick={handleUpdateTasks}>
+                    Save Changes
+                  </div>
+                </div>
+                <div className="gantt-container">
+                  <Gantt
+                    tasks={data}
+                    zoom={currentZoom}
+                    onDataUpdated={logDataUpdate}
+                  />
+                </div>
+              </div>
             </div>
-            <div className="btn save-tasks" onClick={handleUpdateTasks}>
-              Save Changes
-            </div>
-          </div>
-          <div className="gantt-container">
-            <Gantt
-              tasks={data}
-              zoom={currentZoom}
-              onDataUpdated={logDataUpdate}
-            />
-          </div>
-        </div>
+          ) : (
+            <>
+              <img
+                src="http://127.0.0.1:8000/uploads/assets/logo.svg"
+                alt="logo"
+                srcSet=""
+                className={`logo-tasks ${isAnimation ? " animate-logo" : ""}`}
+              />
+              <div
+                className={`create-task-calendar ${
+                  isAnimation ? " animate-calendar" : ""
+                }`}>
+                <div className="calendar-title">Gantt Charts </div>
+                <div className="calendar-text">
+                  "Keep organized and start managing your daily work schedule.
+                  and reduce stress, and ensure that you're making the most of
+                  your time"
+                </div>
+                <button className="btn calendar-button">
+                  Create Your Project Gantt
+                </button>
+              </div>
+              <div
+                className={`calendar-media${
+                  isAnimation ? " animate-media" : ""
+                }`}
+                onClick={CreateGantt}></div>
+            </>
+          )}
+        </>
       )}
     </>
   );
