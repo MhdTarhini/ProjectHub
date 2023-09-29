@@ -1,9 +1,38 @@
 .task-section {
     display: flex;
     flex-direction: column;
-    gap: 20px;
     background: #FAFAFA;
-    width: 100vw;
-    height: 100vh;
-    padding: 0px 0px 0px 87px;
+    width: 1479px;
+        height: 750px;
+        padding: 0px 0px 0px 27px;
+        overflow-y: auto;
+        overflow-x: auto;
+    
+    }
+    
+    .dashboard-container::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .dashboard-container:-webkit-scrollbar {
+        width: 0;
+    }
+    
+    .dashboard-container::-khtml-scrollbar {
+        width: 0;
+    }
+    
+    .dashboard-container::-moz-scrollbar {
+        width: 0;
+    }
+    
+    .top-side-tasks {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 1450px;
+    }
+    
+    .save-tasks {
+        margin: 10px;
 }

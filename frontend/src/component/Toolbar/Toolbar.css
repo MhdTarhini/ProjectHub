@@ -1,25 +1,21 @@
 .zoom-bar {
-  background: #ededed;
   height: 40px;
   line-height: 40px;
-  padding: 5px 10px;
-  margin-left: 50px;
+  padding: 10px;
 }
 
 .radio-label {
   box-sizing: border-box;
   cursor: pointer;
   display: inline-block;
-  height: 30px;
-  line-height: 28px;
   margin-left: 6px;
   text-align: center;
   width: 70px;
-
   border: 1px solid #D9D9D9;
   border-radius: 2px;
   background: #fff;
   color: rgba(0, 0, 0, 0.7);
+  margin-top: 2px;
 }
 
 .radio-label>input[type=radio] {
@@ -30,7 +26,6 @@
 }
 
 .radio-label-active {
-  background: #a0a0a0;
+  background: #0F8EEA;
   color: white;
-  border-color: #707070;
 }

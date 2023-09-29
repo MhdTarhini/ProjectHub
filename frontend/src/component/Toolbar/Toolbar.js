@@ -23,11 +23,6 @@ export default class Toolbar extends Component {
       );
     });
 
-    return (
-      <div className="tool-bar">
-        <b>Zoom: </b>
-        {zoomRadios}
-      </div>
-    );
+    return <div className="tool-bar">{zoomRadios}</div>;
   }
 }

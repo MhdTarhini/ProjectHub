@@ -3,6 +3,7 @@ import Toolbar from "../../component/Toolbar";
 import Gantt from "../../component/gantt-calendar/gant";
 import "./tasksSection.css";
 import axios from "axios";
+import Logo from "../../component/logo/Logo";
 
 const TasksSection = () => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -11,6 +12,7 @@ const TasksSection = () => {
   const [createdLinks, setCreatedLinks] = useState([]);
   const [currentZoom, setCurrentZoom] = useState("Days");
   const [data, setdata] = useState({ data: [], links: [] });
+  const [showlogo, setShowlogo] = useState(true);
 
   const logDataUpdate = (type, action, item, id) => {
     if (type === "task") {
@@ -55,18 +57,36 @@ const TasksSection = () => {
     setCurrentZoom(zoom);
   };
 
+  useEffect(() => {
+    setTimeout(() => {
+      setShowlogo(false);
+    }, 3000);
+  }, []);
+
   return (
-    <div className="task-section">
-      <div className="btn" onClick={handleUpdateTasks}>
-        Save
-      </div>
-      <div className="zoom-bar">
-        <Toolbar zoom={currentZoom} onZoomChange={handleZoomChange} />
-      </div>
-      <div className="gantt-container">
-        <Gantt tasks={data} zoom={currentZoom} onDataUpdated={logDataUpdate} />
-      </div>
-    </div>
+    <>
+      {showlogo ? (
+        <Logo />
+      ) : (
+        <div className="task-section">
+          <div className="top-side-tasks">
+            <div className="zoom-bar">
+              <Toolbar zoom={currentZoom} onZoomChange={handleZoomChange} />
+            </div>
+            <div className="btn save-tasks" onClick={handleUpdateTasks}>
+              Save Changes
+            </div>
+          </div>
+          <div className="gantt-container">
+            <Gantt
+              tasks={data}
+              zoom={currentZoom}
+              onDataUpdated={logDataUpdate}
+            />
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
