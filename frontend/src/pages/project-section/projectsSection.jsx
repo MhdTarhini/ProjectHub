@@ -20,8 +20,8 @@ function classNames(...classes) {
 
 function ProjectsSection() {
   const user = JSON.parse(localStorage.getItem("user"));
-  const cancelButtonRef = useRef(null);
   axios.defaults.headers.common["Authorization"] = `Bearer ${user.user.token}`;
+  const cancelButtonRef = useRef(null);
   const [modalProjectOpen, setModalProjectOpen] = useState(false);
   const [isloading, setIsloading] = useState(false);
   const [projectName, setProjectName] = useState("");

@@ -5,7 +5,6 @@ import "./Gantt.css";
 import zoomConfig from "./zoom";
 
 export default class Gantt extends Component {
-  // instance of gantt.dataProcessor
   dataProcessor = null;
 
   initZoom() {
@@ -50,11 +49,6 @@ export default class Gantt extends Component {
   }
 
   initGanttDataProcessor() {
-    /**
-     * type: "task"|"link"
-     * action: "create"|"update"|"delete"
-     * item: data object object
-     */
     const onDataUpdated = this.props.onDataUpdated;
     this.dataProcessor = gantt.createDataProcessor((type, action, item, id) => {
       if (type === "task" && (action === "create" || action === "update")) {
@@ -64,9 +58,6 @@ export default class Gantt extends Component {
         if (onDataUpdated) {
           onDataUpdated(type, action, item, id);
         }
-
-        // if onDataUpdated changes returns a permanent id of the created item, you can return it from here so dhtmlxGantt could apply it
-        // resolve({id: databaseId});
         return resolve();
       });
     });
@@ -77,12 +68,17 @@ export default class Gantt extends Component {
   }
 
   componentDidMount() {
-    gantt.config.date_format = "%Y-%m-%d %H:%i";
+    gantt.config.date_format = "%Y-%m-%d %H:%i:%s";
     const { tasks } = this.props;
-    // gantt.ext.zoom.init(zoomConfig);
     gantt.init(this.ganttContainer);
     this.initGanttDataProcessor();
-    gantt.parse(tasks);
+    const storedUserData = localStorage.getItem("user");
+    if (storedUserData) {
+      const userData = JSON.parse(storedUserData);
+      const userId = userData.user.id;
+      console.log(userData.user.id);
+      gantt.load(`http://127.0.0.1:8000/api/get_tasks/${userId}`);
+    }
   }
 
   componentWillUnmount() {

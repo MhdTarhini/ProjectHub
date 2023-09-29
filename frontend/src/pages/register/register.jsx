@@ -6,6 +6,10 @@ import { getAuth } from "firebase/auth";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 function Register() {
+    const user = JSON.parse(localStorage.getItem("user"));
+    axios.defaults.headers.common[
+      "Authorization"
+    ] = `Bearer ${user.user.token}`;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFristName] = useState("");

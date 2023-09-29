@@ -13,12 +13,13 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-             $table->unsignedBigInteger('calendar_id');
-            $table->foreign('calendar_id')->references('id')->on('calendars');
-            $table->string('task_index');
-            $table->string('name');
-            $table->string('start_date');
-            $table->string('end_date');
+            $table->string('text');
+            $table->string('duration');
+            $table->dateTime('start_date');
+            $table->float('progress');
+            $table->integer('parent');
+            $table->unsignedBigInteger('calendar_id');
+           $table->foreign('calendar_id')->references('id')->on('calendars');
             $table->timestamps();
         });
     }

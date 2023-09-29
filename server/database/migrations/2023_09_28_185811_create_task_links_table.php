@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('task_links', function (Blueprint $table) {
             $table->id();
-             $table->unsignedBigInteger('calendar_id');
-            $table->foreign('calendar_id')->references('id')->on('calendars');
-            $table->string('source');
-            $table->string('target');
             $table->string('type');
+            $table->integer('source');
+            $table->integer('target');
+            $table->unsignedBigInteger('calendar_id');
+           $table->foreign('calendar_id')->references('id')->on('calendars');
             $table->timestamps();
         });
     }

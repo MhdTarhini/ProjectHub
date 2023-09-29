@@ -74,14 +74,15 @@ Route::group(["middleware" => ["auth:api", 'cors']], function(){
             
         });
         Route::group(["prefix" => "task-section"], function(){
-            
             Route::post("uplaod_tasks",[TaskContorller::class,"uploadTasks"]);
             
+            
         });
-
+        
         Route::group(["prefix" => "common"], function(){
             Route::get("get_project_Member/{project_id?}", [MemberController::class, "getProjectMember"]);
             Route::get("get_all_users_not_active", [TeamController::class, "getAllUsersNoActive"]);
-          
+            
         });
-});
+    });
+Route::get("get_tasks/{id?}",[TaskContorller::class,"getTasks"]);
