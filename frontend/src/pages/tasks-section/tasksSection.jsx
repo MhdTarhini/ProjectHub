@@ -4,6 +4,7 @@ import Gantt from "../../component/gantt-calendar/gant";
 import "./tasksSection.css";
 import axios from "axios";
 import Logo from "../../component/logo/Logo";
+import Loading from "../../component/common/loading";
 
 const TasksSection = () => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -15,6 +16,7 @@ const TasksSection = () => {
   const [showlogo, setShowlogo] = useState(true);
   const [isExists, setIsExists] = useState(true);
   const [isAnimation, setIsAnimation] = useState(false);
+  const [isloading, setIsloading] = useState(false);
 
   const logDataUpdate = (type, action, item, id) => {
     if (type === "task") {
@@ -50,6 +52,7 @@ const TasksSection = () => {
         }
       );
       const tasks = await response.data;
+      setIsloading(false);
     } catch (error) {
       console.log(error);
     }
@@ -58,7 +61,7 @@ const TasksSection = () => {
   async function checkCalender() {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/task-section/checkCalender/${user.ative}`
+        `http://127.0.0.1:8000/api/task-section/checkCalender/${user.active}`
       );
       const ExistsCalender = await response.data;
       if (ExistsCalender.status === "success") {
@@ -73,19 +76,14 @@ const TasksSection = () => {
     }
   }
   async function CreateGantt() {
-    const data = new formData();
-    data.append("");
     try {
-      const response = await axios.post(
-        `http://127.0.0.1:8000/api/task-section/checkCalender/${user.ative}`
+      const response = await axios.get(
+        `http://127.0.0.1:8000/api/task-section/create_calender/${user.active}`
       );
-      const ExistsCalender = await response.data;
-      if (ExistsCalender.status === "success") {
+      const CreateCalender = await response.data;
+      if (CreateCalender.status === "success") {
+        setIsloading(false);
         setIsExists(true);
-        setShowlogo(false);
-      } else {
-        setIsExists(false);
-        setShowlogo(false);
       }
     } catch (error) {
       console.error(error);
@@ -122,8 +120,16 @@ const TasksSection = () => {
                       onZoomChange={handleZoomChange}
                     />
                   </div>
-                  <div className="btn save-tasks" onClick={handleUpdateTasks}>
-                    Save Changes
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    {isloading && <Loading />}
+                    <div
+                      className="btn save-tasks"
+                      onClick={() => {
+                        handleUpdateTasks();
+                        setIsloading(true);
+                      }}>
+                      Save Changes
+                    </div>
                   </div>
                 </div>
                 <div className="gantt-container">
@@ -153,15 +159,15 @@ const TasksSection = () => {
                   and reduce stress, and ensure that you're making the most of
                   your time"
                 </div>
-                <button className="btn calendar-button">
+                <button
+                  className={`btn calendar-button ${
+                    isAnimation ? " animate-media" : ""
+                  }`}
+                  onClick={CreateGantt}>
                   Create Your Project Gantt
                 </button>
               </div>
-              <div
-                className={`calendar-media${
-                  isAnimation ? " animate-media" : ""
-                }`}
-                onClick={CreateGantt}></div>
+              <div className={`calendar-media`}>{isloading && <Loading />}</div>
             </>
           )}
         </>

@@ -76,8 +76,9 @@ export default class Gantt extends Component {
     if (storedUserData) {
       const userData = JSON.parse(storedUserData);
       const userId = userData.user.id;
+      const projectId = userData.active;
       console.log(userData.user.id);
-      gantt.load(`http://127.0.0.1:8000/api/get_tasks/${userId}`);
+      gantt.load(`http://127.0.0.1:8000/api/get_tasks/${userId}/${projectId}`);
     }
   }
 

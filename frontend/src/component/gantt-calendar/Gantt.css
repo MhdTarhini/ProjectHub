@@ -1,6 +1,27 @@
 
 .gantt-container {
     height: 980px;
-        width: 1451px;
+     width: 1435px;
+    margin-left: 14px;
+        overflow-x: auto;
+    scrollbar-width: none;
 }
+.gantt_layout_cell .gantt_hor_scroll
+
+.gantt_layout_cell .gantt_hor_scroll::-webkit-scrollbar {
+    height: 0; 
+}
+.gantt_layout_cell .gantt_hor_scroll::-webkit-scrollbar {
+    height: 10px; 
+}
+
+.gantt_layout_cell .gantt_hor_scroll::-webkit-scrollbar-thumb {
+    background-color: #c2c2c2; 
+    border-radius: 5px;    
+}
+
+.gantt_layout_cell .gantt_hor_scroll::-webkit-scrollbar-thumb:hover {
+    background-color: #a3a3a3;
+}
+        
 

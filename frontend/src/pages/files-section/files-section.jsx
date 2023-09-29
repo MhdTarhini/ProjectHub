@@ -17,6 +17,7 @@ import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { Dialog } from "@headlessui/react";
 import Logo from "../../component/logo/Logo";
 import Message from "../../component/common/Message/message";
+import { Alert } from "@mui/material";
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -125,6 +126,7 @@ function FilesSection() {
   let selected_users_id = [];
 
   async function newBranch() {
+    setNewbranchDone(false);
     const data = new FormData();
     selected.map((select) => {
       selected_users_id.push(select.value);
@@ -177,7 +179,7 @@ function FilesSection() {
         closeModal();
         setfile([]);
         setIsloading(false);
-        setIsnewFile(true)
+        setIsnewFile(true);
       } else {
         setError(true);
         setErrorMessage("name is not valid");
@@ -285,8 +287,12 @@ function FilesSection() {
             )}
           </div>
           <div className="hr"></div>
-          {noBranchMessage && <Message text={"NO Branch Founded"} />}
-          {newBranchDone && <Message text={"New Branch Has Been Added"} />}
+          {/* {noBranchMessage && <Message text={"No Branch Founded"} />} */}
+          {newBranchDone && (
+            <Alert severity="success">
+              This is a success alert — check it out!
+            </Alert>
+          )}
           <div className="branches-filter">
             <div className="branches">
               <Menu

@@ -3,7 +3,7 @@
     flex-direction: column;
     background: #FAFAFA;
     width: 1479px;
-        height: 750px;
+        height: 735px;
         padding: 0px 0px 0px 27px;
         overflow-y: auto;
         overflow-x: auto;
@@ -92,7 +92,7 @@
 
 .logo-tasks,
 .create-task-calendar,
-.calendar-media {
+.calendar-button {
     opacity: 0;
     transform: translateY(50px);
     transition: all 0.5s ease-out;
@@ -103,4 +103,14 @@
 .animate-media {
     opacity: 1;
     transform: translateY(0);
+}
+.calendar-media {
+    position: absolute;
+    top: 600px;
+    left: 550px;
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 500px;
 }
