@@ -19,8 +19,17 @@ function Register() {
   const [authMethod, setAuthMethod] = useState("email");
 
   const navigate = useNavigate();
+     
 
-  async function handleRegister() {
+
+  async function handleRegister(
+    email,
+    password,
+    firstName,
+    lastName,
+    profileImage,
+    authMethod
+  ) {
     const data = new FormData();
     data.append("email", email);
     data.append("password", password);
@@ -28,6 +37,7 @@ function Register() {
     data.append("first_name", firstName);
     data.append("profile_img", profileImage);
     data.append("authMethod", authMethod);
+    data.append("remember_token", null);
     try {
       const response = await axios.post(
         "http://127.0.0.1:8000/api/guest/register",
@@ -65,13 +75,20 @@ function Register() {
       .then((result) => {
         console.log(result.user);
         console.log(result.user.email);
-        setEmail(result.user.email);
-        setFristName(result.user.displayName.split(" ")[0]);
-        setLastName(result.user.displayName.split(" ")[1]);
-        setProfileImage(result.user.photoURL);
-        setPassword(null);
-        setAuthMethod("google");
-        handleRegister();
+        // setEmail(result.user.email);
+        // setFristName(result.user.displayName.split(" ")[0]);
+        // setLastName(result.user.displayName.split(" ")[1]);
+        // setProfileImage(result.user.photoURL);
+        // setPassword(null);
+        // setAuthMethod("google");
+        handleRegister(
+          result.user.email,
+          result.user.displayName.split(" ")[0],
+          result.user.displayName.split(" ")[1],
+          result.user.photoURL,
+          null,
+          "google"
+        );
       })
       .catch((error) => {
         console.error("Error signing in with Google:", error.message);
@@ -254,17 +271,21 @@ function Register() {
             />
             {error && <div className="error">{passwordErrorMessage}</div>}
           </div>
-          <div className="login-btn" onClick={handleRegister}>
+          <div
+            className="login-btn"
+            onClick={() => {
+              handleRegister(
+                email,
+                password,
+                firstName,
+                lastName,
+                profileImage,
+                authMethod
+              );
+            }}>
             Register
           </div>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="471"
-            viewBox="0 0 471 2"
-            fill="none">
-            <path d="M0 1H155" stroke="black" />
-            <path d="M310 1H471" stroke="black" />
-          </svg>
+
           <div className="google" onClick={useSignInWithGoogle}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -292,7 +313,7 @@ function Register() {
             <div>Sign up with Google</div>
           </div>
           <div className="to-register">
-            Already have an account ?
+            Already have an account?
             <Link to={"/"} className="to-sign-up">
               Sign in
             </Link>

@@ -162,4 +162,14 @@ class AuthController extends Controller{
         ]);
     }
 
+     function resetPassword(Request $request){
+        $user=User::where("email" , $request->email)->first();
+        $user->password = Hash::make($request->password);
+        $user->save();
+        return response()->json([
+            'status' => 'success',
+        ]);
+
+    }
+
 }

@@ -20,6 +20,7 @@ Route::group(["prefix" => "guest","middleware" => ["cors"]], function(){
     Route::get("unauthorized", [AuthController::class, "unauthorized"])->name("unauthorized");
     Route::post("login", [AuthController::class, "login"]);
     Route::post("register", [AuthController::class, "register"]);
+    Route::post("reset_password", [AuthController::class, "resetPassword"]);
 });
 
 

@@ -27,24 +27,24 @@ class DatabaseSeeder extends Seeder
             'role' => "engineer",
         ]);
 
-        DB::table("users")->insert(([
-            'first_name'=>"joe",
-            'last_name'=>"biden",
-            'email'=>"joe@gmail.com",
-            'password'=>Hash::make('1234567'),
-            'role_id'=>1,
-            "authMethod"=>"email",
-        ]));
-        DB::table("users")->insert(([
-            'first_name'=>"mohamad",
-            'last_name'=>"tarhini",
-            'email'=>"mohamad@gmail.com",
-            'password'=>Hash::make('1234567'),
-            'role_id'=>1,
-            "authMethod"=>"email",
-            'profile_img'=>"http://127.0.0.1:8000/uploads/users_image/default.png"
+        // DB::table("users")->insert(([
+        //     'first_name'=>"joe",
+        //     'last_name'=>"biden",
+        //     'email'=>"joe@gmail.com",
+        //     'password'=>Hash::make('1234567'),
+        //     'role_id'=>1,
+        //     "authMethod"=>"email",
+        // ]));
+        // DB::table("users")->insert(([
+        //     'first_name'=>"mohamad",
+        //     'last_name'=>"tarhini",
+        //     'email'=>"mohamad@gmail.com",
+        //     'password'=>Hash::make('1234567'),
+        //     'role_id'=>1,
+        //     "authMethod"=>"email",
+        //     'profile_img'=>"http://127.0.0.1:8000/uploads/users_image/default.png"
 
-        ]));
+        // ]));
 
         //  DB::table('projects')->insert([
         //     'name' => "project-1",
@@ -64,39 +64,39 @@ class DatabaseSeeder extends Seeder
 
         // ]);
 
-        DB::table("users")->insert(([
-            'first_name'=>"lara",
-            'last_name'=>"lara",
-            'email'=>"lara@gmail.com",
-            'password'=>Hash::make('1234567'),
-            'role_id'=>1,
-            "authMethod"=>"email",
-            'profile_img'=>"http://127.0.0.1:8000/uploads/users_image/default.png"
+        // DB::table("users")->insert(([
+        //     'first_name'=>"lara",
+        //     'last_name'=>"lara",
+        //     'email'=>"lara@gmail.com",
+        //     'password'=>Hash::make('1234567'),
+        //     'role_id'=>1,
+        //     "authMethod"=>"email",
+        //     'profile_img'=>"http://127.0.0.1:8000/uploads/users_image/default.png"
 
 
-        ]));
-        DB::table("users")->insert(([
-            'first_name'=>"hassan",
-            'last_name'=>"hassan",
-            'email'=>"hassan@gmail.com",
-            'password'=>Hash::make('1234567'),
-            'role_id'=>1,
-            "authMethod"=>"email",
-            'profile_img'=>"http://127.0.0.1:8000/uploads/users_image/default.png"
+        // ]));
+        // DB::table("users")->insert(([
+        //     'first_name'=>"hassan",
+        //     'last_name'=>"hassan",
+        //     'email'=>"hassan@gmail.com",
+        //     'password'=>Hash::make('1234567'),
+        //     'role_id'=>1,
+        //     "authMethod"=>"email",
+        //     'profile_img'=>"http://127.0.0.1:8000/uploads/users_image/default.png"
 
 
-        ]));
-        DB::table("users")->insert(([
-            'first_name'=>"loren",
-            'last_name'=>"loren",
-            'email'=>"loren@gmail.com",
-            'password'=>Hash::make('1234567'),
-            'role_id'=>1,
-            "authMethod"=>"email",
-            'profile_img'=>"http://127.0.0.1:8000/uploads/users_image/default.png"
+        // ]));
+        // DB::table("users")->insert(([
+        //     'first_name'=>"loren",
+        //     'last_name'=>"loren",
+        //     'email'=>"loren@gmail.com",
+        //     'password'=>Hash::make('1234567'),
+        //     'role_id'=>1,
+        //     "authMethod"=>"email",
+        //     'profile_img'=>"http://127.0.0.1:8000/uploads/users_image/default.png"
 
 
-        ]));
+        // ]));
 
         // DB::table("calendars")->insert(([
         //     'project_id'=>1,
