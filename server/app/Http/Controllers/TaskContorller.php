@@ -60,6 +60,13 @@ class TaskContorller extends Controller
         $user_calendar=Calendar::where("user_id",$id)->pluck("id");
         $user_task=Task::where("calendar_id",$user_calendar)->get();
         $user_link=TaskLink::where("calendar_id",$user_calendar)->get();
+
+        if ($user_task->isEmpty() && $user_link->isEmpty()) {
+        return response()->json([
+            "data" => [],
+            "links" => []
+        ]);
+    }
  
         return response()->json([
             "data" => $user_task,

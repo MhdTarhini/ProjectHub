@@ -13,6 +13,9 @@ import base64 from "base-64";
 import Loading from "../common/loading";
 import Message from "../common/Message/message";
 import CheckConflict from "../CheckConflict/CheckConflict";
+import LocalCommit from "../LocalCommit/LocalCommit";
+import CommitHistory from "../commitsHistory/CommitHistory";
+import CommitMain from "../commitMain/CommitMain";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -159,21 +162,21 @@ function FilesContainer({
   }
 
   async function getAIResponse() {
-    try {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/api/file-section/open_ai",
-        {
-          data: FileDetails,
-        }
-      );
-      const reponseai = await response.data;
-      if (reponseai.status === "success") {
-        setDetailsAI(reponseai.data);
-        setFileDetails("");
-      }
-    } catch (error) {
-      console.error(error);
-    }
+    // try {
+    //   const response = await axios.post(
+    //     "http://127.0.0.1:8000/api/file-section/open_ai",
+    //     {
+    //       data: FileDetails,
+    //     }
+    //   );
+    //   const reponseai = await response.data;
+    //   if (reponseai.status === "success") {
+    //     setDetailsAI(reponseai.data);
+    //     setFileDetails("");
+    //   }
+    // } catch (error) {
+    //   console.error(error);
+    // }
   }
 
   async function getfileCommit(file_id) {
@@ -230,10 +233,10 @@ function FilesContainer({
     }
   }
 
-  function handleCommitMessage(e) {
-    setCommitMessage(e.target.value);
-    setLocalError(false);
-  }
+  // function handleCommitMessage(e) {
+  //   setCommitMessage(e.target.value);
+  //   setLocalError(false);
+  // }
   function handleMainCommitMessage(e) {
     setMainCommitMessage(e.target.value);
   }
@@ -269,32 +272,32 @@ function FilesContainer({
     window.electron.send(channels.Get_Details, { file_dxf });
   }
 
-  async function submitCommit(old_path_dxf, file_version, file_id) {
-    const data = new FormData();
-    data.append("message", commitMessage);
-    data.append("compare_path_svg", CompareResult);
-    data.append("new_path_svg", getSvg);
-    data.append("old_path_dxf", old_path_dxf);
-    data.append("new_path_dxf", update);
-    data.append("version", file_version);
-    data.append("status", 1);
-    data.append("user_id", user.user.id);
-    data.append("file_id", file_id);
-    try {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/api/file-section/add_commit",
-        data
-      );
-      const commitInfo = await response.data;
-      setCommitInfo(commitInfo.data);
-      setIsCommited(true);
-      setIsLocalCommitLoading(false);
-    } catch (error) {
-      setIsLocalCommitLoading(false);
-      setLocalError(true);
-      setLocalErrorMessage(error.response.data.message);
-    }
-  }
+  // async function submitCommit(old_path_dxf, file_version, file_id) {
+  //   const data = new FormData();
+  //   data.append("message", commitMessage);
+  //   data.append("compare_path_svg", CompareResult);
+  //   data.append("new_path_svg", getSvg);
+  //   data.append("old_path_dxf", old_path_dxf);
+  //   data.append("new_path_dxf", update);
+  //   data.append("version", file_version);
+  //   data.append("status", 1);
+  //   data.append("user_id", user.user.id);
+  //   data.append("file_id", file_id);
+  //   try {
+  //     const response = await axios.post(
+  //       "http://127.0.0.1:8000/api/file-section/add_commit",
+  //       data
+  //     );
+  //     const commitInfo = await response.data;
+  //     setCommitInfo(commitInfo.data);
+  //     setIsCommited(true);
+  //     setIsLocalCommitLoading(false);
+  //   } catch (error) {
+  //     setIsLocalCommitLoading(false);
+  //     setLocalError(true);
+  //     setLocalErrorMessage(error.response.data.message);
+  //   }
+  // }
   async function displayConflict(svg_data) {
     setGoCheckConflict(false);
     const data = new FormData();
@@ -312,41 +315,41 @@ function FilesContainer({
       setMainErrorMessage(error.response.data.message);
     }
   }
-  function handleUpload(e) {
-    setSvgSuccess(false);
-    const file_uploaded = e.target.files[0];
-    if (file_uploaded) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const dxf_file = event.target.result;
-        window.electron.send(channels.Covert_Data_to_svg, { dxf_file });
-      };
-      reader.readAsDataURL(file_uploaded);
-    } else {
-      setLocalError(true);
-      setLocalErrorMessage("No file uploaded");
-    }
-  }
-  async function handleLocalPush() {
-    const data = new FormData();
-    data.append("commit_id", commitInfo.id);
-    try {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/api/file-section/push_local_commit",
-        data
-      );
-      const IsPushed = await response.data;
-      if (IsPushed.status === "success") {
-        setIsPushed(true);
-        setIsloading(false);
-        setIsDone(true);
-        setBranchFiles.files?.push(IsPushed.data);
-      }
-    } catch (error) {
-      setLocalError(true);
-      setLocalErrorMessage(error.response.data.message);
-    }
-  }
+  // function handleUpload(e) {
+  //   setSvgSuccess(false);
+  //   const file_uploaded = e.target.files[0];
+  //   if (file_uploaded) {
+  //     const reader = new FileReader();
+  //     reader.onload = (event) => {
+  //       const dxf_file = event.target.result;
+  //       window.electron.send(channels.Covert_Data_to_svg, { dxf_file });
+  //     };
+  //     reader.readAsDataURL(file_uploaded);
+  //   } else {
+  //     setLocalError(true);
+  //     setLocalErrorMessage("No file uploaded");
+  //   }
+  // }
+  // async function handleLocalPush() {
+  //   const data = new FormData();
+  //   data.append("commit_id", commitInfo.id);
+  //   try {
+  //     const response = await axios.post(
+  //       "http://127.0.0.1:8000/api/file-section/push_local_commit",
+  //       data
+  //     );
+  //     const IsPushed = await response.data;
+  //     if (IsPushed.status === "success") {
+  //       setIsPushed(true);
+  //       setIsloading(false);
+  //       setIsDone(true);
+  //       setBranchFiles.files?.push(IsPushed.data);
+  //     }
+  //   } catch (error) {
+  //     setLocalError(true);
+  //     setLocalErrorMessage(error.response.data.message);
+  //   }
+  // }
   const handleDataFromChild = () => {
     SetCheckingConlfectFile(false);
     onData();
@@ -423,8 +426,17 @@ function FilesContainer({
     }, 2000);
   }, []);
 
-  console.log(branche);
-  console.log(getFiles);
+  function handleData() {
+    closeModal();
+    closeCheckFile();
+  }
+  function close() {
+    setOpen(false);
+    closeCheckFile();
+  }
+  function closeCheckFileModel() {
+    closeCheckFile();
+  }
 
   return (
     <>
@@ -767,17 +779,23 @@ function FilesContainer({
                                       <div className="commit-field-title">
                                         Local Commit
                                       </div>
-                                      <Input
+                                      <LocalCommit
+                                        openedfileDetails={openedfileDetails}
+                                        closeCheckFile={closeCheckFile}
+                                        closeModal={closeModal}
+                                        close={close}
+                                      />
+                                      {/* <Input
                                         label={"Commit message"}
                                         name={"Commit-message"}
                                         type={"text"}
                                         onchange={handleCommitMessage}
-                                      />
-                                      <div className="number-of-letter">
+                                      /> */}
+                                      {/* <div className="number-of-letter">
                                         {commitMessage.length}/50
-                                      </div>
+                                      </div> */}
 
-                                      <div className="input-upload-file">
+                                      {/* <div className="input-upload-file">
                                         <label
                                           className={`btn updated-file ${
                                             isLocalFileLoading
@@ -891,14 +909,16 @@ function FilesContainer({
                                         <div className="success">
                                           Commit Successfully !
                                         </div>
-                                      )}
+                                      )} */}
                                       <div className="hr-details"></div>
                                     </div>
                                   )}
                                 </div>
 
                                 <div className="commit-tracker">
-                                  <Listbox
+                                  <CommitHistory allCommit={allCommit} />
+
+                                  {/* <Listbox
                                     value={selected}
                                     onChange={setSelected}>
                                     {({ open }) => (
@@ -993,14 +1013,24 @@ function FilesContainer({
                                     openCommitModal();
                                   }}>
                                   Check Commit
-                                </button>
+                                </button> */}
+                                </div>
                                 <div className="hr-details"></div>
                                 {!isManager && branche.team_id == null && (
                                   <>
                                     <div className="commit-field-title">
                                       Main commit
                                     </div>
-                                    <Input
+                                    <CommitMain
+                                      noMainMatch={noMainMatch}
+                                      openedfileDetails={openedfileDetails}
+                                      mainDxfPath={mainDxfPath}
+                                      mainDxfVersion={mainDxfVersion}
+                                      close={close}
+                                      mainDxfId={mainDxfId}
+                                      closeCheckFile={closeCheckFile}
+                                    />
+                                    {/* <Input
                                       label={"Commit message"}
                                       name={"Commit-message"}
                                       type={"text"}
@@ -1057,7 +1087,7 @@ function FilesContainer({
                                       <div className="error">
                                         {errorMainMessage}
                                       </div>
-                                    )}
+                                    )} */}
                                   </>
                                 )}
                               </div>
@@ -1104,16 +1134,11 @@ function FilesContainer({
           <Loading />
         )}
       </Modal>
-      <Modal
+      {/* <Modal
         isOpen={CheckCommitIsOpen}
         onRequestClose={closeCheckCommit}
         ariaHideApp={false}
         className="check-conflict-model zindex">
-        {/* <div className="btns close">
-          <button className="btn" onClick={closeCheckCommit}>
-            X
-          </button>
-        </div> */}
         {seletedCommitSVG ? (
           <img
             src={seletedCommitSVG}
@@ -1125,7 +1150,7 @@ function FilesContainer({
         ) : (
           <Loading />
         )}
-      </Modal>
+      </Modal> */}
       <Modal
         isOpen={CheckFileIsOpen}
         onRequestClose={closeCheckFile}
