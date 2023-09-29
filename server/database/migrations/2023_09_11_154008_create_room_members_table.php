@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('room_members', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('room_id');
-            $table->foreign('room_id')->references('id')->on('chat_rooms');
+            $table->foreign('room_id')->references('id')->on('chat_rooms')->onDelete('cascade');
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

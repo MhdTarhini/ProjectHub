@@ -167,7 +167,7 @@ function ProjectsSection() {
         }
         localStorage.setItem("user", JSON.stringify(userData));
         setIsloading(false);
-        setIsUpdatedStatus(true);
+        setIsUpdatedStatus(!isUpdatedStatus);
       } catch (error) {
         setIsloading(false);
         console.error(error);

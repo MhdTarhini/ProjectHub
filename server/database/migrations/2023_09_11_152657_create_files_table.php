@@ -18,11 +18,11 @@ return new class extends Migration
             $table->string('path_svg');
             $table->string('version');
             $table->unsignedBigInteger('project_id');
-            $table->foreign('project_id')->references('id')->on('projects');
+            $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('branche_id');
-            $table->foreign('branche_id')->references('id')->on('branches');
+            $table->foreign('branche_id')->references('id')->on('branches')->onDelete('cascade');
             $table->timestamps();
         });
     }

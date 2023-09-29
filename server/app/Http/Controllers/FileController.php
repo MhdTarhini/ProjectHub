@@ -161,19 +161,19 @@ function pullFromMain(Request $request)
 
     return response()->json([
         'status' => 'success',
-        'added' => $add_counter . " Were Added",
-        'conflict' => "There are conflicts in " . $conflict_counter . " files",
+        'added' => $add_counter ,
+        'conflict' => $conflict_counter,
         'data' => $matching_files,
     ]);
 }
 
 function accepteFile(Request $request){
     $user=Auth::user();
-    $file=File::where("branch_id",$request->branch_id)->where("name",$request->file_name)->first();
+    $file=File::where("branche_id",$request->branch_id)->where("name",$request->file_name)->first();
 
     $file->path_dxf=$request->path_dxf;
     $file->path_svg=$request->path_svg;
-    $file->version=$request->path_svg;
+    $file->version=$file->version+1;
     $file->user_id=$user->id;
     $file->save();
 

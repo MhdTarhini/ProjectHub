@@ -372,6 +372,9 @@ function ProjectsTable({ openedProject }) {
                           openedProject.id
                         );
                         setIsloading(true);
+                      document.getElementById("project-name").value = "";
+                      document.getElementById("project-location").value = "";
+                      document.getElementById("description").value = "";
                       }}>
                       Update Project
                     </div>
@@ -446,6 +449,7 @@ function ProjectsTable({ openedProject }) {
                   <div
                     className="btn btn-create-team"
                     onClick={() => {
+                      document.getElementById("team_name").value = "";
                       createTeam();
                       setCreatingTeamLoading(true);
                     }}>

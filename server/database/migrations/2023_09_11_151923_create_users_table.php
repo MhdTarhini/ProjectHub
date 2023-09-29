@@ -19,8 +19,6 @@ return new class extends Migration
             $table->string('password')->nullable();
             $table->string('authMethod');
             $table->string('profile_img')->nullable();
-            $table->unsignedBigInteger('role_id');
-            $table->foreign('role_id')->references('id')->on('roles');
             $table->rememberToken();
             $table->timestamps();
         });

@@ -21,7 +21,6 @@ def compareData(new_version_path,old_version_path):
                     for chunk in response.iter_content(chunk_size=1024):
                         if chunk:
                             local_file.write(chunk)
-                # print(f"File downloaded as {local_filename}")
             else:
                 print(f"Error with status code: {response.status_code}")
         except Exception as e:
@@ -166,7 +165,6 @@ def compareData(new_version_path,old_version_path):
 
 if __name__ == "__main__":
     if len(sys.argv) < 1:
-        print("Usage: compare_data.py new_version_data old_version_path")
         sys.exit(1)
 
     new_version_path = sys.argv[1]

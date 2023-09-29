@@ -19,6 +19,7 @@ function CheckConflict({ onData, Pulldata, BranchData, branch }) {
   const [isAccepted, setIsAccepted] = useState(false);
   const [isDoneChecking, setIsDoneChecking] = useState(false);
   const [isRejected, setIsRejected] = useState(false);
+  const [checkConflictdisplay, setCheckConflictdisplay] = useState(false);
 
   function closeModal() {
     setmodelisOpen(false);
@@ -41,7 +42,6 @@ function CheckConflict({ onData, Pulldata, BranchData, branch }) {
     }
   }
 
-
   function ComparePull(main_file) {
     let local_file_path = "";
     setCompareSuccess(false);
@@ -62,8 +62,8 @@ function CheckConflict({ onData, Pulldata, BranchData, branch }) {
     const data = new FormData();
     data.append("branch_id", branch.id);
     data.append("file_name", seletedFile.name);
-    data.append("new_dxf_path", seletedFile.path_dxf);
-    data.append("new_svg_path", seletedFile.path_svg);
+    data.append("path_dxf", seletedFile.path_dxf);
+    data.append("path_svg", seletedFile.path_svg);
     try {
       const response = await axios.post(
         "http://127.0.0.1:8000/api/file-section/accepte_file",
@@ -78,19 +78,13 @@ function CheckConflict({ onData, Pulldata, BranchData, branch }) {
     }
   }
   useEffect(() => {
-    const handleCompareMainDataIsDone = (data) => {
+    window.electron.on(channels.Compare_Main_Data_IsDone, (data) => {
       const decodedData = base64.decode(data);
       setCompareResult(decodedData);
+      setCheckConflictdisplay(true);
       displayConflict(decodedData);
-    };
-
-    window.electron.on(
-      channels.Compare_Main_Data_IsDone,
-      handleCompareMainDataIsDone
-    );
+    });
   }, []);
-
-  console.log(isAcceptedId.length);
 
   useEffect(() => {
     if (Pulldata.length === isAcceptedId.length + isRejectedId.length) {
@@ -105,9 +99,7 @@ function CheckConflict({ onData, Pulldata, BranchData, branch }) {
         <div className="loading-display">
           <Loading />
           <div>Pull New Files....</div>
-          {setTimeout(() => {
-            onData();
-          }, 3000)}
+          {onData()}
         </div>
       ) : (
         <div className="card-container">

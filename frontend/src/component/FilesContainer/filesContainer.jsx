@@ -28,6 +28,7 @@ function FilesContainer({
   pullData,
   openCheck,
   onData,
+  isNewFile,
 }) {
   const user = JSON.parse(localStorage.getItem("user"));
   axios.defaults.headers.common["Authorization"] = `Bearer ${user.user.token}`;
@@ -71,7 +72,6 @@ function FilesContainer({
   const [isDone, setIsDone] = useState(false);
   const [noMainMatch, setNoMainMatch] = useState(false);
   const [isCommited, setIsCommited] = useState(false);
-  const [updateFiles, setUpdateFiles] = useState(false);
   const [isDoneCommitMain, setIsDoneCommitMain] = useState(false);
   const [isManager, setIsManager] = useState(false);
   const [doneGetFiles, setDoneGetFiles] = useState(false);
@@ -80,10 +80,14 @@ function FilesContainer({
   const [showImage, setShowImage] = useState(true);
   const [detailsAI, setDetailsAI] = useState("");
   const [getDetails, setGetDetails] = useState(false);
-  const [branchFiles, setBranchFiles] = useState([]);
+  // const [branchFiles, setBranchFiles] = useState([]);
+  const [branchFiles, setBranchFiles] = useState({
+    files: [],
+  });
   const [deletedFile, setDeletedFile] = useState([]);
   const [modalDeleteOpen, setModalDeleteOpen] = useState(false);
   const [goCheckConflict, setGoCheckConflict] = useState(false);
+  const [donePull, setDonePull] = useState(false);
 
   function openModal() {
     setIsloading(false);
@@ -352,6 +356,7 @@ function FilesContainer({
   // }
   const handleDataFromChild = () => {
     SetCheckingConlfectFile(false);
+    setDonePull(true);
     onData();
   };
 
@@ -364,12 +369,21 @@ function FilesContainer({
   }, [branche]);
 
   useEffect(() => {
-    branchFiles.files?.push(updateFile);
-  }, [updateFile]);
+    if (isNewFile) {
+      setBranchFiles((BranchFiles) => ({
+        ...BranchFiles,
+        files: [...BranchFiles.files, updateFile],
+      }));
+    }
+  }, [isNewFile]);
 
   useEffect(() => {
     handleGetFiles();
-  }, [pullData]);
+  }, [donePull]);
+
+  function DonePull() {
+    setDonePull(true);
+  }
 
   useEffect(() => {
     window.electron.on(channels.Compare_Data_IsDone, (data) => {
@@ -415,6 +429,7 @@ function FilesContainer({
         branchFiles = branchFiles.filter(
           (file) => file.id !== deletedFile.data.id
         );
+        closeDeleteModal();
       }
     } catch (error) {
       console.error(error);
@@ -446,6 +461,7 @@ function FilesContainer({
           Pulldata={pullData}
           BranchData={getFiles}
           branch={branche}
+          DonePull={pullData}
         />
       ) : (
         <div>
@@ -539,7 +555,7 @@ function FilesContainer({
                   </div>
                 ) : (
                   <img
-                    src="https://forums.synfig.org/uploads/default/original/2X/3/320a629e5c20a8f67d6378c5273cda8a9e2ff0bc.gif"
+                    src="http://127.0.0.1:8000/uploads/assets/loading.gif"
                     alt=""
                     srcset=""
                   />
@@ -675,8 +691,8 @@ function FilesContainer({
                                   <div className="download-icon">
                                     <div className="share-button">
                                       <svg
-                                        width="30px"
-                                        height="30px"
+                                        width="20px"
+                                        height="20px"
                                         viewBox="0 0 24 24"
                                         fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -692,8 +708,8 @@ function FilesContainer({
                                       className="view-svg"
                                       onClick={openFileModal}>
                                       <svg
-                                        width="30px"
-                                        height="30px"
+                                        width="20px"
+                                        height="20px"
                                         viewBox="0 -4 20 20"
                                         version="1.1"
                                         className="view_svg">
@@ -721,8 +737,8 @@ function FilesContainer({
                                     </div>
                                     <div className="download-dxf-file">
                                       <svg
-                                        width="30px"
-                                        height="30px"
+                                        width="20px"
+                                        height="20px"
                                         viewBox="0 0 24 24"
                                         fill="none"
                                         xmlns="http://www.w3.org/2000/svg"

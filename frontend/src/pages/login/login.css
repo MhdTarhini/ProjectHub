@@ -209,6 +209,9 @@
     padding: 18px;
     cursor: pointer;
 }
+.login-btn:hover {
+    background: #0b9aff;
+}
 .reset-btn {
     width: 471px;
     height: 56px;
@@ -227,6 +230,9 @@
     cursor: pointer;
     margin-top: 20px;
     margin-bottom: 20px;
+}
+.reset-btn:hover {
+    background: #0b9aff;
 }
 
 .display-side {

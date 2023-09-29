@@ -23,9 +23,9 @@ return new class extends Migration
             $table->unsignedBigInteger('file_id')->nullable();
             $table->foreign('file_id')->references('id')->on('files');
             $table->unsignedBigInteger('branch_main_id')->nullable();
-            $table->foreign('branch_main_id')->references('id')->on('branches');
+            $table->foreign('branch_main_id')->references('id')->on('branches')->onDelete('cascade');
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

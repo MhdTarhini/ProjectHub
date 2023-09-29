@@ -40,10 +40,12 @@ class BranchController extends Controller
 
         $branch->usermembers()->attach($user_ids);
 
+        $branch->load('members') ;
+        
         return response()->json([
             'status' => 'success',
             'message' => 'Branch created and members assigned successfully!',
-            'data' => $branch->load('members') 
+            'data' => $branch
         ]);
     }
 

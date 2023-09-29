@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('source');
             $table->integer('target');
             $table->unsignedBigInteger('calendar_id');
-           $table->foreign('calendar_id')->references('id')->on('calendars');
+           $table->foreign('calendar_id')->references('id')->on('calendars')->onDelete('cascade');
             $table->timestamps();
         });
     }

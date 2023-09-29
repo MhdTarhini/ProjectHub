@@ -56,7 +56,7 @@ class TaskContorller extends Controller
 
     }
 
-    public function getTasks($id){
+    public function getTasks($id="null"){
         $user_calendar=Calendar::where("user_id",$id)->pluck("id");
         $user_task=Task::where("calendar_id",$user_calendar)->get();
         $user_link=TaskLink::where("calendar_id",$user_calendar)->get();
