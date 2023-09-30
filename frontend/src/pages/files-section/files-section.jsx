@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, {useEffect, useState } from "react";
 import { channels } from "../../shared/constants";
 import "./files-section.css";
 import Modal from "react-modal";
@@ -9,14 +9,11 @@ import axios from "axios";
 import { MultiSelect } from "react-multi-select-component";
 import FilesContainer from "../../component/FilesContainer/filesContainer";
 import base64 from "base-64";
-import { ProjectContext } from "../../context/ProjectContext";
 import Loading from "../../component/common/loading";
-import CheckConflict from "../../component/CheckConflict/CheckConflict";
-import { Fragment } from "react";
-import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
-import { Dialog } from "@headlessui/react";
 import Logo from "../../component/logo/Logo";
 import Message from "../../component/common/Message/message";
+import PopupMessage from "../../component/common/Message/popup-message/popupMessage";
+
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -24,10 +21,8 @@ function classNames(...classes) {
 function FilesSection() {
   const user = JSON.parse(localStorage.getItem("user"));
   axios.defaults.headers.common["Authorization"] = `Bearer ${user.user.token}`;
-  const cancelButtonRef = useRef(null);
   const [file, setfile] = useState([]);
   const [fileName, setFileName] = useState("");
-  const [uploadSuccess, setUploadSuccess] = useState(false);
   const [getSvg, setGetSvg] = useState("");
   const [brancheName, setBrancheName] = useState("");
   const [SvgSuccess, setSvgSuccess] = useState(false);
@@ -45,11 +40,9 @@ function FilesSection() {
   const [modalBrancheOpen, setModalBrancheOpen] = React.useState(false);
   const [selected, setSelected] = useState([]);
   const [pullData, setPullData] = useState([]);
-  const [open, setOpen] = useState(false);
   const [CheckingConlfectFile, SetCheckingConlfectFile] = useState(false);
   const [pullMessage, setPullMessage] = useState([]);
   const [isdeleted, setIsdeleted] = useState(false);
-  const [newBranchDone, setNewbranchDone] = useState(false);
   const [teamMember, setTeamMember] = useState([]);
   const [showlogo, setShowlogo] = useState(true);
   const [transformedData, setTransformedData] = useState([]);
@@ -57,6 +50,7 @@ function FilesSection() {
   const [newBranchError, setNewBranchError] = useState("");
   const [checkConflictMode, setCheckConflictMode] = useState(false);
   const [isNewFile, setIsnewFile] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   async function getTeamMember() {
     try {
@@ -121,7 +115,6 @@ function FilesSection() {
   let selected_users_id = [];
 
   async function newBranch() {
-    setNewbranchDone(false);
     const data = new FormData();
     selected.map((select) => {
       selected_users_id.push(select.value);
@@ -137,7 +130,6 @@ function FilesSection() {
       );
       const new_branche = await response.data;
       if (new_branche.status === "success") {
-        setNewbranchDone(true);
         closeBrancheModal();
         setIsloading(false);
         setBranches((branches) => [...branches, new_branche.data]);
@@ -198,11 +190,16 @@ function FilesSection() {
       if (pull_files.status === "success") {
         setPullData(response.data.data);
         setPullMessage(response.data);
-        setOpen(true);
+        handleTogglePopup();
       }
     } catch (error) {
       console.error(error);
     }
+  }
+
+  function ConflictMode() {
+    SetCheckingConlfectFile(true);
+    setCheckConflictMode(true);
   }
 
   async function deleteBranch() {
@@ -239,10 +236,6 @@ function FilesSection() {
   }
 
   useEffect(() => {
-    window.electron.on(channels.Extract_Data_IsDone, (data) => {
-      setUploadSuccess(true);
-    });
-
     window.electron.on(channels.Covert_Data_to_svg_IsDone, (data) => {
       setSvgSuccess(true);
       const decodedData = base64.decode(data);
@@ -252,6 +245,10 @@ function FilesSection() {
       setIsManager(true);
     }
   }, []);
+
+  const handleTogglePopup = () => {
+    setIsPopupOpen(!isPopupOpen);
+  };
 
   useEffect(() => {
     getTeamMember();
@@ -263,6 +260,10 @@ function FilesSection() {
       setShowlogo(false);
     }, 3000);
   }, []);
+
+  const handleClosePopup = () => {
+    setIsPopupOpen(false);
+  };
 
   return (
     <>
@@ -585,236 +586,14 @@ function FilesSection() {
             </button>
           </div>
         </Modal>
-        <Transition.Root show={open} as={Fragment}>
-          <Dialog
-            as="div"
-            className="relative z-10"
-            initialFocus={cancelButtonRef}
-            onClose={setOpen}>
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0"
-              enterTo="opacity-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0">
-              <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
-            </Transition.Child>
-
-            <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-              <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                <Transition.Child
-                  as={Fragment}
-                  enter="ease-out duration-300"
-                  enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                  enterTo="opacity-100 translate-y-0 sm:scale-100"
-                  leave="ease-in duration-200"
-                  leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-                  leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
-                  <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                    <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                      <div className="sm:flex sm:items-start">
-                        <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                          {pullMessage.added > 0 &&
-                          pullMessage.conflict === 0 ? (
-                            <svg
-                              width="20px"
-                              height="25px"
-                              viewBox="0 0 117 117"
-                              version="1.1"
-                              xmlns="http://www.w3.org/2000/svg">
-                              <title />
-                              <desc />
-                              <defs />
-                              <g
-                                fill="none"
-                                fill-rule="evenodd"
-                                id="Page-1"
-                                stroke="none"
-                                stroke-width="1">
-                                <g fill-rule="nonzero" id="correct">
-                                  <path
-                                    d="M34.5,55.1 C32.9,53.5 30.3,53.5 28.7,55.1 C27.1,56.7 27.1,59.3 28.7,60.9 L47.6,79.8 C48.4,80.6 49.4,81 50.5,81 C50.6,81 50.6,81 50.7,81 C51.8,80.9 52.9,80.4 53.7,79.5 L101,22.8 C102.4,21.1 102.2,18.5 100.5,17 C98.8,15.6 96.2,15.8 94.7,17.5 L50.2,70.8 L34.5,55.1 Z"
-                                    fill="#17AB13"
-                                    id="Shape"
-                                  />
-                                  <path
-                                    d="M89.1,9.3 C66.1,-5.1 36.6,-1.7 17.4,17.5 C-5.2,40.1 -5.2,77 17.4,99.6 C28.7,110.9 43.6,116.6 58.4,116.6 C73.2,116.6 88.1,110.9 99.4,99.6 C118.7,80.3 122,50.7 107.5,27.7 C106.3,25.8 103.8,25.2 101.9,26.4 C100,27.6 99.4,30.1 100.6,32 C113.1,51.8 110.2,77.2 93.6,93.8 C74.2,113.2 42.5,113.2 23.1,93.8 C3.7,74.4 3.7,42.7 23.1,23.3 C39.7,6.8 65,3.9 84.8,16.2 C86.7,17.4 89.2,16.8 90.4,14.9 C91.6,13 91,10.5 89.1,9.3 Z"
-                                    fill="#4A4A4A"
-                                    id="Shape"
-                                  />
-                                </g>
-                              </g>
-                            </svg>
-                          ) : (
-                            <ExclamationTriangleIcon
-                              className="h-6 w-6 text-red-600"
-                              aria-hidden="true"
-                            />
-                          )}
-                        </div>
-                        <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                          <Dialog.Title
-                            as="h3"
-                            className="text-base font-semibold leading-6 text-gray-900">
-                            Pull Result !
-                          </Dialog.Title>
-                          {pullMessage && (
-                            <div className="mt-2">
-                              <p className="text-sm text-gray-500">
-                                {pullMessage.added} Were Added
-                              </p>
-                              <p className="text-sm text-gray-500">
-                                There are conflicts in {pullMessage.conflict}{" "}
-                                files
-                              </p>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                      {pullData.length > 0 && (
-                        <button
-                          type="button"
-                          className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                          onClick={() => {
-                            SetCheckingConlfectFile(true);
-                            setOpen(false);
-                            setCheckConflictMode(true);
-                          }}>
-                          check
-                        </button>
-                      )}
-                      <button
-                        type="button"
-                        className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                        onClick={() => setOpen(false)}
-                        ref={cancelButtonRef}>
-                        close
-                      </button>
-                    </div>
-                  </Dialog.Panel>
-                </Transition.Child>
-              </div>
-            </div>
-          </Dialog>
-        </Transition.Root>
+        <PopupMessage
+          pullMessage={pullMessage}
+          ConflictMode={ConflictMode}
+          pullData={pullData}
+          isOpen={isPopupOpen}
+          onClose={handleClosePopup}
+        />
       </div>
-      {/* <Modal
-        isOpen={AddContentIsOpen}
-        onRequestClose={closeAddContentModal}
-        ariaHideApp={false}
-        className={`new-issue-model noImage`}
-        style={{ overlay: { background: "rgb(0 0 0 / 15%)" } }}>
-        <h2 className="model-title">Upload New Media</h2>
-        <div className="upload-file-form">
-          {imagedIsUpload ? (
-            <div>
-              <div className="reupload-image">
-                <img
-                  src={imageSrc}
-                  alt="Uploaded Preview"
-                  style={{ maxWidth: "300px", maxHeight: "300px" }}
-                />
-                <svg
-                  className="reupload-icon"
-                  width="30px"
-                  height="30px"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  onClick={() => {
-                    setImageSrc([]);
-                    setImageIsUploaded(false);
-                  }}>
-                  <g clip-path="url(#clip0_1276_7761)">
-                    <path
-                      d="M19.7285 10.9288C20.4413 13.5978 19.7507 16.5635 17.6569 18.6573C15.1798 21.1344 11.4826 21.6475 8.5 20.1966M18.364 8.05071L17.6569 7.3436C14.5327 4.21941 9.46736 4.21941 6.34316 7.3436C3.42964 10.2571 3.23318 14.8588 5.75376 18M18.364 8.05071H14.1213M18.364 8.05071V3.80807"
-                      stroke="#1C274C"
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_1276_7761">
-                      <rect width="24" height="24" fill="white" />
-                    </clipPath>
-                  </defs>
-                </svg>
-              </div>
-              <Input
-                label={"File Name"}
-                name={"file-name"}
-                type={"text"}
-                onchange={handleContentTitle}
-              />
-              {newContetError && (
-                <div className="error">{newContentTitleError}</div>
-              )}
-            </div>
-          ) : (
-            <div className="input-new-image">
-              <label htmlFor="issue-image" className="issue-image-label">
-                <svg
-                  width="25px"
-                  height="25px"
-                  viewBox="-2 0 32 32"
-                  version="1.1">
-                  <title>arrow-bottom</title>
-                  <desc>Created with Sketch Beta.</desc>
-                  <defs></defs>
-                  <g
-                    id="Page-1"
-                    stroke="none"
-                    stroke-width="1"
-                    fill="none"
-                    fill-rule="evenodd">
-                    <g
-                      id="Icon-Set"
-                      transform="translate(-519.000000, -931.000000)"
-                      fill="rgb(0 0 0 / 85%)">
-                      <path
-                        d="M543,935 L540,935 L540,937 L543,937 C544.104,937 545,937.896 545,939 L545,959 C545,960.104 544.104,961 543,961 L523,961 C521.896,961 521,960.104 521,959 L521,939 C521,937.896 521.896,937 523,937 L526,937 L526,935 L523,935 C520.791,935 519,936.791 519,939 L519,959 C519,961.209 520.791,963 523,963 L543,963 C545.209,963 547,961.209 547,959 L547,939 C547,936.791 545.209,935 543,935 L543,935 Z M525.343,949.758 L532.242,956.657 C532.451,956.865 532.728,956.954 533,956.939 C533.272,956.954 533.549,956.865 533.758,956.657 L540.657,949.758 C541.048,949.367 541.048,948.733 540.657,948.343 C540.267,947.953 539.633,947.953 539.242,948.343 L534,953.586 L534,932 C534,931.447 533.553,931 533,931 C532.448,931 532,931.447 532,932 L532,953.586 L526.757,948.343 C526.367,947.953 525.733,947.953 525.343,948.343 C524.952,948.733 524.952,949.367 525.343,949.758 L525.343,949.758 Z"
-                        id="arrow-bottom"></path>
-                    </g>
-                  </g>
-                </svg>
-                Upload Image
-                {isloading && <Loading />}
-              </label>
-              <input
-                type="file"
-                name="issue-image"
-                id="issue-image"
-                onChange={(e) => {
-                  handleImageChange(e);
-                  setImageIsUploaded(true);
-                }}
-              />
-              {newContetError && (
-                <div className="error">{newContentImageError}</div>
-              )}
-            </div>
-          )}
-          <div className="btns-new-file">
-            <button className="btn close-btn" onClick={closeAddContentModal}>
-              Close
-            </button>
-
-            <button
-              className={` ${imagedIsUpload ? "btn" : "on-procress"}`}
-              onClick={() => {
-                handleAddNewContent();
-                setIsloading(true);
-              }}>
-              Add
-            </button>
-          </div>
-        </div>
-      </Modal> */}
     </>
   );
 }

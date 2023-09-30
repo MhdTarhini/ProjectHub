@@ -27,7 +27,6 @@ def compareData(new_version_data,old_version_path):
             print(f"An error occurred: {e}")
 
     file_url = old_version_path  
-    # local_filename = "downloaded_file.dxf"
     local_filename = os.path.join(file_path, "downloaded_file.dxf")
 
     download_file(file_url, local_filename)
@@ -62,7 +61,6 @@ def compareData(new_version_data,old_version_path):
         file.writelines(cleaned_lines)
 
     new_version = filename
-    # old_version="downloaded_file.dxf"
     old_version = os.path.join(file_path, "downloaded_file.dxf")
 
 

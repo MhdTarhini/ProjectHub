@@ -1,14 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./FilesContainer.css";
 import axios from "axios";
 import { channels } from "../../shared/constants";
-import Input from "../input/input";
 import Modal from "react-modal";
 import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { Listbox } from "@headlessui/react";
-import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import base64 from "base-64";
 import Loading from "../common/loading";
 import Message from "../common/Message/message";
@@ -17,13 +14,9 @@ import LocalCommit from "../LocalCommit/LocalCommit";
 import CommitHistory from "../commitsHistory/CommitHistory";
 import CommitMain from "../commitMain/CommitMain";
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
 
 function FilesContainer({
   branche,
-  file,
   updateFile,
   pullData,
   openCheck,
@@ -35,39 +28,18 @@ function FilesContainer({
   const [open, setOpen] = useState(false);
   const [getFiles, setGetFiles] = useState([]);
   const [openedfileDetails, setOpenedFileDetails] = useState([]);
-  const [update, setUpdate] = useState([]);
-  const [compareSuccess, setCompareSuccess] = useState(false);
-  const [CompareResult, setCompareResult] = useState("");
-  const [mainCompareSuccess, setMainCompareSuccess] = useState(false);
-  const [mainCompareResult, setMainCompareResult] = useState("");
-  const [commitMessage, setCommitMessage] = useState("");
-  const [FileDetails, setFileDetails] = useState("");
-  const [detailsSuccess, setDetailsSuccess] = useState(false);
-  const [goAI, setGoAI] = useState(false);
   const [conflictSvg, setConflitSvg] = useState("");
   const [modalIsOpen, setIsOpen] = React.useState(false);
-  const [CheckCommitIsOpen, setCheckCommitIsOpen] = React.useState(false);
   const [selected, setSelected] = useState(["commit message </> version"]);
   const [allCommit, setAllCommit] = useState([]);
-  const [seletedCommitSVG, setSeletedCommitSVG] = useState("");
   const [mainDxfPath, setMainDxfPath] = useState("");
   const [mainDxfVersion, setMainDxfVersion] = useState("");
-  const [getSvg, setGetSvg] = useState("");
-  const [svgSuccess, setSvgSuccess] = useState(false);
-  const [mainCommitMessage, setMainCommitMessage] = useState("");
   const [mainDxfId, setMainDxfId] = useState("");
   const [CheckFileIsOpen, setCheckFileIsOpen] = useState(false);
   const [seletedFile, setSeletedFile] = useState("");
-  const [error, setError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [errorLocal, setLocalError] = useState(false);
-  const [errorMain, setMainError] = useState(false);
-  const [errorMainMessage, setMainErrorMessage] = useState("");
   const [isLoading, setIsloading] = useState(false);
-  const [isLocalFileLoading, setIsLocalFileLoading] = useState(false);
   const [isDone, setIsDone] = useState(false);
   const [noMainMatch, setNoMainMatch] = useState(false);
-  const [isCommited, setIsCommited] = useState(false);
   const [isDoneCommitMain, setIsDoneCommitMain] = useState(false);
   const [isManager, setIsManager] = useState(false);
   const [doneGetFiles, setDoneGetFiles] = useState(false);
@@ -83,23 +55,13 @@ function FilesContainer({
   const [goCheckConflict, setGoCheckConflict] = useState(false);
   const [donePull, setDonePull] = useState(false);
 
-  function openModal() {
-    setIsloading(false);
-    setIsOpen(true);
-  }
-
   function closeModal() {
     setIsOpen(false);
     setIsloading(false);
   }
-  function openCommitModal() {
-    setCheckCommitIsOpen(true);
-    setIsloading(false);
-    setIsCommited(false);
-  }
+
 
   function closeCheckCommit() {
-    setCheckCommitIsOpen(false);
     setIsloading(false);
   }
   function openFileModal() {
@@ -115,16 +77,6 @@ function FilesContainer({
     setModalDeleteOpen(false);
   }
 
-  async function downloadFile(file_name) {
-    try {
-      const response = await axios.get(
-        `http://127.0.0.1:8000/api/file-section/download_file/${file_name}`
-      );
-      const content = response;
-    } catch (error) {
-      console.error(error);
-    }
-  }
 
   async function getAIResponse(data) {
     try {
@@ -139,7 +91,6 @@ function FilesContainer({
 
         if (reponseai.status === "success") {
           setDetailsAI(reponseai.data);
-          setFileDetails("");
         }
       }
     } catch (error) {
@@ -155,8 +106,7 @@ function FilesContainer({
       const commitData = await response.data;
       setAllCommit(commitData.data);
     } catch (error) {
-      setError(true);
-      setErrorMessage(error.response.data.message);
+      console.error(error)
     }
   }
 
@@ -173,8 +123,7 @@ function FilesContainer({
       setGetFiles(files.data);
       setDoneGetFiles(true);
     } catch (error) {
-      setError(true);
-      setErrorMessage(error.response.data.message);
+      console.error(error)
     }
   }
   async function getMainFilePath(file_name) {
@@ -196,42 +145,12 @@ function FilesContainer({
         setNoMainMatch(true);
       }
     } catch (error) {
-      setMainError(true);
-      setMainErrorMessage(error.response.data.message);
-    }
-  }
-  function handleMainCommitMessage(e) {
-    setMainCommitMessage(e.target.value);
-  }
-
-  function handleCompare(e, old_version_path) {
-    setCompareSuccess(false);
-    const file_uploaded = e.target.files[0];
-    if (file_uploaded) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const new_version_data = event.target.result;
-        window.electron.send(channels.Compare_Data, {
-          new_version_data,
-          old_version_path,
-        });
-      };
-      reader.readAsDataURL(file_uploaded);
-    } else {
-      console.log("No file uploaded");
+      console.error(error)
     }
   }
 
-  function CompareWithMain(main_file_path, local_file_path) {
-    setCompareSuccess(false);
-    window.electron.send(channels.Compare_Main_Data, {
-      main_file_path,
-      local_file_path,
-    });
-  }
 
   function getDxfData(file_dxf) {
-    setDetailsSuccess(false);
     window.electron.send(channels.Get_Details, { file_dxf });
   }
 
@@ -248,8 +167,7 @@ function FilesContainer({
       setConflitSvg(conflictSVG.data);
       setIsloading(false);
     } catch (error) {
-      setMainError(true);
-      setMainErrorMessage(error.response.data.message);
+      console.error(error)
     }
   }
   const handleDataFromChild = () => {
@@ -279,37 +197,18 @@ function FilesContainer({
     handleGetFiles();
   }, [donePull]);
 
-  function DonePull() {
-    setDonePull(true);
-  }
 
   useEffect(() => {
-    window.electron.on(channels.Compare_Data_IsDone, (data) => {
-      const decodedData = base64.decode(data);
-      setCompareResult(decodedData);
-      setCompareSuccess(true);
-      setIsloading(false);
-    });
     window.electron.on(channels.Compare_Main_Data_IsDone, (data) => {
       const decodedData = base64.decode(data);
-      setMainCompareResult(decodedData);
       displayConflict(decodedData);
-      setMainCompareSuccess(true);
       setGoCheckConflict(true);
       setIsloading(false);
     });
     window.electron.on(channels.Get_Details_IsDone, (data) => {
       console.log(data);
-      setFileDetails(data);
-      setDetailsSuccess(true);
       getAIResponse(data);
       setIsloading(false);
-    });
-    window.electron.on(channels.Covert_Data_to_svg_IsDone, (data) => {
-      const decodedData = base64.decode(data);
-      setGetSvg(decodedData);
-      setSvgSuccess(true);
-      setIsLocalFileLoading(false);
     });
     if (user.team_active == 0) {
       setIsManager(true);
@@ -340,15 +239,8 @@ function FilesContainer({
     }, 2000);
   }, []);
 
-  function handleData() {
-    closeModal();
-    closeCheckFile();
-  }
   function close() {
     setOpen(false);
-    closeCheckFile();
-  }
-  function closeCheckFileModel() {
     closeCheckFile();
   }
 
@@ -417,7 +309,6 @@ function FilesContainer({
                                         className="card"
                                         key={file.id}
                                         onClick={() => {
-                                          setFileDetails("");
                                           setOpenedFileDetails(file);
                                           setSeletedFile(file.path_svg);
                                           openFileModal();
@@ -525,12 +416,9 @@ function FilesContainer({
                   onClose={() => {
                     setOpen(false);
                     closeCheckFile();
-                    setUpdate([]);
-                    setCompareResult([]);
                     closeCheckCommit();
                     closeModal();
                     setNoMainMatch(false);
-                    setIsCommited(false);
                   }}>
                   <Transition.Child
                     as={Fragment}

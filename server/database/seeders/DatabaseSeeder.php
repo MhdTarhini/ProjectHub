@@ -20,31 +20,23 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
 
         
-        DB::table('roles')->insert([
-            'role' => "project manager",
-        ]);
-        DB::table('roles')->insert([
-            'role' => "engineer",
-        ]);
 
-        // DB::table("users")->insert(([
-        //     'first_name'=>"joe",
-        //     'last_name'=>"biden",
-        //     'email'=>"joe@gmail.com",
-        //     'password'=>Hash::make('1234567'),
-        //     'role_id'=>1,
-        //     "authMethod"=>"email",
-        // ]));
-        // DB::table("users")->insert(([
-        //     'first_name'=>"mohamad",
-        //     'last_name'=>"tarhini",
-        //     'email'=>"mohamad@gmail.com",
-        //     'password'=>Hash::make('1234567'),
-        //     'role_id'=>1,
-        //     "authMethod"=>"email",
-        //     'profile_img'=>"http://127.0.0.1:8000/uploads/users_image/default.png"
+        DB::table("users")->insert(([
+            'first_name'=>"joe",
+            'last_name'=>"biden",
+            'email'=>"joe@gmail.com",
+            'password'=>Hash::make('1234567'),
+            "authMethod"=>"email",
+        ]));
+        DB::table("users")->insert(([
+            'first_name'=>"mohamad",
+            'last_name'=>"tarhini",
+            'email'=>"mohamad@gmail.com",
+            'password'=>Hash::make('1234567'),
+            "authMethod"=>"email",
+            'profile_img'=>"http://127.0.0.1:8000/uploads/users_image/default.png"
 
-        // ]));
+        ]));
 
         //  DB::table('projects')->insert([
         //     'name' => "project-1",

@@ -8,10 +8,7 @@ import Message from "../common/Message/message";
 import "./CheckConflict.css";
 
 function CheckConflict({ onData, Pulldata, BranchData, branch }) {
-  // handleCompare(e, openedfileDetails.path_dxf);
-  const [compareResult, setCompareResult] = useState([]);
   const [seletedFile, setSeletedFile] = useState([]);
-  const [compareSuccess, setCompareSuccess] = useState(false);
   const [conflictSVG, setConflitSvg] = useState("");
   const [modalIsOpen, setmodelisOpen] = useState(false);
   const [isAcceptedId, setIsAcceptedId] = useState([]);
@@ -20,6 +17,8 @@ function CheckConflict({ onData, Pulldata, BranchData, branch }) {
   const [isDoneChecking, setIsDoneChecking] = useState(false);
   const [isRejected, setIsRejected] = useState(false);
   const [checkConflictdisplay, setCheckConflictdisplay] = useState(false);
+  const [showImage, setShowImage] = useState(true);
+  const [cache, setCache] = useState({});
 
   function closeModal() {
     setmodelisOpen(false);
@@ -27,24 +26,38 @@ function CheckConflict({ onData, Pulldata, BranchData, branch }) {
   }
 
   async function displayConflict(svg_data) {
-    const data = new FormData();
-    data.append("svg_data", svg_data);
-    try {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/api/file-section/check_conflict",
-        data
-      );
-      const conflictSVGData = await response.data;
-      setConflitSvg(conflictSVGData.data);
-      setmodelisOpen(true);
-    } catch (error) {
-      console.error(error);
+    setShowImage(false);
+    if (checkConflictdisplay) {
+      setCheckConflictdisplay(false);
+
+      if (cache[svg_data]) {
+        setConflitSvg(cache[svg_data]);
+        setShowImage(true);
+      } else {
+        const data = new FormData();
+        data.append("svg_data", svg_data);
+        try {
+          const response = await axios.post(
+            "http://127.0.0.1:8000/api/file-section/check_conflict",
+            {
+              svg_data: svg_data,
+            }
+          );
+          const conflictSVGData = await response.data;
+          setCache((prevCache) => ({
+            ...prevCache,
+            [svg_data]: conflictSVGData.data,
+          }));
+          setConflitSvg(conflictSVGData.data);
+          setShowImage(true);
+        } catch (error) {
+          console.error(error);
+        }
+      }
     }
   }
-
   function ComparePull(main_file) {
     let local_file_path = "";
-    setCompareSuccess(false);
     let main_file_path = main_file.path_dxf;
     BranchData.map((branchFile) => {
       if (branchFile.name === main_file.name) {
@@ -80,7 +93,6 @@ function CheckConflict({ onData, Pulldata, BranchData, branch }) {
   useEffect(() => {
     window.electron.on(channels.Compare_Main_Data_IsDone, (data) => {
       const decodedData = base64.decode(data);
-      setCompareResult(decodedData);
       setCheckConflictdisplay(true);
       displayConflict(decodedData);
     });
@@ -107,15 +119,14 @@ function CheckConflict({ onData, Pulldata, BranchData, branch }) {
             if (file.id)
               return (
                 <div
-                  className={`${
-                    isAcceptedId.includes(file.id) && "accpted-card no-shake"
-                  } ${
-                    isRejectedId.includes(file.id) && "rejected-card no-shake"
-                  } card shake`}
+                  className={` card ${
+                    isAcceptedId.includes(file.id) && "accpted-card "
+                  } ${isRejectedId.includes(file.id) && "rejected-card"}`}
                   key={file.id}
                   onClick={() => {
                     ComparePull(file);
                     setSeletedFile(file);
+                    setmodelisOpen(true);
                   }}>
                   {file.path_svg ? (
                     <img
@@ -130,14 +141,8 @@ function CheckConflict({ onData, Pulldata, BranchData, branch }) {
                   ) : (
                     <Loading />
                   )}
-                  ;
                   <div className="middle-card">
                     <div className="file-name">{file.name}</div>
-                    <div className="card-option">
-                      <div className="point"></div>
-                      <div className="point"></div>
-                      <div className="point"></div>
-                    </div>
                   </div>
                 </div>
               );
@@ -155,68 +160,66 @@ function CheckConflict({ onData, Pulldata, BranchData, branch }) {
             X
           </button>
         </div>
-        {conflictSVG ? (
-          <>
-            <img
-              src={conflictSVG}
-              style={{ height: 700 }}
-              alt="SVG"
-              srcSet=""
-              className="svg-image"
-              key={Date.now()}
-            />
-            {!isAcceptedId.includes(seletedFile.id) &&
-            !isRejectedId.includes(seletedFile.id) ? (
-              <div className="btns">
-                <div
-                  className="accept "
-                  onClick={() => {
-                    acceptFile();
-                    setIsAcceptedId([...isAcceptedId, seletedFile.id]);
-                    closeModal();
-                  }}>
-                  <svg
-                    width="40px"
-                    height="40px"
-                    viewBox="0 0 1024 1024"
-                    class="icon"
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M512 512m-448 0a448 448 0 1 0 896 0 448 448 0 1 0-896 0Z"
-                      fill="#4CAF50"
-                    />
-                    <path
-                      d="M738.133333 311.466667L448 601.6l-119.466667-119.466667-59.733333 59.733334 179.2 179.2 349.866667-349.866667z"
-                      fill="#CCFF90"
-                    />
-                  </svg>
-                </div>
-                <div
-                  className="reject"
-                  onClick={() => {
-                    setIsRejected(true);
-                    setIsRejectedId([...isRejectedId, seletedFile.id]);
-                    closeModal();
-                  }}>
-                  <svg
-                    width="40px"
-                    height="40px"
-                    viewBox="0 0 1024 1024"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      fill="#ff0000"
-                      d="M512 64a448 448 0 1 1 0 896 448 448 0 0 1 0-896zM288 512a38.4 38.4 0 0 0 38.4 38.4h371.2a38.4 38.4 0 0 0 0-76.8H326.4A38.4 38.4 0 0 0 288 512z"
-                    />
-                  </svg>
-                </div>
-              </div>
-            ) : (
-              <div> </div>
-            )}
-          </>
+        <img
+          src={
+            showImage
+              ? conflictSVG
+              : "https://forums.synfig.org/uploads/default/original/2X/3/320a629e5c20a8f67d6378c5273cda8a9e2ff0bc.gif"
+          }
+          style={{ height: 700 }}
+          alt="SVG"
+          srcSet=""
+          className="svg-image"
+          key={Date.now()}
+        />
+        {!isAcceptedId.includes(seletedFile.id) &&
+        !isRejectedId.includes(seletedFile.id) ? (
+          <div className="btns">
+            <div
+              className="accept "
+              onClick={() => {
+                acceptFile();
+                setIsAcceptedId([...isAcceptedId, seletedFile.id]);
+                closeModal();
+              }}>
+              <svg
+                width="40px"
+                height="40px"
+                viewBox="0 0 1024 1024"
+                class="icon"
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M512 512m-448 0a448 448 0 1 0 896 0 448 448 0 1 0-896 0Z"
+                  fill="#4CAF50"
+                />
+                <path
+                  d="M738.133333 311.466667L448 601.6l-119.466667-119.466667-59.733333 59.733334 179.2 179.2 349.866667-349.866667z"
+                  fill="#CCFF90"
+                />
+              </svg>
+            </div>
+            <div
+              className="reject"
+              onClick={() => {
+                setIsRejected(true);
+                setIsRejectedId([...isRejectedId, seletedFile.id]);
+                closeModal();
+              }}>
+              <svg
+                width="40px"
+                height="40px"
+                viewBox="0 0 1024 1024"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                  fill="#ff0000"
+                  d="M512 64a448 448 0 1 1 0 896 448 448 0 0 1 0-896zM288 512a38.4 38.4 0 0 0 38.4 38.4h371.2a38.4 38.4 0 0 0 0-76.8H326.4A38.4 38.4 0 0 0 288 512z"
+                />
+              </svg>
+            </div>
+          </div>
         ) : (
-          <Loading />
+          <div> </div>
         )}
       </Modal>
     </>

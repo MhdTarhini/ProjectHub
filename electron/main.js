@@ -83,7 +83,6 @@ ipcMain.on(channels.Extract_Data, (event, arg) => {
 ipcMain.on(channels.Compare_Data, (event, arg) => {
   const { new_version_data, old_version_path } = arg;
   const tempFilePath = path.join(__dirname, "data", "tempfile.dxf");
-  // const tempFilePath = "tempfile.dxf";
   fs.writeFileSync(tempFilePath, new_version_data);
   let pyCompare = new PythonShell("./compare_data.py", {
     args: [tempFilePath, old_version_path],
