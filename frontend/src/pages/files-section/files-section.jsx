@@ -17,7 +17,6 @@ import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { Dialog } from "@headlessui/react";
 import Logo from "../../component/logo/Logo";
 import Message from "../../component/common/Message/message";
-import { Alert } from "@mui/material";
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -32,8 +31,6 @@ function FilesSection() {
   const [getSvg, setGetSvg] = useState("");
   const [brancheName, setBrancheName] = useState("");
   const [SvgSuccess, setSvgSuccess] = useState(false);
-  const [dxfFile, setDxfFile] = useState(null);
-  const [branche, setBranche] = useState("main");
   const [branches, setBranches] = useState([]);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -50,7 +47,6 @@ function FilesSection() {
   const [pullData, setPullData] = useState([]);
   const [open, setOpen] = useState(false);
   const [CheckingConlfectFile, SetCheckingConlfectFile] = useState(false);
-  const [pullFilesIsDone, setPullFilesIsDone] = useState(false);
   const [pullMessage, setPullMessage] = useState([]);
   const [isdeleted, setIsdeleted] = useState(false);
   const [newBranchDone, setNewbranchDone] = useState(false);
@@ -109,7 +105,6 @@ function FilesSection() {
       const reader = new FileReader();
       reader.onload = (event) => {
         const dxf_file = event.target.result;
-        setDxfFile(dxf_file);
         window.electron.send(channels.Covert_Data_to_svg, { dxf_file });
       };
       reader.readAsDataURL(file_uploaded);
@@ -204,7 +199,6 @@ function FilesSection() {
         setPullData(response.data.data);
         setPullMessage(response.data);
         setOpen(true);
-        setPullFilesIsDone(true);
       }
     } catch (error) {
       console.error(error);
@@ -287,12 +281,8 @@ function FilesSection() {
             )}
           </div>
           <div className="hr"></div>
-          {/* {noBranchMessage && <Message text={"No Branch Founded"} />} */}
-          {newBranchDone && (
-            <Alert severity="success">
-              This is a success alert — check it out!
-            </Alert>
-          )}
+          {noBranchMessage && <Message text={"No Branch Founded"} />}
+          {isdeleted && <Message text={"File Is Deleted"} type={"success"} />}
           <div className="branches-filter">
             <div className="branches">
               <Menu
@@ -373,7 +363,7 @@ function FilesSection() {
                             </Menu.Item>
                           </div>
                         ))}
-                        {!isManager && (
+                        {!isManager && user.active !== 0 && (
                           <div className="py-1">
                             <Menu.Item onClick={openBrancheModal}>
                               {({ active }) => (
@@ -712,6 +702,119 @@ function FilesSection() {
           </Dialog>
         </Transition.Root>
       </div>
+      {/* <Modal
+        isOpen={AddContentIsOpen}
+        onRequestClose={closeAddContentModal}
+        ariaHideApp={false}
+        className={`new-issue-model noImage`}
+        style={{ overlay: { background: "rgb(0 0 0 / 15%)" } }}>
+        <h2 className="model-title">Upload New Media</h2>
+        <div className="upload-file-form">
+          {imagedIsUpload ? (
+            <div>
+              <div className="reupload-image">
+                <img
+                  src={imageSrc}
+                  alt="Uploaded Preview"
+                  style={{ maxWidth: "300px", maxHeight: "300px" }}
+                />
+                <svg
+                  className="reupload-icon"
+                  width="30px"
+                  height="30px"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  onClick={() => {
+                    setImageSrc([]);
+                    setImageIsUploaded(false);
+                  }}>
+                  <g clip-path="url(#clip0_1276_7761)">
+                    <path
+                      d="M19.7285 10.9288C20.4413 13.5978 19.7507 16.5635 17.6569 18.6573C15.1798 21.1344 11.4826 21.6475 8.5 20.1966M18.364 8.05071L17.6569 7.3436C14.5327 4.21941 9.46736 4.21941 6.34316 7.3436C3.42964 10.2571 3.23318 14.8588 5.75376 18M18.364 8.05071H14.1213M18.364 8.05071V3.80807"
+                      stroke="#1C274C"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_1276_7761">
+                      <rect width="24" height="24" fill="white" />
+                    </clipPath>
+                  </defs>
+                </svg>
+              </div>
+              <Input
+                label={"File Name"}
+                name={"file-name"}
+                type={"text"}
+                onchange={handleContentTitle}
+              />
+              {newContetError && (
+                <div className="error">{newContentTitleError}</div>
+              )}
+            </div>
+          ) : (
+            <div className="input-new-image">
+              <label htmlFor="issue-image" className="issue-image-label">
+                <svg
+                  width="25px"
+                  height="25px"
+                  viewBox="-2 0 32 32"
+                  version="1.1">
+                  <title>arrow-bottom</title>
+                  <desc>Created with Sketch Beta.</desc>
+                  <defs></defs>
+                  <g
+                    id="Page-1"
+                    stroke="none"
+                    stroke-width="1"
+                    fill="none"
+                    fill-rule="evenodd">
+                    <g
+                      id="Icon-Set"
+                      transform="translate(-519.000000, -931.000000)"
+                      fill="rgb(0 0 0 / 85%)">
+                      <path
+                        d="M543,935 L540,935 L540,937 L543,937 C544.104,937 545,937.896 545,939 L545,959 C545,960.104 544.104,961 543,961 L523,961 C521.896,961 521,960.104 521,959 L521,939 C521,937.896 521.896,937 523,937 L526,937 L526,935 L523,935 C520.791,935 519,936.791 519,939 L519,959 C519,961.209 520.791,963 523,963 L543,963 C545.209,963 547,961.209 547,959 L547,939 C547,936.791 545.209,935 543,935 L543,935 Z M525.343,949.758 L532.242,956.657 C532.451,956.865 532.728,956.954 533,956.939 C533.272,956.954 533.549,956.865 533.758,956.657 L540.657,949.758 C541.048,949.367 541.048,948.733 540.657,948.343 C540.267,947.953 539.633,947.953 539.242,948.343 L534,953.586 L534,932 C534,931.447 533.553,931 533,931 C532.448,931 532,931.447 532,932 L532,953.586 L526.757,948.343 C526.367,947.953 525.733,947.953 525.343,948.343 C524.952,948.733 524.952,949.367 525.343,949.758 L525.343,949.758 Z"
+                        id="arrow-bottom"></path>
+                    </g>
+                  </g>
+                </svg>
+                Upload Image
+                {isloading && <Loading />}
+              </label>
+              <input
+                type="file"
+                name="issue-image"
+                id="issue-image"
+                onChange={(e) => {
+                  handleImageChange(e);
+                  setImageIsUploaded(true);
+                }}
+              />
+              {newContetError && (
+                <div className="error">{newContentImageError}</div>
+              )}
+            </div>
+          )}
+          <div className="btns-new-file">
+            <button className="btn close-btn" onClick={closeAddContentModal}>
+              Close
+            </button>
+
+            <button
+              className={` ${imagedIsUpload ? "btn" : "on-procress"}`}
+              onClick={() => {
+                handleAddNewContent();
+                setIsloading(true);
+              }}>
+              Add
+            </button>
+          </div>
+        </div>
+      </Modal> */}
     </>
   );
 }

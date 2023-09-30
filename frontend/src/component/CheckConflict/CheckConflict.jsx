@@ -94,7 +94,7 @@ function CheckConflict({ onData, Pulldata, BranchData, branch }) {
 
   return (
     <>
-      {isAccepted && <Message text={"File Is Accepted"} />}
+      {isAccepted && <Message text={"File Is Accepted"} type={"success"} />}
       {isDoneChecking ? (
         <div className="loading-display">
           <Loading />

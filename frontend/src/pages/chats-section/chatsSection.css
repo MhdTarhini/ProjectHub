@@ -3,6 +3,7 @@
     padding: 0px 0px 0px 27px;
     background: #EEEEEE;
     height: 89.2vh;
+    padding: 20px;
 
 }
 .left-side-chat {
@@ -85,7 +86,6 @@
         width: 100%;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 5px;
     }
     
     .date-name {
@@ -105,7 +105,7 @@
         font-size: 13px;
         color: #929292;
         left: 110px;
-        top: 200px
+        top: 220px
     }
     
     .date {
@@ -125,9 +125,10 @@
 }
 .user-info-contact {
     display: flex;
-    padding: 20px 20px 20px 10px;
+    padding: 10px 20px 10px 10px;
     gap:10px;
     cursor: pointer;
+    align-items: center
     
     
 }

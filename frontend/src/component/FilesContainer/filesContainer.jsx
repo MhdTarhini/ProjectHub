@@ -453,6 +453,14 @@ function FilesContainer({
     closeCheckFile();
   }
 
+  function doneCommit() {
+    setIsDoneCommitMain(true);
+  }
+
+  function donePush() {
+    setIsDone(true);
+  }
+
   return (
     <>
       {openCheck ? (
@@ -478,12 +486,19 @@ function FilesContainer({
             </div>
           ) : (
             <div className="files-controller">
-              {isDone && <Message text={"File Is Pushed To Branch"} />}
+              {isDone && (
+                <Message text={"File Is Pushed To Branch"} type={"success"} />
+              )}
 
               {isDoneCommitMain && (
-                <Message text={"File Is Commited To Main Branch"} />
+                <Message
+                  text={"File Is Commited To Main Branch"}
+                  type={"success"}
+                />
               )}
-              {isdeleted && <Message text={"delete successful"} />}
+              {isdeleted && (
+                <Message text={"delete successful"} type={"success"} />
+              )}
               {branche.name === "main" ? (
                 doneGetFiles ? (
                   <div className="branches-in-main">
@@ -572,7 +587,6 @@ function FilesContainer({
                           setSeletedFile(file.path_svg);
                           openFileModal();
                           setOpen(true);
-                          // setGetDetails(true);
                           getDxfData(file.path_dxf);
                           getfileCommit(file.id);
                           getMainFilePath(file.name);
@@ -800,6 +814,7 @@ function FilesContainer({
                                         closeCheckFile={closeCheckFile}
                                         closeModal={closeModal}
                                         close={close}
+                                        donePush={donePush}
                                       />
                                       {/* <Input
                                         label={"Commit message"}
@@ -1043,6 +1058,7 @@ function FilesContainer({
                                       mainDxfPath={mainDxfPath}
                                       mainDxfVersion={mainDxfVersion}
                                       close={close}
+                                      doneCommit={doneCommit}
                                       mainDxfId={mainDxfId}
                                       closeCheckFile={closeCheckFile}
                                     />
@@ -1132,7 +1148,8 @@ function FilesContainer({
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         ariaHideApp={false}
-        className="check-conflict-model">
+        className="check-conflict-model"
+        style={{ overlay: { background: "rgb(0 0 0 / 15%)" } }}>
         {/* <div className="btns close">
           <button className="btn" onClick={closeModal}>
             X
@@ -1171,7 +1188,8 @@ function FilesContainer({
         isOpen={CheckFileIsOpen}
         onRequestClose={closeCheckFile}
         ariaHideApp={false}
-        className="check-conflict-model">
+        className="check-conflict-model"
+        style={{ overlay: { background: "rgb(0 0 0 / 15%)" } }}>
         {/* <div className="btns close">
           <button className="btn" onClick={closeCheckFile}>
             X

@@ -59,14 +59,8 @@ class BranchController extends Controller
         ], 404); 
     }
 
-    try {
-        $branch->delete();
-    } catch (\Exception $e) {
-        return response()->json([
-            'status' => 'error',
-            'message' => 'Failed to delete branch',
-        ], 500); 
-    }
+    $branch->delete();
+
 
     return response()->json([
         'status' => 'success',

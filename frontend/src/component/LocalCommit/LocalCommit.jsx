@@ -7,7 +7,13 @@ import base64 from "base-64";
 import Message from "../common/Message/message";
 import Loading from "../common/loading";
 
-function LocalCommit({ openedfileDetails, closeModal, closeCheckFile, close }) {
+function LocalCommit({
+  openedfileDetails,
+  closeModal,
+  closeCheckFile,
+  close,
+  donePush,
+}) {
   const user = JSON.parse(localStorage.getItem("user"));
   axios.defaults.headers.common["Authorization"] = `Bearer ${user.user.token}`;
   const [modalIsOpen, setIsOpen] = React.useState(false);
@@ -145,6 +151,7 @@ function LocalCommit({ openedfileDetails, closeModal, closeCheckFile, close }) {
         setIsPushed(true);
         setIsloading(false);
         setIsDone(true);
+        donePush();
         setBranchFiles.files?.push(IsPushed.data);
       }
     } catch (error) {
@@ -175,9 +182,7 @@ function LocalCommit({ openedfileDetails, closeModal, closeCheckFile, close }) {
   }, []);
   return (
     <>
-      <div className="files-controller">
-        {isDone && <Message text={"File Is Pushed To Branch"} />}
-      </div>
+      <div>{isDone && <Message text={"File Is Pushed To Branch"} />}</div>
       <Input
         label={"Commit message"}
         name={"Commit-message"}
@@ -185,7 +190,7 @@ function LocalCommit({ openedfileDetails, closeModal, closeCheckFile, close }) {
         onchange={handleCommitMessage}
       />
       <div className="number-of-letter">{commitMessage.length}/50</div>
-      <div>
+      <div className="commit-btns-local">
         <div className="input-upload-file">
           <label
             className={`btn updated-file ${
@@ -275,12 +280,8 @@ function LocalCommit({ openedfileDetails, closeModal, closeCheckFile, close }) {
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         ariaHideApp={false}
-        className="check-conflict-model">
-        {/* <div className="btns close">
-          <button className="btn" onClick={closeModal}>
-            X
-          </button>
-        </div> */}
+        className="check-conflict-model"
+        style={{ overlay: { background: "rgb(0 0 0 / 15%)" } }}>
         {conflictSvg ? (
           <img
             src={conflictSvg}

@@ -243,7 +243,9 @@ function ProjectsTable({ openedProject }) {
 
   return (
     <>
-      {/* {updateProjectIsDone && <Message text={`Project Is Updated`} />} */}
+      {updateProjectIsDone && (
+        <Message text={`Project Is Updated`} type={"success"} />
+      )}
       <div className="py-14 sm:py-32 memebers-details">
         <div className="mx-auto grid max-w-7xl gap-x-8 px-6 lg:px-8 xl:grid-auto-columns">
           <div className="max-w-2xl">
@@ -277,27 +279,37 @@ function ProjectsTable({ openedProject }) {
                       />
                     </svg>
                     <svg
-                      fill="#9393ff"
-                      version="1.1"
-                      id="Capa_1"
-                      width="40px"
-                      height="40px"
-                      viewBox="0 0 27.021 27.022"
+                      width="32px"
+                      height="32px"
+                      viewBox="-0.01 0 20.026 20.026"
+                      xmlns="http://www.w3.org/2000/svg"
                       onClick={() => {
                         setOpenAddMemberModel(true);
                       }}>
-                      <g>
-                        <g>
-                          <path
-                            d="M17.855,21.223c0-1.902,1.049-3.55,2.588-4.44c-0.963-0.308-2-0.552-3.09-0.722c2.342-1.299,3.929-3.794,3.929-6.663
-			c0-4.207-3.41-7.617-7.617-7.617s-7.617,3.41-7.617,7.617c0,2.868,1.587,5.364,3.929,6.663C4.223,16.958,0,19.897,0,23.389h18.35
-			C18.041,22.727,17.855,22,17.855,21.223z"
-                          />
-                        </g>
+                      <g id="add-user-left-8" transform="translate(-2 -1.974)">
                         <path
-                          d="M23.004,17.206c-2.218,0-4.018,1.797-4.018,4.018c0,2.219,1.8,4.017,4.018,4.017c2.219,0,4.018-1.798,4.018-4.017
-		C27.02,19.002,25.223,17.206,23.004,17.206z M25.627,21.936h-1.909v1.91h-1.427v-1.91h-1.91v-1.429h1.91v-1.911h1.427v1.911h1.909
-		V21.936z"
+                          id="secondary"
+                          fill="#0F8EEA"
+                          d="M11,17a6,6,0,0,0-3.4-5.4A6,6,0,1,1,19,9a5.94,5.94,0,0,1-1.34,3.77,1,1,0,0,0,.28,1.45A7,7,0,0,1,21,20a1,1,0,0,1-1,1H9.46A5.93,5.93,0,0,0,11,17Z"
+                        />
+                        <path
+                          id="primary"
+                          d="M3,17H7M5,19V15"
+                          fill="none"
+                          stroke="#000000"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                        />
+                        <path
+                          id="primary-2"
+                          data-name="primary"
+                          d="M7.35,11a5.9,5.9,0,0,1-.27-3A6,6,0,0,1,19,9a5.94,5.94,0,0,1-1.34,3.77,1,1,0,0,0,.28,1.45A7,7,0,0,1,21,20a1,1,0,0,1-1,1H9"
+                          fill="none"
+                          stroke="#000000"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
                         />
                       </g>
                     </svg>
@@ -372,9 +384,9 @@ function ProjectsTable({ openedProject }) {
                           openedProject.id
                         );
                         setIsloading(true);
-                      document.getElementById("project-name").value = "";
-                      document.getElementById("project-location").value = "";
-                      document.getElementById("description").value = "";
+                        document.getElementById("project-name").value = "";
+                        document.getElementById("project-location").value = "";
+                        document.getElementById("description").value = "";
                       }}>
                       Update Project
                     </div>
@@ -388,7 +400,10 @@ function ProjectsTable({ openedProject }) {
                 </div>
                 <div className="line-edit"></div>
                 {creatingTeamIsDone && (
-                  <Message text={`${createdTeamName} Team Is Created`} />
+                  <Message
+                    text={`${createdTeamName} Team Is Created`}
+                    type={"success"}
+                  />
                 )}
               </div>
               <h2 className="model-title new-project-model-title">Add Team</h2>

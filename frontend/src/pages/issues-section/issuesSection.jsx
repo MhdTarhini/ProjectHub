@@ -119,7 +119,9 @@ function IssuesSection() {
         <Logo />
       ) : (
         <div className="issues-section">
-          {isDoneCreateNewIssue && <Message text={`New Issue Is Created`} />}
+          {isDoneCreateNewIssue && (
+            <Message text={`New Issue Is Created`} type={"success"} />
+          )}
           <div className="top-file-section">
             <div className="issue-section-title">Issues Section</div>
             <div
@@ -165,7 +167,9 @@ function IssuesSection() {
             isOpen={modalIsOpen}
             onRequestClose={closeModal}
             ariaHideApp={false}
-            className={`new-issue-model ${imageIsUploaded ? "" : "noImage"}`}
+            className={`new-issue-model ${
+              imageIsUploaded ? "withimage" : "noImage"
+            }`}
             style={{ overlay: { background: "rgb(0 0 0 / 15%)" } }}>
             <h2 className="model-title">Upload New File</h2>
             <div className="upload-file-form">

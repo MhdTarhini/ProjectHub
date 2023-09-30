@@ -43,7 +43,6 @@ function ChatsSection() {
   const [isMulti, setIsMulti] = useState(false);
   const [createMultiRoomIsOpen, setCreateMultiRoomIsOpen] = useState(false);
   const [seletedRoomInfo, setSeletedRoomInfo] = useState([]);
-  // const { teamMember } = useContext(ProjectContext);
   const [selected, setSelected] = useState([]);
   const [teamMember, setTeamMember] = useState([]);
   const [showlogo, setShowlogo] = useState(true);
@@ -240,7 +239,9 @@ function ChatsSection() {
               <div className="room-list">
                 {rooms.map((room) =>
                   userRooms.map((userRoom) => {
-                    if (room.data.name === userRoom.Room_db_id) {
+                    console.log(room.data.name);
+                    console.log(userRoom.userRoom);
+                    if (room.data.name === userRoom.name) {
                       return (
                         <>
                           <div

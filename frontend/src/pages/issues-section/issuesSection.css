@@ -292,6 +292,7 @@ border: 1px solid var(--stroke, #E8E8E8);
     color: #000;
     position: absolute;
     left: 30%;
+    top: 10px;
     width: 500px;
     border: 1px solid var(--stroke, #E8E8E8);
     background: #FFF;

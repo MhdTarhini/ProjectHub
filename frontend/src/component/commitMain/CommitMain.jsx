@@ -14,6 +14,7 @@ function CommitMain({
   close,
   mainDxfId,
   closeCheckFile,
+  doneCommit,
 }) {
   const user = JSON.parse(localStorage.getItem("user"));
   axios.defaults.headers.common["Authorization"] = `Bearer ${user.user.token}`;
@@ -68,7 +69,7 @@ function CommitMain({
       const commitData = await response.data;
       setIsloading(false);
       setMainError(false);
-      setIsDoneCommitMain(true);
+      doneCommit();
     } catch (error) {
       setMainError(true);
       setMainErrorMessage(error.response.data.message);
@@ -102,11 +103,7 @@ function CommitMain({
   useEffect(() => {
     window.electron.on(channels.Compare_Main_Data_IsDone, (data) => {
       const decodedData = base64.decode(data);
-      setMainCompareResult(decodedData);
       displayConflict(decodedData);
-      setMainCompareSuccess(true);
-      setGoCheckConflict(true);
-      setIsloading(false);
     });
   }, []);
 

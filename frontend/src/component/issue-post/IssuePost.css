@@ -54,7 +54,6 @@
 }
 
 .btn.empty-button {
-    background-color: #007bff;
     color: #fff;
     padding: 10px 20px;
     border-radius: 4px;
@@ -65,5 +64,5 @@
 }
 
 .btn.empty-button:hover {
-    background-color: #0056b3;
+    background-color: #31a1f1;
 }

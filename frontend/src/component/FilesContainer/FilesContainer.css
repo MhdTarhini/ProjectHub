@@ -44,7 +44,8 @@
     border-radius: 10px;
     z-index: 0;
     color: white;
-    background-color: #07a6f0;
+    /* background-color: #07a6f0; */
+        background-color: #0f8eea;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -313,7 +314,7 @@
 }
 
 .updated-file {
-    background-color: #07a6f0;
+    background-color: #0f8eea;
     align-self: flex-start;
     width: 180px;
     display: flex;
@@ -322,7 +323,7 @@
 }
 
 .updated-file:hover {
-    background-color: #21b4f8;
+    background-color: #31a1f1;
 }
 
 .zindex {
@@ -335,7 +336,7 @@
 
 .on-procress {
     cursor: default;
-    background: #73bff5fa;
+    background: #0f8eea;
     padding: 10px 20px;
     gap: 10px;
     align-self: center;
@@ -465,4 +466,7 @@
     padding: 40px 20px;
     border-radius: 8px;
     width: 1300px;
+}
+.commit-btns-local {
+    align-self: center;
 }
