@@ -4,7 +4,7 @@ import IssuePost from "../../component/issue-post/IssuePost";
 import Modal from "react-modal";
 import Input from "../../component/input/input";
 import axios from "axios";
-import Loading from "../../component/common/loading";
+import Loading from "../../component/common/loading/loading";
 import Message from "../../component/common/Message/message";
 import Logo from "../../component/logo/Logo";
 

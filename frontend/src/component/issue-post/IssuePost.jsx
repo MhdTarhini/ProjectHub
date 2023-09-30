@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import "./IssuePost.css";
 import axios from "axios";
 import Input from "../input/input";
-import Loading from "../common/loading";
+import Loading from "../common/loading/loading";
 import Modal from "react-modal";
 import { MultiSelect } from "react-multi-select-component";
 import { ProjectContext } from "../../context/ProjectContext";

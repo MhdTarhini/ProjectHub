@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { channels } from "../../shared/constants";
 import base64 from "base-64";
 import Modal from "react-modal";
-import Loading from "../common/loading";
+import Loading from "../common/loading/loading";
 import axios from "axios";
 import Message from "../common/Message/message";
 import "./CheckConflict.css";

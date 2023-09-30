@@ -4,7 +4,7 @@ import Modal from "react-modal";
 import { MultiSelect } from "react-multi-select-component";
 import Input from "../../component/input/input";
 import axios from "axios";
-import Loading from "../../component/common/loading";
+import Loading from "../../component/common/loading/loading";
 import Message from "../../component/common/Message/message";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";

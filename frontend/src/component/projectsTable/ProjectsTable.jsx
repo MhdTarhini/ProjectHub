@@ -5,7 +5,7 @@ import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import "./ProjectsTable.css";
 import Input from "../input/input";
-import Loading from "../common/loading";
+import Loading from "../common/loading/loading";
 import { MultiSelect } from "react-multi-select-component";
 import { ProjectContext } from "../../context/ProjectContext";
 import Message from "../common/Message/message";

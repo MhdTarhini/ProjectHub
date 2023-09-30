@@ -5,7 +5,7 @@ import { channels } from "../../shared/constants";
 import Modal from "react-modal";
 import base64 from "base-64";
 import Message from "../common/Message/message";
-import Loading from "../common/loading";
+import Loading from "../common/loading/loading";
 
 function LocalCommit({
   openedfileDetails,

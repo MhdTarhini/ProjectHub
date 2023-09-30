@@ -314,23 +314,12 @@ function Login() {
                       )}
                     </div>
                     <div className="bottom">
-                      <div className="remember-me">
-                        <input
-                          type="checkbox"
-                          name="remember"
-                          id="remember"
-                          onChange={handleRemmeberMe}
-                        />
-                        <label htmlFor="remember" className="remember-label">
-                          remeber me
-                        </label>
-                      </div>
                       <div
                         className="forget-pass"
                         onClick={() => {
                           setIsForgotPassword(true);
                         }}>
-                        forgote password ?
+                        forgot password ?
                       </div>
                     </div>
                     <div
@@ -391,7 +380,7 @@ function Login() {
                 />
               </svg>
               <img
-                src="./login-display.svg"
+                src="http://127.0.0.1:8000/uploads/assets/login-display.svg"
                 alt="sss"
                 className="mid-svg"
                 style={{ zIndex: "1" }}

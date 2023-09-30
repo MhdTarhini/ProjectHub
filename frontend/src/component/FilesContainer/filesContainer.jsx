@@ -7,7 +7,7 @@ import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import base64 from "base-64";
-import Loading from "../common/loading";
+import Loading from "../common/loading/loading";
 import Message from "../common/Message/message";
 import CheckConflict from "../CheckConflict/CheckConflict";
 import LocalCommit from "../LocalCommit/LocalCommit";

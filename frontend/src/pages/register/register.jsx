@@ -21,12 +21,11 @@ function Register() {
   const navigate = useNavigate();
      
 
-
   async function handleRegister(
-    email,
-    password,
     firstName,
     lastName,
+    email,
+    password,
     profileImage,
     authMethod
   ) {
@@ -73,20 +72,12 @@ function Register() {
 
     signInWithPopup(auth, provider)
       .then((result) => {
-        console.log(result.user);
-        console.log(result.user.email);
-        // setEmail(result.user.email);
-        // setFristName(result.user.displayName.split(" ")[0]);
-        // setLastName(result.user.displayName.split(" ")[1]);
-        // setProfileImage(result.user.photoURL);
-        // setPassword(null);
-        // setAuthMethod("google");
         handleRegister(
-          result.user.email,
           result.user.displayName.split(" ")[0],
           result.user.displayName.split(" ")[1],
-          result.user.photoURL,
+          result.user.email,
           null,
+          result.user.photoURL,
           "google"
         );
       })
@@ -137,7 +128,11 @@ function Register() {
           />
         </svg>
         <div className="register-description">
-          <img src="./register-text.svg" alt="" srcSet="" />
+          <img
+            src="http://127.0.0.1:8000/uploads/assets/register-text.svg"
+            alt=""
+            srcSet=""
+          />
         </div>
         <svg
           width="360"
@@ -275,10 +270,10 @@ function Register() {
             className="login-btn"
             onClick={() => {
               handleRegister(
-                email,
-                password,
                 firstName,
                 lastName,
+                email,
+                password,
                 profileImage,
                 authMethod
               );

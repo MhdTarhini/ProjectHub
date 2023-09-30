@@ -9,7 +9,7 @@ import axios from "axios";
 import { MultiSelect } from "react-multi-select-component";
 import FilesContainer from "../../component/FilesContainer/filesContainer";
 import base64 from "base-64";
-import Loading from "../../component/common/loading";
+import Loading from "../../component/common/loading/loading";
 import Logo from "../../component/logo/Logo";
 import Message from "../../component/common/Message/message";
 import PopupMessage from "../../component/common/Message/popup-message/popupMessage";

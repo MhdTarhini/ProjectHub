@@ -5,7 +5,7 @@ import Logo from "../../component/logo/Logo";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import Message from "../../component/common/Message/message";
-import Loading from "../../component/common/loading";
+import Loading from "../../component/common/loading/loading";
 import Modal from "react-modal";
 
 function Dashboard() {

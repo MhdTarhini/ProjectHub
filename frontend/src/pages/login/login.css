@@ -159,7 +159,7 @@
 .bottom {
     display: flex;
     width: 471px;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: flex-start;
 }
 

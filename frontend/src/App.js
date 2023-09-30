@@ -13,17 +13,6 @@ import IssuesSection from "./pages/issues-section/issuesSection";
 import ChatsSection from "./pages/chats-section/chatsSection";
 import SettingsPage from "./pages/settings-page/settingsPage";
 
-import { initializeApp } from "firebase/app";
-
-initializeApp({
-  apiKey: "AIzaSyDsB1iitOEJl9_95lfdpU4jHNi4eS4VCvs",
-  authDomain: "projecthub-28b52.firebaseapp.com",
-  projectId: "projecthub-28b52",
-  storageBucket: "projecthub-28b52.appspot.com",
-  messagingSenderId: "810956090127",
-  appId: "1:810956090127:web:c42e239ee518b89f1bec7a",
-  measurementId: "G-BF9LZW2GDY",
-});
 function App() {
   return (
     <AuthContextProvider>

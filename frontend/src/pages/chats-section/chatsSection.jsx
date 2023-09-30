@@ -1,8 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./chatsSection.css";
 import { MultiSelect } from "react-multi-select-component";
 import {
-  getFirestore,
   onSnapshot,
   collection,
   addDoc,
@@ -10,25 +9,12 @@ import {
   query,
   serverTimestamp,
 } from "firebase/firestore";
-import { initializeApp } from "firebase/app";
 import { signOut } from "firebase/auth";
 import { getAuth } from "firebase/auth";
-import { ProjectContext } from "../../context/ProjectContext";
 import axios from "axios";
 import Modal from "react-modal";
 import Logo from "../../component/logo/Logo";
-
-const db = getFirestore(
-  initializeApp({
-    apiKey: "AIzaSyDsB1iitOEJl9_95lfdpU4jHNi4eS4VCvs",
-    authDomain: "projecthub-28b52.firebaseapp.com",
-    projectId: "projecthub-28b52",
-    storageBucket: "projecthub-28b52.appspot.com",
-    messagingSenderId: "810956090127",
-    appId: "1:810956090127:web:c42e239ee518b89f1bec7a",
-    measurementId: "G-BF9LZW2GDY",
-  })
-);
+import db from "../../firebase";
 
 function ChatsSection() {
   const userData = JSON.parse(localStorage.getItem("user"));

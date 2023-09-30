@@ -6,7 +6,7 @@ import { Listbox } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import axios from "axios";
 import Modal from "react-modal";
-import Loading from "../common/loading";
+import Loading from "../common/loading/loading";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");

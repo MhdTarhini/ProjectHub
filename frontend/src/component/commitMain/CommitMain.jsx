@@ -3,7 +3,7 @@ import Input from "../input/input";
 import axios from "axios";
 import { channels } from "../../shared/constants";
 import base64 from "base-64";
-import Loading from "../common/loading";
+import Loading from "../common/loading/loading";
 import Modal from "react-modal";
 
 function CommitMain({

@@ -4,7 +4,7 @@ import Gantt from "../../component/gantt-calendar/gant";
 import "./tasksSection.css";
 import axios from "axios";
 import Logo from "../../component/logo/Logo";
-import Loading from "../../component/common/loading";
+import Loading from "../../component/common/loading/loading";
 
 const TasksSection = () => {
   const user = JSON.parse(localStorage.getItem("user"));
