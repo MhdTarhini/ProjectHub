@@ -54,8 +54,6 @@ function FilesContainer({
   const [mainDxfVersion, setMainDxfVersion] = useState("");
   const [getSvg, setGetSvg] = useState("");
   const [svgSuccess, setSvgSuccess] = useState(false);
-  const [isPushed, setIsPushed] = useState(false);
-  const [commitInfo, setCommitInfo] = useState([]);
   const [mainCommitMessage, setMainCommitMessage] = useState("");
   const [mainDxfId, setMainDxfId] = useState("");
   const [CheckFileIsOpen, setCheckFileIsOpen] = useState(false);
@@ -63,12 +61,10 @@ function FilesContainer({
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [errorLocal, setLocalError] = useState(false);
-  const [errorLocalMessage, setLocalErrorMessage] = useState("");
   const [errorMain, setMainError] = useState(false);
   const [errorMainMessage, setMainErrorMessage] = useState("");
   const [isLoading, setIsloading] = useState(false);
   const [isLocalFileLoading, setIsLocalFileLoading] = useState(false);
-  const [isLocalCommitLoading, setIsLocalCommitLoading] = useState(false);
   const [isDone, setIsDone] = useState(false);
   const [noMainMatch, setNoMainMatch] = useState(false);
   const [isCommited, setIsCommited] = useState(false);
@@ -79,8 +75,6 @@ function FilesContainer({
   const [isCheckingConlfectFile, SetCheckingConlfectFile] = useState(openCheck);
   const [showImage, setShowImage] = useState(true);
   const [detailsAI, setDetailsAI] = useState("");
-  const [getDetails, setGetDetails] = useState(false);
-  // const [branchFiles, setBranchFiles] = useState([]);
   const [branchFiles, setBranchFiles] = useState({
     files: [],
   });
@@ -129,39 +123,6 @@ function FilesContainer({
       const content = response;
     } catch (error) {
       console.error(error);
-    }
-  }
-
-  async function handleCommitMain(
-    compare_Svg,
-    new_path_svg,
-    old_path_dxf,
-    new_path_dxf,
-    version,
-    status
-  ) {
-    const data = new FormData();
-    data.append("message", mainCommitMessage);
-    data.append("file_id", noMainMatch ? null : mainDxfId);
-    data.append("new_path_svg", new_path_svg);
-    data.append("new_path_dxf", new_path_dxf);
-    data.append("old_path_dxf", old_path_dxf);
-    data.append("compare_path_svg", compare_Svg);
-    data.append("version", version);
-    data.append("status", status);
-    data.append("team_id", user.team_active);
-    try {
-      const response = await axios.post(
-        `http://127.0.0.1:8000/api/file-section/main_commit`,
-        data
-      );
-      const commitData = await response.data;
-      setIsloading(false);
-      setMainError(false);
-      setIsDoneCommitMain(true);
-    } catch (error) {
-      setMainError(true);
-      setMainErrorMessage(error.response.data.message);
     }
   }
 
@@ -236,11 +197,6 @@ function FilesContainer({
       setMainErrorMessage(error.response.data.message);
     }
   }
-
-  // function handleCommitMessage(e) {
-  //   setCommitMessage(e.target.value);
-  //   setLocalError(false);
-  // }
   function handleMainCommitMessage(e) {
     setMainCommitMessage(e.target.value);
   }
@@ -276,32 +232,6 @@ function FilesContainer({
     window.electron.send(channels.Get_Details, { file_dxf });
   }
 
-  // async function submitCommit(old_path_dxf, file_version, file_id) {
-  //   const data = new FormData();
-  //   data.append("message", commitMessage);
-  //   data.append("compare_path_svg", CompareResult);
-  //   data.append("new_path_svg", getSvg);
-  //   data.append("old_path_dxf", old_path_dxf);
-  //   data.append("new_path_dxf", update);
-  //   data.append("version", file_version);
-  //   data.append("status", 1);
-  //   data.append("user_id", user.user.id);
-  //   data.append("file_id", file_id);
-  //   try {
-  //     const response = await axios.post(
-  //       "http://127.0.0.1:8000/api/file-section/add_commit",
-  //       data
-  //     );
-  //     const commitInfo = await response.data;
-  //     setCommitInfo(commitInfo.data);
-  //     setIsCommited(true);
-  //     setIsLocalCommitLoading(false);
-  //   } catch (error) {
-  //     setIsLocalCommitLoading(false);
-  //     setLocalError(true);
-  //     setLocalErrorMessage(error.response.data.message);
-  //   }
-  // }
   async function displayConflict(svg_data) {
     setGoCheckConflict(false);
     const data = new FormData();
@@ -319,41 +249,6 @@ function FilesContainer({
       setMainErrorMessage(error.response.data.message);
     }
   }
-  // function handleUpload(e) {
-  //   setSvgSuccess(false);
-  //   const file_uploaded = e.target.files[0];
-  //   if (file_uploaded) {
-  //     const reader = new FileReader();
-  //     reader.onload = (event) => {
-  //       const dxf_file = event.target.result;
-  //       window.electron.send(channels.Covert_Data_to_svg, { dxf_file });
-  //     };
-  //     reader.readAsDataURL(file_uploaded);
-  //   } else {
-  //     setLocalError(true);
-  //     setLocalErrorMessage("No file uploaded");
-  //   }
-  // }
-  // async function handleLocalPush() {
-  //   const data = new FormData();
-  //   data.append("commit_id", commitInfo.id);
-  //   try {
-  //     const response = await axios.post(
-  //       "http://127.0.0.1:8000/api/file-section/push_local_commit",
-  //       data
-  //     );
-  //     const IsPushed = await response.data;
-  //     if (IsPushed.status === "success") {
-  //       setIsPushed(true);
-  //       setIsloading(false);
-  //       setIsDone(true);
-  //       setBranchFiles.files?.push(IsPushed.data);
-  //     }
-  //   } catch (error) {
-  //     setLocalError(true);
-  //     setLocalErrorMessage(error.response.data.message);
-  //   }
-  // }
   const handleDataFromChild = () => {
     SetCheckingConlfectFile(false);
     setDonePull(true);
@@ -555,7 +450,7 @@ function FilesContainer({
                                         No files
                                       </div>
                                       <div className="empty-text">
-                                        Alwats keep your branches organized and
+                                        Always keep your branches organized and
                                         usefull.
                                       </div>
                                     </div>
@@ -577,32 +472,45 @@ function FilesContainer({
                 )
               ) : (
                 <div className="card-container">
-                  {branchFiles?.files?.map((file) => {
-                    return (
-                      <div
-                        className="card"
-                        key={file.id}
-                        onClick={() => {
-                          setOpenedFileDetails(file);
-                          setSeletedFile(file.path_svg);
-                          openFileModal();
-                          setOpen(true);
-                          getDxfData(file.path_dxf);
-                          getfileCommit(file.id);
-                          getMainFilePath(file.name);
-                          setIsDoneCommitMain(false);
-                        }}>
-                        <img
-                          src={file.path_svg}
-                          className="file-section-card-img"
-                          alt={file.name}
-                        />
-                        <div className="middle-card">
-                          <div className="file-name">{file.name}</div>
+                  {branchFiles?.files.length > 0 ? (
+                    <>
+                      {branchFiles?.files?.map((file) => {
+                        return (
+                          <div
+                            className="card"
+                            key={file.id}
+                            onClick={() => {
+                              setOpenedFileDetails(file);
+                              setSeletedFile(file.path_svg);
+                              openFileModal();
+                              setOpen(true);
+                              getDxfData(file.path_dxf);
+                              getfileCommit(file.id);
+                              getMainFilePath(file.name);
+                              setIsDoneCommitMain(false);
+                            }}>
+                            <img
+                              src={file.path_svg}
+                              className="file-section-card-img"
+                              alt={file.name}
+                            />
+                            <div className="middle-card">
+                              <div className="file-name">{file.name}</div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </>
+                  ) : (
+                    <div>
+                      <div className="file-post-empty">
+                        <div className="empty-title">No files</div>
+                        <div className="empty-text">
+                          Always keep your branches organized and usefull.
                         </div>
                       </div>
-                    );
-                  })}
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -816,131 +724,6 @@ function FilesContainer({
                                         close={close}
                                         donePush={donePush}
                                       />
-                                      {/* <Input
-                                        label={"Commit message"}
-                                        name={"Commit-message"}
-                                        type={"text"}
-                                        onchange={handleCommitMessage}
-                                      /> */}
-                                      {/* <div className="number-of-letter">
-                                        {commitMessage.length}/50
-                                      </div> */}
-
-                                      {/* <div className="input-upload-file">
-                                        <label
-                                          className={`btn updated-file ${
-                                            isLocalFileLoading
-                                              ? "loading-green"
-                                              : "n"
-                                          }`}
-                                          htmlFor="updated-file">
-                                          <div className="download-icon">
-                                            <svg
-                                              width="20px"
-                                              height="20px"
-                                              viewBox="0 0 24 24"
-                                              fill="fffff"
-                                              xmlns="http://www.w3.org/2000/svg">
-                                              <g id="Interface / Download">
-                                                <path
-                                                  id="Vector"
-                                                  d="M6 21H18M12 3V17M12 17L17 12M12 17L7 12"
-                                                  stroke="#000000"
-                                                  troke-width="2"
-                                                  stroke-linecap="round"
-                                                  stroke-linejoin="round"
-                                                  fill="fffff"
-                                                />
-                                              </g>
-                                            </svg>
-                                          </div>
-                                          {isLocalFileLoading ? (
-                                            <Loading />
-                                          ) : (
-                                            <div>File</div>
-                                          )}
-                                        </label>
-                                        <input
-                                          type="file"
-                                          name="update file"
-                                          id="updated-file"
-                                          onChange={(e) => {
-                                            setIsLocalFileLoading(true);
-                                            setUpdate(e.target.files[0]);
-                                            handleCompare(
-                                              e,
-                                              openedfileDetails.path_dxf
-                                            );
-                                            handleUpload(e);
-                                          }}
-                                          className="none"
-                                        />
-                                        <div
-                                          className={` btn-check ${
-                                            compareSuccess
-                                              ? "btn color-btn-check"
-                                              : "on-procress"
-                                          }`}
-                                          onClick={() => {
-                                            setGoCheckConflict(true);
-                                            displayConflict(CompareResult);
-                                            closeCheckFile();
-                                            openModal();
-                                          }}>
-                                          Check
-                                        </div>
-                                      </div>
-                                      <div className="check-commit">
-                                        <button
-                                          className={` btn-commit ${
-                                            compareSuccess
-                                              ? "btn"
-                                              : "on-procress"
-                                          } ${
-                                            isLocalCommitLoading
-                                              ? "loading-green"
-                                              : "n"
-                                          }`}
-                                          onClick={() => {
-                                            setIsLocalCommitLoading(true);
-                                            submitCommit(
-                                              openedfileDetails.path_dxf,
-                                              openedfileDetails.version,
-                                              openedfileDetails.id
-                                            );
-                                          }}>
-                                          {isLocalCommitLoading ? (
-                                            <Loading />
-                                          ) : (
-                                            <div>Commit</div>
-                                          )}
-                                        </button>
-                                        <button
-                                          className={` btn-commit ${
-                                            compareSuccess && isCommited
-                                              ? "btn"
-                                              : "on-procress"
-                                          }`}
-                                          onClick={() => {
-                                            setOpen(false);
-                                            handleLocalPush();
-                                            setCompareSuccess(false);
-                                            setCommitMessage("");
-                                            closeModal();
-                                          }}>
-                                          Push
-                                        </button>
-                                      </div>
-                                      {errorLocal && (
-                                        <div className="error">
-                                          {errorLocalMessage}
-                                        </div>
-                                      )}
-                                      {isCommited && (
-                                        <div className="success">
-                                          Commit Successfully !
-                                        </div>
-                                      )} */}
                                       <div className="hr-details"></div>
                                     </div>
                                   )}
@@ -948,103 +731,6 @@ function FilesContainer({
 
                                 <div className="commit-tracker">
                                   <CommitHistory allCommit={allCommit} />
-
-                                  {/* <Listbox
-                                    value={selected}
-                                    onChange={setSelected}>
-                                    {({ open }) => (
-                                      <>
-                                        <Listbox.Label className="block text-sm font-medium leading-6 text-gray-900">
-                                          Commit History
-                                        </Listbox.Label>
-                                        <div className="relative mt-2">
-                                          <Listbox.Button className="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6">
-                                            <span className="flex items-center">
-                                              <span className="ml-3 block truncate">
-                                                {selected}
-                                              </span>
-                                            </span>
-                                            <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
-                                              <ChevronUpDownIcon
-                                                className="h-5 w-5 text-gray-400"
-                                                aria-hidden="true"
-                                              />
-                                            </span>
-                                          </Listbox.Button>
-
-                                          <Transition
-                                            show={open}
-                                            as={Fragment}
-                                            leave="transition ease-in duration-100"
-                                            leaveFrom="opacity-100"
-                                            leaveTo="opacity-0">
-                                            <Listbox.Options className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                                              {allCommit.map((commit) => (
-                                                <Listbox.Option
-                                                  key={commit.id}
-                                                  className={({ active }) =>
-                                                    classNames(
-                                                      active
-                                                        ? "bg-indigo-600 text-white"
-                                                        : "text-gray-900",
-                                                      "relative cursor-default select-none py-2 pl-3 pr-9"
-                                                    )
-                                                  }
-                                                  value={
-                                                    commit.message + " </> "
-                                                  }>
-                                                  {({ selected, active }) => (
-                                                    <>
-                                                      <div className="flex items-center">
-                                                        <span
-                                                          className={classNames(
-                                                            selected
-                                                              ? "font-semibold"
-                                                              : "font-normal",
-                                                            "ml-3 block truncate"
-                                                          )}>
-                                                          {commit.message +
-                                                            " </> "}
-                                                        </span>
-                                                      </div>
-
-                                                      {setSeletedCommitSVG(
-                                                        commit.compare_path_svg
-                                                      )}
-                                                      {selected ? (
-                                                        <span
-                                                          className={classNames(
-                                                            active
-                                                              ? "text-white"
-                                                              : "text-indigo-600",
-                                                            "absolute inset-y-0 right-0 flex items-center pr-4"
-                                                          )}>
-                                                          <CheckIcon
-                                                            className="h-5 w-5"
-                                                            aria-hidden="true"
-                                                          />
-                                                        </span>
-                                                      ) : null}
-                                                    </>
-                                                  )}
-                                                </Listbox.Option>
-                                              ))}
-                                            </Listbox.Options>
-                                          </Transition>
-                                        </div>
-                                      </>
-                                    )}
-                                  </Listbox>
-                                </div>
-                                <button
-                                  className="btn btn-commit-check"
-                                  onClick={() => {
-                                    setSelected(["commit message </> version"]);
-                                    closeCheckFile();
-                                    openCommitModal();
-                                  }}>
-                                  Check Commit
-                                </button> */}
                                 </div>
                                 <div className="hr-details"></div>
                                 {!isManager && branche.team_id == null && (
@@ -1062,64 +748,6 @@ function FilesContainer({
                                       mainDxfId={mainDxfId}
                                       closeCheckFile={closeCheckFile}
                                     />
-                                    {/* <Input
-                                      label={"Commit message"}
-                                      name={"Commit-message"}
-                                      type={"text"}
-                                      onchange={handleMainCommitMessage}
-                                    />
-                                    <div className="btn-main-commit">
-                                      <button
-                                        className={`commit-main ${
-                                          mainCompareSuccess || noMainMatch
-                                            ? "btn"
-                                            : "on-procress"
-                                        }`}
-                                        onClick={() => {
-                                          if (noMainMatch) {
-                                            handleCommitMain(
-                                              null,
-                                              openedfileDetails.path_svg,
-                                              null,
-                                              openedfileDetails.path_dxf,
-                                              "-1",
-                                              0
-                                            );
-                                          } else {
-                                            handleCommitMain(
-                                              mainCompareResult,
-                                              openedfileDetails.path_svg,
-                                              mainDxfPath,
-                                              openedfileDetails.path_dxf,
-                                              mainDxfVersion,
-                                              0
-                                            );
-                                          }
-                                          setOpen(false);
-                                          closeCheckFile();
-                                        }}>
-                                        Commit To Main
-                                      </button>
-                                      <div
-                                        className={`check-main ${
-                                          noMainMatch ? "on-procress" : "btn"
-                                        }`}
-                                        onClick={() => {
-                                          CompareWithMain(
-                                            mainDxfPath,
-                                            openedfileDetails.path_dxf
-                                          );
-                                          closeCheckFile();
-                                          openModal();
-                                        }}>
-                                        Check
-                                      </div>
-                                    </div>
-                                    {errorMain && (
-                                      <div className="error">
-                                        {errorMainMessage}
-                                      </div>
-                                    )} */}
                                   </>
                                 )}
                               </div>
@@ -1150,11 +778,6 @@ function FilesContainer({
         ariaHideApp={false}
         className="check-conflict-model"
         style={{ overlay: { background: "rgb(0 0 0 / 15%)" } }}>
-        {/* <div className="btns close">
-          <button className="btn" onClick={closeModal}>
-            X
-          </button>
-        </div> */}
         {conflictSvg ? (
           <img
             src={conflictSvg}
@@ -1167,34 +790,12 @@ function FilesContainer({
           <Loading />
         )}
       </Modal>
-      {/* <Modal
-        isOpen={CheckCommitIsOpen}
-        onRequestClose={closeCheckCommit}
-        ariaHideApp={false}
-        className="check-conflict-model zindex">
-        {seletedCommitSVG ? (
-          <img
-            src={seletedCommitSVG}
-            style={{ height: 700 }}
-            alt="SVG"
-            srcSet=""
-            className="svg-image"
-          />
-        ) : (
-          <Loading />
-        )}
-      </Modal> */}
       <Modal
         isOpen={CheckFileIsOpen}
         onRequestClose={closeCheckFile}
         ariaHideApp={false}
         className="check-conflict-model"
         style={{ overlay: { background: "rgb(0 0 0 / 15%)" } }}>
-        {/* <div className="btns close">
-          <button className="btn" onClick={closeCheckFile}>
-            X
-          </button>
-        </div> */}
         {seletedFile ? (
           <img
             src={seletedFile}
