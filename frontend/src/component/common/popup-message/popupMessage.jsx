@@ -6,7 +6,6 @@ import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
 function PopupMessage({
   pullMessage,
-  setOpenModel,
   ConflictMode,
   pullData,
   isOpen,

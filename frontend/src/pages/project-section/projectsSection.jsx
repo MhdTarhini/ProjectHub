@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./projectsSection.css";
 import Modal from "react-modal";
-import { MultiSelect } from "react-multi-select-component";
 import Input from "../../component/input/input";
 import axios from "axios";
 import Loading from "../../component/common/loading/loading";
@@ -463,15 +462,6 @@ function ProjectsSection() {
         {newProjectError && (
           <div className="error">{newProjectErrorMessage.location}</div>
         )}
-
-        {/* <div> */}
-        {/* <MultiSelect
-            options={"hello"}
-            value={"hello"}
-            // onChange={setSelected}
-            labelledBy="Select"
-          />
-        </div> */}
         <div className="btns-new-file btns-new-project">
           {isloading && (
             <div className="loading-new-project">
@@ -555,13 +545,6 @@ function ProjectsSection() {
                       }}>
                       close
                     </button>
-                    {/* <button
-                      type="button"
-                      className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                      onClick={() => setOpen(false)}
-                      ref={cancelButtonRef}>
-                      Cancel
-                    </button> */}
                   </div>
                 </Dialog.Panel>
               </Transition.Child>

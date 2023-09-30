@@ -13,19 +13,22 @@ class TaskContorller extends Controller
     function uploadTasks(Request $request){
         $user=Auth::user();
 
-        $user_calendar=Calendar::where("user_id",$user->id)->pluck("id")->first();
+        $user_calendar=Calendar::where("user_id",$user->id)->where("project_id",$request->project_id)->first();
 
         foreach($request->created_tasks as $task){
             if($task['action']==="create"){
                 $selected_task=new Task;
             }else{
                 $selected_task=Task::find($task['id']);
+                if(!$selected_task) {
+                $selected_task=new Task;
+                }
             }
             if($task['action']==="delete"){
                 $selected_task->delete();
             }else{
                 
-                $selected_task->calendar_id=$user_calendar;
+                $selected_task->calendar_id=$user_calendar->id;
                 $selected_task->text=$task['text'];
                 $selected_task->duration=$task['duration'];
                 $selected_task->start_date=$task['start_date'];
@@ -43,7 +46,7 @@ class TaskContorller extends Controller
             if($link['action']==="delete"){
                 $selected_link->delete();
             }else{
-                $selected_link->calendar_id=$user_calendar;
+                $selected_link->calendar_id=$user_calendar->id;
                 $selected_link->source=$link['source'];
                 $selected_link->target=$link['target'];
                 $selected_link->type=$link['type'];

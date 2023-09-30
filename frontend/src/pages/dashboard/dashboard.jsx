@@ -138,7 +138,11 @@ function Dashboard() {
             <div className=" dashboard-card">
               <div className="tasks-card">
                 <div className="card-title">Tasks</div>
-                <div className="tasks-card-new-btn">
+                <div
+                  className="tasks-card-new-btn"
+                  onClick={() => {
+                    navigate("/v1/tasks-section");
+                  }}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="25"
@@ -161,13 +165,7 @@ function Dashboard() {
                       />
                     </g>
                   </svg>
-                  <div
-                    className="tasks-card-new"
-                    onClick={() => {
-                      navigate("/v1/tasks-section");
-                    }}>
-                    New Task
-                  </div>
+                  <div className="tasks-card-new">New Task</div>
                 </div>
                 <div className="tasks-card-list">
                   {noTasks ? (
@@ -236,7 +234,7 @@ function Dashboard() {
                     })}
                   </div>
                 ) : (
-                  <div className="no-recent-files">No Revent Files</div>
+                  <div className="no-recent-files">No Recent Files</div>
                 )}
               </div>
             </div>

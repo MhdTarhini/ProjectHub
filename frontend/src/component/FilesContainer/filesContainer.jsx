@@ -269,10 +269,14 @@ function FilesContainer({
               <div className="Files-empty">
                 <div className="empty-title">Collaborate and Share</div>
                 <div className="empty-text">
-                  Looks like there are no Branches or Files yet. Upload your
-                  Work and share it with other.
+                  Looks like there are no branches or files yet. Upload your own
+                  and share them with other.
                 </div>
-                <button className="btn empty-button">Upload New Files</button>
+                {user.active === 0 ? (
+                  <div className="error">you must be member in a project</div>
+                ) : (
+                  <div></div>
+                )}
               </div>
             </div>
           ) : (

@@ -12,7 +12,7 @@ import base64 from "base-64";
 import Loading from "../../component/common/loading/loading";
 import Logo from "../../component/logo/Logo";
 import Message from "../../component/common/Message/message";
-import PopupMessage from "../../component/common/Message/popup-message/popupMessage";
+import PopupMessage from "../../component/common/popup-message/popupMessage";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -273,7 +273,9 @@ function FilesSection() {
         <div className="files-section">
           <div className="top-file-section">
             <div className="file-section-title">Files Section</div>
-            {selectedBranche.name === "main" || user.active === 0 ? (
+            {selectedBranche.name === "main" ||
+            user.active === 0 ||
+            !selectedBranche.name ? (
               <div></div>
             ) : (
               <div onClick={openModal} className="btn">

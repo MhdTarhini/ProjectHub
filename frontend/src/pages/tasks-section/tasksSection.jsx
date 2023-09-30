@@ -49,6 +49,7 @@ const TasksSection = () => {
         {
           created_tasks: TasksData,
           created_links: createdLinks,
+          project_id: user.active,
         }
       );
       const tasks = await response.data;
@@ -159,13 +160,20 @@ const TasksSection = () => {
                   and reduce stress, and ensure that you're making the most of
                   your time"
                 </div>
-                <button
-                  className={`btn calendar-button ${
-                    isAnimation ? " animate-media" : ""
-                  }`}
-                  onClick={CreateGantt}>
-                  Create Your Project Gantt
-                </button>
+
+                {user.active === 0 ? (
+                  <div className="error">
+                    you must be member in a project before using gantt
+                  </div>
+                ) : (
+                  <button
+                    className={`btn calendar-button ${
+                      isAnimation ? " animate-media" : ""
+                    }`}
+                    onClick={CreateGantt}>
+                    Start
+                  </button>
+                )}
               </div>
               <div className={`calendar-media`}>{isloading && <Loading />}</div>
             </>

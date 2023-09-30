@@ -87,7 +87,7 @@
 }
 
 .btn.calendar-button:hover {
-    background-color: #0056b3;
+    background-color: #31a1f1;
 }
 
 .logo-tasks,
@@ -113,4 +113,8 @@
     flex-direction: column;
     align-items: center;
     width: 500px;
+}
+.on-process {
+    cursor: none;
+    background-color: #777;
 }
