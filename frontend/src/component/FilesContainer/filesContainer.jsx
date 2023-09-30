@@ -126,22 +126,25 @@ function FilesContainer({
     }
   }
 
-  async function getAIResponse() {
-    // try {
-    //   const response = await axios.post(
-    //     "http://127.0.0.1:8000/api/file-section/open_ai",
-    //     {
-    //       data: FileDetails,
-    //     }
-    //   );
-    //   const reponseai = await response.data;
-    //   if (reponseai.status === "success") {
-    //     setDetailsAI(reponseai.data);
-    //     setFileDetails("");
-    //   }
-    // } catch (error) {
-    //   console.error(error);
-    // }
+  async function getAIResponse(data) {
+    try {
+      if (isLoading) {
+        const response = await axios.post(
+          "http://127.0.0.1:8000/api/file-section/open_ai",
+          {
+            data: data,
+          }
+        );
+        const reponseai = await response.data;
+
+        if (reponseai.status === "success") {
+          setDetailsAI(reponseai.data);
+          setFileDetails("");
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   async function getfileCommit(file_id) {
@@ -296,10 +299,11 @@ function FilesContainer({
       setIsloading(false);
     });
     window.electron.on(channels.Get_Details_IsDone, (data) => {
+      console.log(data);
       setFileDetails(data);
       setDetailsSuccess(true);
+      getAIResponse(data);
       setIsloading(false);
-      getAIResponse();
     });
     window.electron.on(channels.Covert_Data_to_svg_IsDone, (data) => {
       const decodedData = base64.decode(data);

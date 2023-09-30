@@ -65,15 +65,15 @@ function WeatherWidget() {
       {weatherData && (
         <div class="container mx-autos">
           <div class="w-80 h-full">
-            <div class="bg-white p-6 rounded-2xl border-2 border-gray-50">
+            <div class=" p-6 rounded-2xl">
               <div class="flex flex-col">
                 <div>
-                  <h2 class="font-bold text-gray-600 text-center">
+                  <h2 class="font-bold text-gray-600 text-center city">
                     {weatherData.name}, Lebanon
                   </h2>
                 </div>
-                <div class="my-6">
-                  <div class="flex flex-row space-x-4 items-center">
+                <div class="mt-3">
+                  <div class="flex flex-row space-x-4 class-weather">
                     <div id="icon">
                       <span>
                         <img src={svg} alt="" srcset="" />
@@ -81,11 +81,13 @@ function WeatherWidget() {
                     </div>
                     <div id="temp">
                       <h4 class="text-4xl">{weatherData.main.temp}°C</h4>
-                      <p class="p">{weatherData.weather[0].description}</p>
+                      <p class=" weather">
+                        {weatherData.weather[0].description}
+                      </p>
                     </div>
                   </div>
                 </div>
-                <div class="w-full place-items-end text-right border-t-2 border-gray-100 mt-2">
+                <div class="w-full place-items-end text-right border-t-2 border-gray-100 mt-5">
                   <div href="#" class="text-indigo-600 font-medium">
                     <div
                       style={{

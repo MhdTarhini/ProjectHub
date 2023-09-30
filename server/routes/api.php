@@ -76,8 +76,9 @@ Route::group(["middleware" => ["auth:api", 'cors']], function(){
         });
         Route::group(["prefix" => "task-section"], function(){
             Route::post("uplaod_tasks",[TaskContorller::class,"uploadTasks"]);
-            Route::get("checkCalender/{project_id}",[TaskContorller::class,"checkCalendar"]);
-            Route::get("create_calender/{project_id}",[TaskContorller::class,"createCalendar"]);
+            Route::get("checkCalender/{project_id?}",[TaskContorller::class,"checkCalendar"]);
+            Route::get("create_calender/{project_id?}",[TaskContorller::class,"createCalendar"]);
+            Route::get("tasks_title/{project_id?}",[TaskContorller::class,"tasksTitle"]);
             
             
         });

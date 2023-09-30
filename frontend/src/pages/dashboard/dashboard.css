@@ -55,7 +55,7 @@
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
-        padding: 14px;
+        padding: 10px;
         gap: 5px;
     }
     
@@ -194,9 +194,8 @@
     transform: rotateY(180deg);
 }
 .file-recent-card{
-    padding: 10px;
 overflow-y: auto;
-    height: 223px;
+    height: 233px;
 }
 
 .file-recent-card::-webkit-scrollbar {
@@ -329,9 +328,7 @@ line-height: 20px;
 display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
-    border: 1px solid var(--stroke, #E8E8E8);
-    background: #F8F8F8;
+    padding: 0px 10px 0px 5px;
 }
 .notification-title{
      color: #000;
@@ -351,7 +348,6 @@ gap: 16px;
 border-radius: 6px;
 border: 1px solid #E5E7EB;
 background: #FFF;
-box-shadow: 0px 4px 4px 0px rgba(174, 174, 174, 0.25);
 }
 @keyframes fadeIn {
   from {
@@ -370,6 +366,7 @@ box-shadow: 0px 4px 4px 0px rgba(174, 174, 174, 0.25);
 .image-user {
     width: 30px;
     height: 30px;
+    border-radius: 50%;
 }
 
 .svg-img-card-dashboard {
@@ -408,6 +405,7 @@ box-shadow: 0px 4px 4px 0px rgba(174, 174, 174, 0.25);
     font-weight: 400;
     line-height: 20px;
     height: 90px;
+    border-radius: 10px;
 }
 
 .uploaded_at {
@@ -461,6 +459,8 @@ box-shadow: 0px 4px 4px 0px rgba(174, 174, 174, 0.25);
     width: 200px;
     height: 200px;
     margin-left: 30px;
+    margin-right: 100px;
+        border-radius: 20px;
 }
 
 .close-commit {
@@ -485,6 +485,158 @@ box-shadow: 0px 4px 4px 0px rgba(174, 174, 174, 0.25);
 }
 
 .btns-not {
+}
+
+.file-dash-card {
     display: flex;
-    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.top-card-file-recent {
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 10px 5px 10px;
+
+}
+
+.card-dash {
+    position: relative;
+    width: 300px;
+    height: 50px;
+    padding: 0.5rem 0.5rem 0rem 0.5rem;
+    /* background: rgba(198, 198, 198, 0.34); */
+    background-color: #0f8eea;
+    border-radius: 10px;
+    backdrop-filter: blur(5px);
+    border-bottom: 3px solid rgba(255, 255, 255, 0.440);
+    border-left: 2px rgba(255, 255, 255, 0.545) outset;
+    transform: skewX(2deg);
+    transition: .4s;
+    overflow: hidden;
+    color: white;
+    cursor: pointer;
+}
+
+.card-dash:hover {
+    height: 100px;
+    transform: skew(0deg)
+}
+
+.align {
+    padding: 1rem;
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-self: flex-start;
+}
+
+.red {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #ff605c;
+    box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.280);
+}
+
+.yellow {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #ffbd44;
+    box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.280);
+}
+
+.green {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #00ca4e;
+    box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.280);
+}
+
+.card-dash .h11 {
+    text-align: center;
+    color: rgb(218, 244, 237);
+    text-shadow: -10px 5px 10px rgba(0, 0, 0, 0.573);
+}
+
+.button-accpt {
+    font-size: 18px;
+    display: inline-block;
+    outline: 0;
+    border: 0;
+    cursor: pointer;
+    will-change: box-shadow, transform;
+    background-color: #0f8eea;
+    box-shadow: 0px 0.01em 0.01em rgb(45 35 66 / 40%), 0px 0.3em 0.7em -0.01em rgb(45 35 66 / 30%), inset 0px -0.01em 0px rgb(58 65 111 / 50%);
+    padding: 0 2em;
+    border-radius: 0.3em;
+    color: #fff;
+    height: 2.6em;
+    text-shadow: 0 1px 0 rgb(0 0 0 / 40%);
+    transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.button-accpt:hover {
+    box-shadow: 0px 0.1em 0.2em rgb(45 35 66 / 40%), 0px 0.4em 0.7em -0.1em rgb(45 35 66 / 30%), inset 0px -0.1em 0px #3c4fe0;
+    transform: translateY(-0.1em);
+}
+
+.button-accpt:active {
+    box-shadow: inset 0px 0.1em 0.6em #0f8eea;
+    transform: translateY(0em);
+}
+
+.button-refuse {
+    font-size: 18px;
+    display: inline-block;
+    outline: 0;
+    border: 0;
+    cursor: pointer;
+    will-change: box-shadow, transform;
+    background: #f14242;
+    box-shadow: 0px 0.01em 0.01em rgb(45 35 66 / 40%), 0px 0.3em 0.7em -0.01em rgb(45 35 66 / 30%), inset 0px -0.01em 0px rgb(58 65 111 / 50%);
+    padding: 0 2em;
+    border-radius: 0.3em;
+    color: #fff;
+    height: 2.6em;
+    text-shadow: 0 1px 0 rgb(0 0 0 / 40%);
+    transition: box-shadow 0.15s ease, transform 0.15s ease;
+    margin-top: 10px;
+    width: 134px;
+}
+
+.button-refuse:hover {
+    box-shadow: 0px 0.1em 0.2em rgb(45 35 66 / 40%), 0px 0.4em 0.7em -0.1em rgb(45 35 66 / 30%), inset 0px -0.1em 0px #3c4fe0;
+    transform: translateY(-0.1em);
+}
+
+.button-refuse:active {
+    box-shadow: inset 0px 0.1em 0.6em #3c4fe0;
+    transform: translateY(0em);
+}
+
+.no-recent-tastks {
+        display: flex;
+        justify-content: center;
+            align-items: center;
+            margin-top: 80px;
+            margin-left: 130px;
+            color: #747474;
+            font-family: Inter;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 20px;
+        }
+        
+.recent-file-card {
+        width: 350px;
+        height: 280px;
+        flex-shrink: 0;
+    border-radius: 5px;
+    border: 1.5px solid var(--stroke, #E8E8E8);
+            background: #FFF;
 }

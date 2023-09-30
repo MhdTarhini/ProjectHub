@@ -3,8 +3,10 @@ import "./dashboard.css";
 import WeatherWidget from "../../component/weather/weather";
 import Logo from "../../component/logo/Logo";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Message from "../../component/common/Message/message";
+import Loading from "../../component/common/loading";
+import Modal from "react-modal";
 
 function Dashboard() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -16,6 +18,15 @@ function Dashboard() {
   const [isManager, setIsManager] = useState(false);
   const [mainCommit, setMainCommit] = useState([]);
   const [donePush, setDonePush] = useState(false);
+  const [tasksTitle, setTasksTitle] = useState([]);
+  const [noTasks, setNoTasks] = useState(false);
+  const [CheckFileIsOpen, setCheckFileIsOpen] = useState(false);
+  const [seletedFile, setSeletedFile] = useState("");
+  const navigate = useNavigate();
+
+  function closeCheckFile() {
+    setCheckFileIsOpen(false);
+  }
 
   async function getRecentFiles() {
     let role = "user";
@@ -38,7 +49,22 @@ function Dashboard() {
       console.log(error);
     }
   }
-
+  async function getTasksTitle() {
+    try {
+      const response = await axios.get(
+        `http://127.0.0.1:8000/api/task-section/tasks_title/${user.active}`
+      );
+      const tasksTitle = await response.data;
+      if (tasksTitle.status === "succcess") {
+        setTasksTitle(tasksTitle.data);
+      } else {
+        setNoTasks(true);
+      }
+      console.log(tasksTitle);
+    } catch (error) {
+      console.log(error);
+    }
+  }
   async function handleAcceptPushToMain() {
     try {
       const response = await axios.get(
@@ -88,6 +114,7 @@ function Dashboard() {
     getRecentFiles();
     getRecentRooms();
     handleAcceptPushToMain();
+    getTasksTitle();
     if (user.projects_Manager_id.includes(user.active)) {
       setIsManager(true);
     }
@@ -134,32 +161,46 @@ function Dashboard() {
                       />
                     </g>
                   </svg>
-                  <div className="tasks-card-new">New Task</div>
+                  <div
+                    className="tasks-card-new"
+                    onClick={() => {
+                      navigate("/v1/tasks-section");
+                    }}>
+                    New Task
+                  </div>
                 </div>
                 <div className="tasks-card-list">
-                  <div className="task-item">
-                    <div className="left-side-task-item">
-                      <div className="task-card-name">Check Floor 2</div>
-                    </div>
-                    <div className="right-side-task-item">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="15"
-                        height="15"
-                        viewBox="0 0 15 15"
-                        fill="none">
-                        <path
-                          d="M6.89333 10.5666L11.9067 5.86665L10.9111 4.93331L6.89333 8.69998L4.86666 6.79998L3.8711 7.73331L6.89333 10.5666ZM7.88888 14.1666C6.90518 14.1666 5.98073 13.9916 5.11555 13.6416C4.25036 13.2916 3.49777 12.8166 2.85777 12.2166C2.21777 11.6166 1.7111 10.9111 1.33777 10.1C0.964438 9.28887 0.777771 8.4222 0.777771 7.49998C0.777771 6.57776 0.964438 5.71109 1.33777 4.89998C1.7111 4.08887 2.21777 3.38331 2.85777 2.78331C3.49777 2.18331 4.25036 1.70831 5.11555 1.35831C5.98073 1.00831 6.90518 0.833313 7.88888 0.833313C8.87259 0.833313 9.79703 1.00831 10.6622 1.35831C11.5274 1.70831 12.28 2.18331 12.92 2.78331C13.56 3.38331 14.0667 4.08887 14.44 4.89998C14.8133 5.71109 15 6.57776 15 7.49998C15 8.4222 14.8133 9.28887 14.44 10.1C14.0667 10.9111 13.56 11.6166 12.92 12.2166C12.28 12.8166 11.5274 13.2916 10.6622 13.6416C9.79703 13.9916 8.87259 14.1666 7.88888 14.1666ZM7.88888 12.8333C9.47703 12.8333 10.8222 12.3166 11.9244 11.2833C13.0267 10.25 13.5778 8.98887 13.5778 7.49998C13.5778 6.01109 13.0267 4.74998 11.9244 3.71665C10.8222 2.68331 9.47703 2.16665 7.88888 2.16665C6.30073 2.16665 4.95555 2.68331 3.85333 3.71665C2.7511 4.74998 2.19999 6.01109 2.19999 7.49998C2.19999 8.98887 2.7511 10.25 3.85333 11.2833C4.95555 12.3166 6.30073 12.8333 7.88888 12.8333Z"
-                          fill="#42EB52"
-                        />
-                      </svg>
-                      <div className="tasks-card-points">
-                        <div className="point-task"></div>
-                        <div className="point-task"></div>
-                        <div className="point-task"></div>
-                      </div>
-                    </div>
-                  </div>
+                  {noTasks ? (
+                    <div className="no-recent-tastks">No Tasks</div>
+                  ) : (
+                    tasksTitle.map((task) => {
+                      return (
+                        <div className="task-item">
+                          <div className="left-side-task-item">
+                            <div className="task-card-name">{task}</div>
+                          </div>
+                          <div className="right-side-task-item">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="15"
+                              height="15"
+                              viewBox="0 0 15 15"
+                              fill="none">
+                              <path
+                                d="M6.89333 10.5666L11.9067 5.86665L10.9111 4.93331L6.89333 8.69998L4.86666 6.79998L3.8711 7.73331L6.89333 10.5666ZM7.88888 14.1666C6.90518 14.1666 5.98073 13.9916 5.11555 13.6416C4.25036 13.2916 3.49777 12.8166 2.85777 12.2166C2.21777 11.6166 1.7111 10.9111 1.33777 10.1C0.964438 9.28887 0.777771 8.4222 0.777771 7.49998C0.777771 6.57776 0.964438 5.71109 1.33777 4.89998C1.7111 4.08887 2.21777 3.38331 2.85777 2.78331C3.49777 2.18331 4.25036 1.70831 5.11555 1.35831C5.98073 1.00831 6.90518 0.833313 7.88888 0.833313C8.87259 0.833313 9.79703 1.00831 10.6622 1.35831C11.5274 1.70831 12.28 2.18331 12.92 2.78331C13.56 3.38331 14.0667 4.08887 14.44 4.89998C14.8133 5.71109 15 6.57776 15 7.49998C15 8.4222 14.8133 9.28887 14.44 10.1C14.0667 10.9111 13.56 11.6166 12.92 12.2166C12.28 12.8166 11.5274 13.2916 10.6622 13.6416C9.79703 13.9916 8.87259 14.1666 7.88888 14.1666ZM7.88888 12.8333C9.47703 12.8333 10.8222 12.3166 11.9244 11.2833C13.0267 10.25 13.5778 8.98887 13.5778 7.49998C13.5778 6.01109 13.0267 4.74998 11.9244 3.71665C10.8222 2.68331 9.47703 2.16665 7.88888 2.16665C6.30073 2.16665 4.95555 2.68331 3.85333 3.71665C2.7511 4.74998 2.19999 6.01109 2.19999 7.49998C2.19999 8.98887 2.7511 10.25 3.85333 11.2833C4.95555 12.3166 6.30073 12.8333 7.88888 12.8333Z"
+                                fill="#42EB52"
+                              />
+                            </svg>
+                            <div className="tasks-card-points">
+                              <div className="point-task"></div>
+                              <div className="point-task"></div>
+                              <div className="point-task"></div>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })
+                  )}
                 </div>
               </div>
             </div>
@@ -167,119 +208,29 @@ function Dashboard() {
               <div className="card-title-files">Recent Files</div>
               <div className="file-recent-card">
                 {recentFiles.length > 0 ? (
-                  <div className="card-recent-file-list">
+                  <div className="file-dash-card">
                     {recentFiles.map((branch) => {
                       return branch.files.map((file) => {
                         return (
-                          <div className="card-file">
-                            <img
-                              src={file.path_svg}
-                              alt=""
-                              srcset=""
-                              className="svg-img-card-dashboard"
-                            />
-                            <div className="card-face card-back">
-                              <div className="card-content-file">
-                                <div className="user-info-card">
-                                  <img
-                                    src={file.user?.profile_img}
-                                    alt=""
-                                    srcset=""
-                                    className="image-user"
-                                  />
-                                  <div className="user-name-file">
-                                    {`${file.user?.first_name} ${file.user?.last_name}`}
-                                  </div>
-                                </div>
-
-                                <div className="middle">
-                                  <div className="file-recent-name">
-                                    {file.name}
-                                  </div>
-                                  <div className="uploaded_at">
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      width="16"
-                                      height="16"
-                                      viewBox="0 0 16 16"
-                                      fill="none">
-                                      <path
-                                        d="M12.6667 2.66675H3.33335C2.59697 2.66675 2.00002 3.2637 2.00002 4.00008V13.3334C2.00002 14.0698 2.59697 14.6667 3.33335 14.6667H12.6667C13.4031 14.6667 14 14.0698 14 13.3334V4.00008C14 3.2637 13.4031 2.66675 12.6667 2.66675Z"
-                                        stroke="#64748B"
-                                        stroke-width="1.33333"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                      />
-                                      <path
-                                        d="M10.6667 1.33325V3.99992"
-                                        stroke="#64748B"
-                                        stroke-width="1.33333"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                      />
-                                      <path
-                                        d="M5.33331 1.33325V3.99992"
-                                        stroke="#64748B"
-                                        stroke-width="1.33333"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                      />
-                                      <path
-                                        d="M2.00002 6.66675H14"
-                                        stroke="#64748B"
-                                        stroke-width="1.33333"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                      />
-                                      <path
-                                        d="M5.33331 9.33325H5.34331"
-                                        stroke="#64748B"
-                                        stroke-width="1.33333"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                      />
-                                      <path
-                                        d="M8.00002 9.33325H8.01002"
-                                        stroke="#64748B"
-                                        stroke-width="1.33333"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                      />
-                                      <path
-                                        d="M10.6667 9.33325H10.6767"
-                                        stroke="#64748B"
-                                        stroke-width="1.33333"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                      />
-                                      <path
-                                        d="M5.33331 11.9999H5.34331"
-                                        stroke="#64748B"
-                                        stroke-width="1.33333"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                      />
-                                      <path
-                                        d="M8.00002 11.9999H8.01002"
-                                        stroke="#64748B"
-                                        stroke-width="1.33333"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                      />
-                                      <path
-                                        d="M10.6667 11.9999H10.6767"
-                                        stroke="#64748B"
-                                        stroke-width="1.33333"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                      />
-                                    </svg>
-                                    {file.created_at.split("T")[0]}
-                                  </div>
-                                </div>
+                          <>
+                            <div
+                              class="card-dash"
+                              onClick={() => {
+                                setSeletedFile(file.path_svg);
+                                setCheckFileIsOpen(true);
+                              }}>
+                              <div className="top-card-file-recent">
+                                <img
+                                  src={file.user?.profile_img}
+                                  alt=""
+                                  srcset=""
+                                  className="image-user"
+                                />
+                                <div className="h11">{file.name}</div>
                               </div>
+                              <img src={file.path_svg} alt="" srcset="" />
                             </div>
-                          </div>
+                          </>
                         );
                       });
                     })}
@@ -391,7 +342,7 @@ function Dashboard() {
                           <div className="card-content-file">
                             <div className="middel">
                               <img
-                                src={commit.compare_path_svg}
+                                src="http://127.0.0.1:8000/storage/hello.svg"
                                 alt=""
                                 srcset=""
                                 className="img-commit-not"
@@ -402,24 +353,25 @@ function Dashboard() {
                                 {commit.message}
                               </div>
                               <div className="btns-not">
-                                <div
-                                  className="btn"
+                                <button
+                                  className="button-accpt"
                                   onClick={() => AcceptePush(commit.id)}>
                                   Accepte
-                                </div>
-                                <div className="btn close-commit">Ignore</div>
+                                </button>
+                                <button className="button-refuse">
+                                  Ignore
+                                </button>
                               </div>
                               <div className="user-info-card-not">
-                                <div className="user-name-file">
-                                  pushed by{" "}
-                                  {`${commit.user?.first_name} ${commit.user?.last_name}`}
-                                </div>
                                 <img
                                   src={commit.user?.profile_img}
                                   alt=""
                                   srcset=""
                                   className="image-user"
                                 />
+                                <div className="user-name-file">
+                                  {`${commit.user?.first_name} ${commit.user?.last_name}`}
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -435,6 +387,24 @@ function Dashboard() {
           </div>
         </div>
       )}
+      <Modal
+        isOpen={CheckFileIsOpen}
+        onRequestClose={closeCheckFile}
+        ariaHideApp={false}
+        className="check-conflict-model"
+        style={{ overlay: { background: "rgb(0 0 0 / 15%)" } }}>
+        {seletedFile ? (
+          <img
+            src={seletedFile}
+            style={{ height: 700 }}
+            alt="SVG"
+            srcSet=""
+            className="svg-image"
+          />
+        ) : (
+          <Loading />
+        )}
+      </Modal>
     </>
   );
 }

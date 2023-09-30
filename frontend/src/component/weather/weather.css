@@ -2,7 +2,6 @@
     width: 350px;
     padding: 20px 30px;
     border-radius: 20px;
-    background: rgba(255, 255, 255, 0.8);
     box-shadow: 0px 5px 25px rgba(114, 114, 114, 0.1);
     backdrop-filter: blur(10px);
     font-weight: 700;
@@ -48,6 +47,15 @@
     font-size: 18px;
     text-align: center;
 }
+.weather {
+    font-weight: 500;
+    font-size: 18px;
+    letter-spacing: 1.2px;
+    color: rgb(197, 197, 197);
+}
+.class-weather{
+    align-items: center;
+}
 
 .p:last-child {
     font-size: 28px;
@@ -58,4 +66,13 @@
 .fa-sun {
     background-image: url("https: //cdn-icons-png.flaticon.com/512/1400/1400310.png");
     background-size: "cover",
+}
+.city {
+    font-weight: 700;
+    font-size: 0.9em;
+    letter-spacing: 1.2px;
+    color: rgb(14, 14, 14);
+}
+#icon{
+    margin-top: 12px;
 }

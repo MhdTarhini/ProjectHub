@@ -102,5 +102,23 @@ class TaskContorller extends Controller
 
 
         }
+
+        function tasksTitle($project_id){
+            $user=Auth::user();
+            $taskExists=Calendar::where("user_id",$user->id)->where("project_id",$project_id)->first();
+            if($taskExists){
+                $user_task=Task::where("calendar_id",$taskExists->id)->get();
+
+            return response()->json([
+                "status" => "success",
+                "data" => $user_task,
+            ]);
+        }else{
+            return response()->json([
+                "status" => "failed",
+            ]);
+        }
+
+        }
   
 }
