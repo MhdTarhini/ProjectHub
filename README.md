@@ -72,10 +72,9 @@ With my project features engineers can create their own virtual world and collab
 ###  ProjectHub is built using the following technologies:
 
 - This project uses the [Electron app development framework](https://www.electronjs.org/). Electron embeds Chromium and Node.js to enable web developers to create desktop applications.
-- For persistent storage (database), the app uses [MySQL](https://www.mysql.com/) MySQL HeatWave is a fully managed database service for transactions, real- time analytics across data warehouses and data lakes, and machine learning services, without the complexity, latency, and cost of ETL duplication. It is available on OCI, AWS, and Azure.
-- To send local push notifications, the app uses the [flutter_local_notifications](https://pub.dev/packages/flutter_local_notifications) package which supports Android, iOS, and macOS.
-  - 🚨 Currently, notifications aren't working on macOS. This is a known issue that we are working to resolve!
-- The app uses the font ["Work Sans"](https://fonts.google.com/specimen/Work+Sans) as its main font, and the design of the app adheres to the material design guidelines.
+- For persistent storage (database), the app uses [MySQL](https://www.mysql.com/) package which allows the app to create a custom storage schema and save it to a local database.
+- On paralllel with Electron I Used [Python](https://www.python.org/) where is a programming language that lets you work more quickly and integrate your systems more effectively.
+- As a Frontend [React](https://react.dev/) that declarative, efficient, and flexible JavaScript library for building user interfaces or UI components.
 
 <br><br>
 
