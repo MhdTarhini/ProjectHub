@@ -390,12 +390,16 @@
 }
 
 .color-btn-check {
-    background-color: rgb(5, 255, 5);
+    background-color: #0f8eea;
 }
 
 .color-btn-check:hover {
-    background-color: rgb(70, 253, 70);
+    background-color: #31a1f1;
+    
+    }
 
+.btn-push {
+    background-color: #000000f6 !important;
 }
 
 .success {

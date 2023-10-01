@@ -44,8 +44,6 @@ function LocalCommit({
 
   function openCommitModal() {
     setCheckCommitIsOpen(true);
-    setIsloading(false);
-    setIsCommited(false);
   }
   function closeCheckCommit() {
     setCheckCommitIsOpen(false);
@@ -55,6 +53,8 @@ function LocalCommit({
   function openModal() {
     setIsloading(false);
     setIsOpen(true);
+    setIsloading(false);
+    setIsCommited(false);
   }
 
   async function submitCommit(old_path_dxf, file_version, file_id) {
@@ -217,7 +217,7 @@ function LocalCommit({
                 </g>
               </svg>
             </div>
-            {isLocalFileLoading ? <Loading /> : <div>File</div>}
+            {isLocalFileLoading ? <div>On Process</div> : <div>File</div>}
           </label>
           <input
             type="file"
@@ -247,7 +247,7 @@ function LocalCommit({
         <div className="check-commit">
           <button
             className={` btn-commit ${compareSuccess ? "btn" : "on-hold"} ${
-              isLocalCommitLoading ? "loading-green" : "n"
+              isLocalCommitLoading ? "on-hold" : "n"
             }`}
             onClick={() => {
               setIsLocalCommitLoading(true);
@@ -257,11 +257,11 @@ function LocalCommit({
                 openedfileDetails.id
               );
             }}>
-            {isLocalCommitLoading ? <Loading /> : <div>Commit</div>}
+            {isLocalCommitLoading ? <div>On Process</div> : <div>Commit</div>}
           </button>
           <button
             className={` btn-commit ${
-              compareSuccess && isCommited ? "btn" : "on-hold"
+              compareSuccess && isCommited ? "btn btn-push" : "on-hold"
             }`}
             onClick={() => {
               close();

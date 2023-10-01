@@ -277,7 +277,7 @@ function ProjectsSection() {
                               {item.teams.map((team, teamIndex) => {
                                 return team.members.map((user, userIndex) => (
                                   <img
-                                    src={user.user.profile_img}
+                                    src="http://34.244.172.132/uploads/assets/default.png"
                                     className={`members-img img-${
                                       userIndex + 1
                                     }`}

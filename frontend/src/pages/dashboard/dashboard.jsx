@@ -44,7 +44,6 @@ function Dashboard() {
       );
       const recentFiles = await response.data;
       setRecentFiles(recentFiles.data);
-      console.log(recentFiles);
     } catch (error) {
       console.log(error);
     }
