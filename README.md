@@ -115,6 +115,8 @@ _Below is an example of how you can instruct your audience on installing and set
    npm run eletron:start
    ```
 
+### Postman Collection
+[ProjectHub API's](./readme/ProjectHub-API's.postman_collection.json)
 ### Demo Accounts
 
 - email: loren@gmail.com, password: 1234567, and role: Manager of 2 projects (Hospital, Building) only one is Hospital project is Active.
