@@ -47,14 +47,13 @@ With my project features engineers can create their own virtual world and collab
 | ---| ---| ---|
 | ![Landing](./readme/TasksSection.jpg) | ![fsdaf](./readme/ezgif.com-resize.gif) | ![fsdaf](./readme/FilesSection.jpg) |
 
-![fsdaf](./readme/ezgif.com-resize.gif)
 
 <br><br>
 
 <!-- Implementation -->
 <img src="./readme/title4.svg"/>
 
-> Using the wireframes and mockups as a guide, we implemented the Coffee Express app with the following features:
+> Using the wireframes and mockups as a guide, we implemented the ProjectHub app with the following features:
 
 
 ### Admin Screens (Desktop)
@@ -62,6 +61,7 @@ With my project features engineers can create their own virtual world and collab
 | ---| ---| ---|
 | ![Landing](./readme/Dashboard_manager.jpg) | ![fsdaf](./readme/ProjectSection.jpg) | ![fsdaf](./readme/TeamMembers.jpg) |
 
+![fsdaf](./readme/ezgif.com-resize.gif)
 <br><br>
 
 <!-- Tech stack -->
