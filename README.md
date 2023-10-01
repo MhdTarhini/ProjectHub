@@ -35,42 +35,33 @@ With my project features engineers can create their own virtual world and collab
 - As a manager, I want to change project statuses so that I can manage my projects effectively.
 
 <br><br>
-
 <!-- Prototyping -->
 <img src="./readme/title3.svg"/>
 
-
-### Wireframes
-| Login screen  | Register screen |  Landing screen |
-| ---| ---| ---|
-| ![Landing](./readme/demo/1440x1024.png) | ![fsdaf](./readme/demo/1440x1024.png) | ![fsdaf](./readme/demo/1440x1024.png) |
-
 ### Mockups
-| Login screen  | Menu Screen | Order Screen |
+| Login screen  | Dashboard Section | Issues Section |
 | ---| ---| ---|
-| ![Landing](./readme/login_page.png) | ![fsdaf](./readme/Dashborad.png) | ![fsdaf](./readme/Issues_Section.png) |
+| ![Landing](./readme/loginpage.jpg) | ![fsdaf](./readme/Dashborad.jpg) | ![fsdaf](./readme/IssuesSection.jpg) |
+
+| Tasks Section  | Loading Screen |  Files Section |
+| ---| ---| ---|
+| ![Landing](./readme/TasksSection.jpg) | ![fsdaf](./readme/ezgif.com-resize.gif) | ![fsdaf](./readme/FilesSection.jpg) |
+
 
 <br><br>
 
 <!-- Implementation -->
 <img src="./readme/title4.svg"/>
 
-> Using the wireframes and mockups as a guide, we implemented the Coffee Express app with the following features:
+> Using the wireframes and mockups as a guide, we implemented the ProjectHub app with the following features:
 
-### User Screens (Mobile)
-| Login screen  | Register screen | Landing screen | Loading screen |
-| ---| ---| ---| ---|
-| ![Landing](https://placehold.co/900x1600) | ![fsdaf](https://placehold.co/900x1600) | ![fsdaf](https://placehold.co/900x1600) | ![fsdaf](https://placehold.co/900x1600) |
-| Home screen  | Menu Screen | Order Screen | Checkout Screen |
-| ![Landing](https://placehold.co/900x1600) | ![fsdaf](https://placehold.co/900x1600) | ![fsdaf](https://placehold.co/900x1600) | ![fsdaf](https://placehold.co/900x1600) |
 
-### Admin Screens (Web)
-| Login screen  | Register screen |  Landing screen |
+### Admin Screens (Desktop)
+| Dshbored Section  | Project Section |  Team Members screen |
 | ---| ---| ---|
-| ![Landing](./readme/demo/1440x1024.png) | ![fsdaf](./readme/demo/1440x1024.png) | ![fsdaf](./readme/demo/1440x1024.png) |
-| Home screen  | Menu Screen | Order Screen |
-| ![Landing](./readme/demo/1440x1024.png) | ![fsdaf](./readme/demo/1440x1024.png) | ![fsdaf](./readme/demo/1440x1024.png) |
+| ![Landing](./readme/Dashboard_manager.jpg) | ![fsdaf](./readme/ProjectSection.jpg) | ![fsdaf](./readme/TeamMembers.jpg) |
 
+![fsdaf](./readme/ezgif.com-resize.gif)
 <br><br>
 
 <!-- Tech stack -->
@@ -78,11 +69,11 @@ With my project features engineers can create their own virtual world and collab
 
 ###  ProjectHub is built using the following technologies:
 
-- This project uses the [Flutter app development framework](https://flutter.dev/). Flutter is a cross-platform hybrid app development platform which allows us to use a single codebase for apps on mobile, desktop, and the web.
-- For persistent storage (database), the app uses the [Hive](https://hivedb.dev/) package which allows the app to create a custom storage schema and save it to a local database.
-- To send local push notifications, the app uses the [flutter_local_notifications](https://pub.dev/packages/flutter_local_notifications) package which supports Android, iOS, and macOS.
-  - 🚨 Currently, notifications aren't working on macOS. This is a known issue that we are working to resolve!
-- The app uses the font ["Work Sans"](https://fonts.google.com/specimen/Work+Sans) as its main font, and the design of the app adheres to the material design guidelines.
+- This project uses the [Electron framework](https://www.electronjs.org/). Electron embeds Chromium and Node.js to enable web developers to create desktop applications.
+- For persistent storage (database), the app uses [MySQL](https://www.mysql.com/) package which allows the app to create a custom storage schema and save it to a local database.
+- On paralllel with Electron I Used [Python](https://www.python.org/) where is a programming language that lets you work more quickly and integrate your systems more effectively.
+- As a Frontend [React](https://react.dev/) that declarative, efficient, and flexible JavaScript library for building user interfaces or UI components.
+- For handling database records I used [Laraverl](https://laravel.com/) that include Eloquent where is an object relational mapper (ORM). 
 
 <br><br>
 
@@ -103,18 +94,25 @@ This is an example of how to list things you need to use the software and how to
 
 _Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. Clone the repo
    ```sh
-   git clone https://github.com/your_username_/Project-Name.git
+   git clone https://github.com/MhdTarhini/ProjectHub.git
    ```
-3. Install NPM packages
+2. Install NPM packages
    ```sh
    npm install
    ```
-4. Enter your API in `config.js`
+3. Enter eletron file
    ```js
-   const API_KEY = 'ENTER YOUR API';
+   cd electron
+   ```
+4. Run React
+   ```js
+   npm run react:start
+   ```
+5. Run Electron
+   ```js
+   npm run eletron:start
    ```
 
-Now, you should be able to run Coffee Express locally and explore its features.
+Now, you should be able to run ProjectHub locally and explore its features.
