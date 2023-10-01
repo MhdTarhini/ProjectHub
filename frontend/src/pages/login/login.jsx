@@ -14,7 +14,7 @@ function Login() {
   const [emailErrorMessage, setEmailErrorMessage] = useState("");
   const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
   const [authMethod, setAuthMethod] = useState("email");
-  const [showLogo, setShowLogo] = useState(false);
+  const [showLogo, setShowLogo] = useState(true);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [newPassword, setNewPassword] = useState("");
   const [Code, setCode] = useState("");
@@ -122,7 +122,12 @@ function Login() {
       setCodeErrorMessage("Wrong Code");
     }
   }
-
+  useEffect(() => {
+    setTimeout(() => {
+      setShowLogo(false);
+    }, 2000);
+  }, []);
+  
   return (
     <>
       <div>

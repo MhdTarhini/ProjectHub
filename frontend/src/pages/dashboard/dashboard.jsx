@@ -90,7 +90,7 @@ function Dashboard() {
   async function AcceptePush(commit_id) {
     const data = new FormData();
     data.append("commit_id", commit_id);
-
+    mainCommit = mainCommit.filter((commit) => commit.id !== commit_id);
     try {
       const response = await axios.post(
         `http://34.244.172.132/api/file-section/accepte_push`,
@@ -108,6 +108,10 @@ function Dashboard() {
       console.log(error);
     }
   }
+
+  function HandleRejected(commit_id) {
+    mainCommit = mainCommit.filter((commit) => commit.id !== commit_id);
+  }
   useEffect(() => {
     getRecentFiles();
     getRecentRooms();
@@ -123,7 +127,7 @@ function Dashboard() {
       setShowlogo(false);
     }, 3000);
   }, []);
-
+  
   return (
     <>
       {showlogo ? (
@@ -366,7 +370,7 @@ function Dashboard() {
                                     onClick={() => AcceptePush(commit.id)}>
                                     Accepte
                                   </button>
-                                  <button className="button-refuse">
+                                  <button className="button-refuse" onClick={()=>{HandleRejected(commit.id)}}>
                                     Ignore
                                   </button>
                                 </div>
