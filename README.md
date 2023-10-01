@@ -110,11 +110,11 @@ _Below is an example of how you can instruct your audience on installing and set
    ```
 4. Run React
    ```js
- npm run react:start
+   npm run react:start
    ```
 5. Run Electron
    ```js
- npm run eletron:start
+   npm run eletron:start
    ```
 
 Now, you should be able to run Coffee Express locally and explore its features.
