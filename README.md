@@ -105,7 +105,7 @@ _Below is an example of how you can instruct your audience on installing and set
    npm install
    ```
 3. Enter eletron file
-   ```
+   ```js
    cd electron
    ```
 4. Run React
