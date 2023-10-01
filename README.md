@@ -42,7 +42,7 @@ With my project features engineers can create their own virtual world and collab
 ### Mockups
 | Login screen  | Dashboard Section | Issues Section |
 | ---| ---| ---|
-| ![Landing](./readme/login_page.png) | ![fsdaf](./readme/Dashborad.png) | ![fsdaf](./readme/Issues_Section.png) |
+| ![Landing](./readme/loginpage.jpg) | ![fsdaf](./readme/Dashborad.jpg) | ![fsdaf](./readme/IssuesSection.jpgg) |
 
 | Tasks Section  |  |  Files Section |
 | ---| ---| ---|
