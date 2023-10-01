@@ -350,7 +350,7 @@ function ChatsSection() {
             onRequestClose={closeCreateMultiRoom}
             ariaHideApp={false}
             className="new-room-model"
-            style={{ overlay: { background: "rgb(0 0 0 / 15%)" } }}>
+            style={{ overlay: { background: "rgb(0 0 0 / 30%)" } }}>
             <h2 className="model-title">Upload New File</h2>
             <div className="btns close">
               <button className="btn" onClick={closeCreateMultiRoom}>

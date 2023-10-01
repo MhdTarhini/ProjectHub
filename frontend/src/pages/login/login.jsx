@@ -15,7 +15,6 @@ function Login() {
   const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
   const [authMethod, setAuthMethod] = useState("email");
   const [showLogo, setShowLogo] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [newPassword, setNewPassword] = useState("");
   const [Code, setCode] = useState("");
@@ -89,17 +88,15 @@ function Login() {
     const TemplateId = "template_mpciypf";
     const userId = "cfZj5HPcXQwhUS1HI";
     const templateParams = {
-      to_name: "hello",
       code: verificationCode,
       reply_to: SendedEmail,
     };
     emailjs.send(serviceId, TemplateId, templateParams, userId).then(
       (response) => {
         setIsSentEmail(true);
-        console.log("SUCCESS!", response.status, response.text);
       },
       (err) => {
-        console.log("FAILED...", err);
+        console.error(err);
       }
     );
   }
@@ -119,15 +116,11 @@ function Login() {
           setIsForgotPassword(false);
         }
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     } else {
       setCodeErrorMessage("Wrong Code");
     }
-  }
-
-  function handleRemmeberMe(e) {
-    setIsChecked(e.target.checked);
   }
 
   return (

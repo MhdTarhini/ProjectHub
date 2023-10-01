@@ -14,7 +14,6 @@ import LocalCommit from "../LocalCommit/LocalCommit";
 import CommitHistory from "../commitsHistory/CommitHistory";
 import CommitMain from "../commitMain/CommitMain";
 
-
 function FilesContainer({
   branche,
   updateFile,
@@ -58,8 +57,8 @@ function FilesContainer({
   function closeModal() {
     setIsOpen(false);
     setIsloading(false);
+    setDetailsAI("");
   }
-
 
   function closeCheckCommit() {
     setIsloading(false);
@@ -77,25 +76,21 @@ function FilesContainer({
     setModalDeleteOpen(false);
   }
 
-
   async function getAIResponse(data) {
-    try {
-      if (isLoading) {
-        const response = await axios.post(
-          "http://127.0.0.1:8000/api/file-section/open_ai",
-          {
-            data: data,
-          }
-        );
-        const reponseai = await response.data;
-
-        if (reponseai.status === "success") {
-          setDetailsAI(reponseai.data);
-        }
-      }
-    } catch (error) {
-      console.error(error);
-    }
+    // try {
+    //   const response = await axios.post(
+    //     "http://127.0.0.1:8000/api/file-section/open_ai",
+    //     {
+    //       data: data,
+    //     }
+    //   );
+    //   const reponseai = await response.data;
+    //   if (reponseai.status === "success") {
+    //     setDetailsAI(reponseai.data);
+    //   }
+    // } catch (error) {
+    //   console.error(error);
+    // }
   }
 
   async function getfileCommit(file_id) {
@@ -106,7 +101,7 @@ function FilesContainer({
       const commitData = await response.data;
       setAllCommit(commitData.data);
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   }
 
@@ -123,7 +118,7 @@ function FilesContainer({
       setGetFiles(files.data);
       setDoneGetFiles(true);
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   }
   async function getMainFilePath(file_name) {
@@ -145,10 +140,9 @@ function FilesContainer({
         setNoMainMatch(true);
       }
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   }
-
 
   function getDxfData(file_dxf) {
     window.electron.send(channels.Get_Details, { file_dxf });
@@ -167,7 +161,7 @@ function FilesContainer({
       setConflitSvg(conflictSVG.data);
       setIsloading(false);
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   }
   const handleDataFromChild = () => {
@@ -197,7 +191,6 @@ function FilesContainer({
     handleGetFiles();
   }, [donePull]);
 
-
   useEffect(() => {
     window.electron.on(channels.Compare_Main_Data_IsDone, (data) => {
       const decodedData = base64.decode(data);
@@ -206,7 +199,6 @@ function FilesContainer({
       setIsloading(false);
     });
     window.electron.on(channels.Get_Details_IsDone, (data) => {
-      console.log(data);
       getAIResponse(data);
       setIsloading(false);
     });
@@ -467,11 +459,6 @@ function FilesContainer({
                                       ]);
                                     }}
                                   />
-                                  <span className="sr-only">Close panel</span>
-                                  <XMarkIcon
-                                    className="h-6 w-6"
-                                    aria-hidden="true"
-                                  />
                                 </button>
                               </div>
                             </Transition.Child>
@@ -521,6 +508,7 @@ function FilesContainer({
                                           fill="#000000"
                                         />
                                       </svg>
+                                      <div style={{ zIndex: "9999999" }}></div>
                                     </div>
                                     <div
                                       className="view-svg"
@@ -594,9 +582,9 @@ function FilesContainer({
                                   <div className="details-of-file">
                                     <div className="file-details-version">
                                       <div>Created Date</div>
-                                      {openedfileDetails.user && (
+                                      {openedfileDetails && (
                                         <div className="file-details-user">{`${
-                                          openedfileDetails.created_at.split(
+                                          openedfileDetails.created_at?.split(
                                             "T"
                                           )[0]
                                         }`}</div>
@@ -673,7 +661,7 @@ function FilesContainer({
         onRequestClose={closeModal}
         ariaHideApp={false}
         className="check-conflict-model"
-        style={{ overlay: { background: "rgb(0 0 0 / 15%)" } }}>
+        style={{ overlay: { background: "rgb(0 0 0 / 30%)" } }}>
         {conflictSvg ? (
           <img
             src={conflictSvg}
@@ -691,7 +679,7 @@ function FilesContainer({
         onRequestClose={closeCheckFile}
         ariaHideApp={false}
         className="check-conflict-model"
-        style={{ overlay: { background: "rgb(0 0 0 / 15%)" } }}>
+        style={{ overlay: { background: "rgb(0 0 0 / 30%)" } }}>
         {seletedFile ? (
           <img
             src={seletedFile}
@@ -709,7 +697,7 @@ function FilesContainer({
         onRequestClose={closeDeleteModal}
         ariaHideApp={false}
         className="new-file-model branche-model"
-        style={{ overlay: { background: "rgb(0 0 0 / 15%)" } }}>
+        style={{ overlay: { background: "rgb(0 0 0 / 30%)" } }}>
         <h2 className="model-title">Add New Branche</h2>
         <div className="btns-new-file">
           <button className="btn close-btn" onClick={closeDeleteModal}>

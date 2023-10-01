@@ -170,8 +170,8 @@ function IssuesSection() {
             className={`new-issue-model ${
               imageIsUploaded ? "withimage" : "noImage"
             }`}
-            style={{ overlay: { background: "rgb(0 0 0 / 15%)" } }}>
-            <h2 className="model-title">Upload New File</h2>
+            style={{ overlay: { background: "rgb(0 0 0 / 30%)" } }}>
+            <h2 className="model-title">Upload New Post</h2>
             <div className="upload-file-form">
               <div className="model-issue-conatainer">
                 <Input

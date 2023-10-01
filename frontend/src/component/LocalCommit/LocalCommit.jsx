@@ -281,7 +281,7 @@ function LocalCommit({
         onRequestClose={closeModal}
         ariaHideApp={false}
         className="check-conflict-model"
-        style={{ overlay: { background: "rgb(0 0 0 / 15%)" } }}>
+        style={{ overlay: { background: "rgb(0 0 0 / 30%)" } }}>
         {conflictSvg ? (
           <img
             src={conflictSvg}

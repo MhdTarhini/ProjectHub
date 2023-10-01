@@ -324,9 +324,6 @@ function ProjectsTable({ openedProject }) {
           </div>
           {openProjectSetting ? (
             <div className="edit-project-model">
-              {/* <h2 className="model-title new-project-model-title">
-                Edit Project
-              </h2> */}
               <div className="edit-project-coonatiner">
                 <div className="first-inputs">
                   <Input
@@ -667,7 +664,9 @@ function ProjectsTable({ openedProject }) {
         onRequestClose={closeAddMemberModel}
         ariaHideApp={false}
         className="new-file-model branche-model project-model">
-        <h2 className="model-title new-project-model-title">
+        <h2
+          className="model-title new-project-model-title"
+          style={{ overlay: { background: "rgb(0 0 0 / 30%)" } }}>
           Create New Project
         </h2>
         <Listbox value={selectedTeamOption} onChange={setSelectedTeamOption}>

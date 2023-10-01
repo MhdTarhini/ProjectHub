@@ -384,7 +384,7 @@ function IssuePost({ selectedPost, isSeleted }) {
         onRequestClose={closeAddContentModal}
         ariaHideApp={false}
         className={`new-issue-model noImage`}
-        style={{ overlay: { background: "rgb(0 0 0 / 15%)" } }}>
+        style={{ overlay: { background: "rgb(0 0 0 / 30%)" } }}>
         <h2 className="model-title">Upload New Media</h2>
         <div className="upload-file-form">
           {imagedIsUpload ? (
@@ -497,7 +497,7 @@ function IssuePost({ selectedPost, isSeleted }) {
         onRequestClose={closeNewMemberModal}
         ariaHideApp={false}
         className={`new-issue-model noImage`}
-        style={{ overlay: { background: "rgb(0 0 0 / 15%)" } }}>
+        style={{ overlay: { background: "rgb(0 0 0 / 30%)" } }}>
         <div className="new-member-model">
           <h2 className="model-title">Add New Member</h2>
           <div>

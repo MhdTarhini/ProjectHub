@@ -314,6 +314,7 @@ function FilesSection() {
                       />
                     </svg>
                     <div className="title-check-consflict">Check Conflict</div>
+                    <div>Click on the card to accept or ignore new changes</div>
                   </div>
                 ) : (
                   <>
@@ -485,7 +486,7 @@ function FilesSection() {
           onRequestClose={closeModal}
           ariaHideApp={false}
           className="new-file-model"
-          style={{ overlay: { background: "rgb(0 0 0 / 15%)" } }}>
+          style={{ overlay: { background: "rgb(0 0 0 / 30%)" } }}>
           <h2 className="model-title">Upload New File</h2>
           <div className="upload-file-form">
             <div className="file-name-conatainer">
@@ -554,7 +555,7 @@ function FilesSection() {
           onRequestClose={closeBrancheModal}
           ariaHideApp={false}
           className="new-file-model branche-model"
-          style={{ overlay: { background: "rgb(0 0 0 / 15%)" } }}>
+          style={{ overlay: { background: "rgb(0 0 0 / 30%)" } }}>
           <h2 className="model-title">Create New Branche</h2>
           <Input
             label={"Branch Name"}

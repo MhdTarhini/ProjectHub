@@ -99,10 +99,7 @@ ipcMain.on(channels.Compare_Data, (event, arg) => {
   });
 });
 ipcMain.on(channels.Compare_Main_Data, (event, arg) => {
-  console.log("here");
   const { main_file_path, local_file_path } = arg;
-  console.log(main_file_path);
-  console.log(local_file_path);
   let pyCompareMain = new PythonShell("./compare_main.py", {
     args: [local_file_path, main_file_path],
   });

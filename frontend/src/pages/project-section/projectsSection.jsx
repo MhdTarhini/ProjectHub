@@ -430,7 +430,8 @@ function ProjectsSection() {
         isOpen={modalProjectOpen}
         onRequestClose={closeProjectModal}
         ariaHideApp={false}
-        className="new-file-model branche-model project-model">
+        className="new-file-model branche-model project-model"
+        style={{ overlay: { background: "rgb(0 0 0 / 30%)" } }}>
         <h2 className="model-title new-project-model-title">
           Create New Project
         </h2>

@@ -68,7 +68,7 @@ class FileController extends Controller
         'project_id' => 'required|string|max:255',
         ]);
 
-        $files=Branch::where("project_id",$request->project_id)->with("files")->get();
+        $files=Branch::where("project_id",$request->project_id)->with("files.user")->get();
 
         return response()->json([
             'status' => 'success',
