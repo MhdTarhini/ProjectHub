@@ -75,6 +75,7 @@ With my project features engineers can create their own virtual world and collab
 - For persistent storage (database), the app uses [MySQL](https://www.mysql.com/) package which allows the app to create a custom storage schema and save it to a local database.
 - On paralllel with Electron I Used [Python](https://www.python.org/) where is a programming language that lets you work more quickly and integrate your systems more effectively.
 - As a Frontend [React](https://react.dev/) that declarative, efficient, and flexible JavaScript library for building user interfaces or UI components.
+- For handling database records I used [Laraverl](https://laravel.com/) that include Eloquent where is an object relational mapper (ORM) to representing data as objects, working as a layer of abstraction on top of the database engine used to store an application's data. 
 
 <br><br>
 
