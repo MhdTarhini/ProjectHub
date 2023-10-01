@@ -46,7 +46,7 @@ With my project features engineers can create their own virtual world and collab
 
 | Tasks Section  | Loading Screen |  Files Section |
 | ---| ---| ---|
-| ![Landing](./readme/TasksSection.jpg) | ![fsdaf](./readme/FilesSection.jpg) | ![fsdaf](./readme/FilesSection.jpg) |
+| ![Landing](./readme/TasksSection.jpg) | ![fsdaf](./readme/ezgif.com-video-to-gif.gif) | ![fsdaf](./readme/FilesSection.jpg) |
 
 
 <br><br>
@@ -60,7 +60,7 @@ With my project features engineers can create their own virtual world and collab
 ### Admin Screens (Desktop)
 | Dshbored Section  | Project Section |  Team Members screen |
 | ---| ---| ---|
-| ![Landing](./readme/Dashboard_manager.jpg) | ![fsdaf](./readme/ezgif.com-video-to-gif.gif) | ![fsdaf](./readme/TeamMembers.jpg) |
+| ![Landing](./readme/Dashboard_manager.jpg) | ![fsdaf](./readme/ProjectSection.jpg) | ![fsdaf](./readme/TeamMembers.jpg) |
 
 <br><br>
 
