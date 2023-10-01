@@ -644,3 +644,24 @@ background: #FFF;
     line-height: 20px;
     margin-top: 10px;
 }
+
+.list-not {
+    height: 220px;
+    overflow-y: auto;
+}
+
+.list-not::-webkit-scrollbar {
+    display: none;
+}
+
+.list-not:-webkit-scrollbar {
+    width: 0;
+}
+
+.list-not::-khtml-scrollbar {
+    width: 0;
+}
+
+.list-not::-moz-scrollbar {
+    width: 0;
+}

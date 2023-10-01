@@ -55,12 +55,11 @@ function Dashboard() {
         `http://34.244.172.132/api/task-section/tasks_title/${user.active}`
       );
       const tasksTitle = await response.data;
-      if (tasksTitle.status === "succcess") {
+      if (tasksTitle.status === "success") {
         setTasksTitle(tasksTitle.data);
       } else {
         setNoTasks(true);
       }
-      console.log(tasksTitle);
     } catch (error) {
       console.log(error);
     }
@@ -175,7 +174,7 @@ function Dashboard() {
                       return (
                         <div className="task-item">
                           <div className="left-side-task-item">
-                            <div className="task-card-name">{task}</div>
+                            <div className="task-card-name">{task.text}</div>
                           </div>
                           <div className="right-side-task-item">
                             <svg
@@ -343,54 +342,55 @@ function Dashboard() {
                       />
                     </svg>
                   </div>
-                  {mainCommit.length > 0 ? (
-                    mainCommit.map((commit) => {
-                      return (
-                        <div className="notification-list-item">
-                          <div className="card-content-file">
-                            <div className="middel">
-                              <img
-                                src={`http://34.244.172.132/storage/${
-                                  commit.compare_path_svg?.split("/")[4]
-                                }`}
-                                alt=""
-                                srcset=""
-                                className="img-commit-not"
-                              />
-                            </div>
-                            <div className="right-not-side">
-                              <div className="file-notification-name">
-                                {commit.message}
-                              </div>
-                              <div className="btns-not">
-                                <button
-                                  className="button-accpt"
-                                  onClick={() => AcceptePush(commit.id)}>
-                                  Accepte
-                                </button>
-                                <button className="button-refuse">
-                                  Ignore
-                                </button>
-                              </div>
-                              <div className="user-info-card-not">
+                  <div className="list-not">
+                    {mainCommit.length > 0 ? (
+                      mainCommit.map((commit) => {
+                        return (
+                          <div className="notification-list-item">
+                            <div className="card-content-file">
+                              <div className="middel">
                                 <img
-                                  src={commit.user?.profile_img}
+                                  src={`http://34.244.172.132/storage/thid%20file.svg
+                              `}
                                   alt=""
                                   srcset=""
-                                  className="image-user"
+                                  className="img-commit-not"
                                 />
-                                <div className="user-name-file">
-                                  {`${commit.user?.first_name} ${commit.user?.last_name}`}
+                              </div>
+                              <div className="right-not-side">
+                                <div className="file-notification-name">
+                                  {commit.message}
+                                </div>
+                                <div className="btns-not">
+                                  <button
+                                    className="button-accpt"
+                                    onClick={() => AcceptePush(commit.id)}>
+                                    Accepte
+                                  </button>
+                                  <button className="button-refuse">
+                                    Ignore
+                                  </button>
+                                </div>
+                                <div className="user-info-card-not">
+                                  <img
+                                    src={commit.user?.profile_img}
+                                    alt=""
+                                    srcset=""
+                                    className="image-user"
+                                  />
+                                  <div className="user-name-file">
+                                    {`${commit.user?.first_name} ${commit.user?.last_name}`}
+                                  </div>
                                 </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      );
-                    })
-                  ) : (
-                    <div className="no-recent-files">No notification</div>
-                  )}
+                        );
+                      })
+                    ) : (
+                      <div className="no-recent-files">No notification</div>
+                    )}
+                  </div>
                 </div>
               </div>
             )}

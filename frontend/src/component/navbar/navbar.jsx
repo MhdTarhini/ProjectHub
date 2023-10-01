@@ -2,6 +2,7 @@ import React from "react";
 import "./navbar.css";
 
 function Navbar() {
+  const userData = JSON.parse(localStorage.getItem("user"));
   return (
     <div className="navbar">
       <div className="logo">
@@ -37,7 +38,7 @@ function Navbar() {
         </div>
         <div className="user-info">
           <div className="user-name-job">
-            <div className="user-name">Joe Biden</div>
+            <div className="user-name">{`${userData.user.first_name} ${userData.user.last_name}`}</div>
             <div className="user-job">Civil engineer</div>
           </div>
           <img
