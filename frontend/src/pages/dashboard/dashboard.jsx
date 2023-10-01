@@ -214,7 +214,11 @@ function Dashboard() {
                             <div
                               class="card-dash"
                               onClick={() => {
-                                setSeletedFile(file.path_svg);
+                                setSeletedFile(
+                                  `http://34.244.172.132/storage/${
+                                    file.path_svg.split("/")[4]
+                                  }`
+                                );
                                 setCheckFileIsOpen(true);
                               }}>
                               <div className="top-card-file-recent">
@@ -226,7 +230,13 @@ function Dashboard() {
                                 />
                                 <div className="h11">{file.name}</div>
                               </div>
-                              <img src={file.path_svg} alt="" srcset="" />
+                              <img
+                                src={`http://34.244.172.132/storage/${
+                                  file.path_svg.split("/")[4]
+                                }`}
+                                alt=""
+                                srcset=""
+                              />
                             </div>
                           </>
                         );
@@ -340,14 +350,16 @@ function Dashboard() {
                           <div className="card-content-file">
                             <div className="middel">
                               <img
-                                src={`http://34.244.172.132/storage/${commit.new_path_svg}`}
+                                src={`http://34.244.172.132/storage/${
+                                  commit.compare_path_svg?.split("/")[4]
+                                }`}
                                 alt=""
                                 srcset=""
                                 className="img-commit-not"
                               />
                             </div>
                             <div className="right-not-side">
-                              <div className="file-recent-name">
+                              <div className="file-notification-name">
                                 {commit.message}
                               </div>
                               <div className="btns-not">

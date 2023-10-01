@@ -34,7 +34,10 @@ function Register() {
     data.append("password", password);
     data.append("last_name", lastName);
     data.append("first_name", firstName);
-    data.append("profile_img", profileImage);
+    data.append(
+      "profile_img",
+      "http://34.244.172.132/uploads/assets/default.png"
+    );
     data.append("authMethod", authMethod);
     data.append("remember_token", null);
     try {

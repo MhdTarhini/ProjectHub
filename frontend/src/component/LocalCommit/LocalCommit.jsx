@@ -284,7 +284,7 @@ function LocalCommit({
         style={{ overlay: { background: "rgb(0 0 0 / 30%)" } }}>
         {conflictSvg ? (
           <img
-            src={conflictSvg}
+            src={`http://34.244.172.132/storage/${conflictSvg.split("/")[4]}`}
             style={{ height: 700 }}
             alt="SVG"
             srcSet=""

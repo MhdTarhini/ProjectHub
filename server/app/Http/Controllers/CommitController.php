@@ -28,15 +28,15 @@ class CommitController extends Controller
         ]);
 
 
-        $file = $request->file('new_path_dxf');
-        if ($file) {
-            $content = file_get_contents($file->getRealPath());
-        } else {
-            return response()->json([
-            'status' => 'failed',
-            'message' => 'new_path_dxf not a file',
-            ]);
-        }
+        // $file = $request->file('new_path_dxf');
+        // if ($file) {
+        //     $content = file_get_contents($file->getRealPath());
+        // } else {
+        //     return response()->json([
+        //     'status' => 'failed',
+        //     'message' => 'new_path_dxf not a file',
+        //     ]);
+        // }
 
         $file_id = File::where('id', $request->file_id)->first(); 
         if ($file_id) {
@@ -52,16 +52,16 @@ class CommitController extends Controller
             ]);
         }
 
-        $path_dxf = Storage::disk('public')->put($dxf, $content);
+        // $path_dxf = Storage::disk('public')->put($dxf, $content);
         $path_svg = Storage::disk('public')->put($svg_compared, $request->compare_path_svg);
         $new_path_svg = Storage::disk('public')->put($svg, $request->new_path_svg);
 
 
         $commit=new Commit;
         $commit->message=$request->message;
-        $commit->new_path_dxf = "http://34.244.172.132/storage/".$dxf;
+        $commit->new_path_dxf = $request->new_path_svg;;
         $commit->compare_path_svg = "http://34.244.172.132/storage/".$svg_compared;
-        $commit->new_path_svg = "http://34.244.172.132/storage/".$svg;
+        $commit->new_path_svg = $request->new_path_svg;
         $commit->old_path_dxf = $request->old_path_dxf;
         $commit->status = $request->status;
         $commit->user_id = Auth::id();

@@ -24,7 +24,6 @@ function CommitMain({
   const [mainCommitMessage, setMainCommitMessage] = useState("");
   const [isLoading, setIsloading] = useState(false);
   const [mainCompareResult, setMainCompareResult] = useState("");
-  const [isDoneCommitMain, setIsDoneCommitMain] = useState(false);
   const [errorMainMessage, setMainErrorMessage] = useState("");
   const [goCheckConflict, setGoCheckConflict] = useState(false);
   const [conflictSvg, setConflitSvg] = useState("");
@@ -151,38 +150,18 @@ function CommitMain({
             closeCheckFile();
             openModal();
           }}>
+          {/* `http://34.244.172.132/storage/${mainDxfPath.split("/")[4]}`,
+          `http://34.244.172.132/storage/$
+          {openedfileDetails.path_dxf.split("/")[4]}` */}
           Check
         </div>
       </div>
       {errorMain && <div className="error">{errorMainMessage}</div>}
-      {/* <Modal
-        isOpen={CheckFileIsOpen}
-        onRequestClose={closeCheckFile}
-        ariaHideApp={false}
-        className="check-conflict-model">
-    
-        {seletedFile ? (
-          <img
-            src={seletedFile}
-            style={{ height: 700 }}
-            alt="SVG"
-            srcSet=""
-            className="svg-image"
-          />
-        ) : (
-          <Loading />
-        )}
-      </Modal> */}
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         ariaHideApp={false}
         className="check-conflict-model">
-        {/* <div className="btns close">
-          <button className="btn" onClick={closeModal}>
-            X
-          </button>
-        </div> */}
         {conflictSvg ? (
           <img
             src={`http://34.244.172.132/storage/${conflictSvg.split("/")[4]}`}

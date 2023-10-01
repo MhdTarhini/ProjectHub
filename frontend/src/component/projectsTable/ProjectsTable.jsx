@@ -7,7 +7,6 @@ import "./ProjectsTable.css";
 import Input from "../input/input";
 import Loading from "../common/loading/loading";
 import { MultiSelect } from "react-multi-select-component";
-import { ProjectContext } from "../../context/ProjectContext";
 import Message from "../common/Message/message";
 import Modal from "react-modal";
 import { Listbox } from "@headlessui/react";

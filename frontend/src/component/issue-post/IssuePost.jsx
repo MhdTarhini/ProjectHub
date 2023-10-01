@@ -5,7 +5,6 @@ import Input from "../input/input";
 import Loading from "../common/loading/loading";
 import Modal from "react-modal";
 import { MultiSelect } from "react-multi-select-component";
-import { ProjectContext } from "../../context/ProjectContext";
 
 function IssuePost({ selectedPost, isSeleted }) {
   const [matchedContent, setMatchedContent] = useState(null);
@@ -195,7 +194,9 @@ function IssuePost({ selectedPost, isSeleted }) {
             {matchedContent && (
               <>
                 <img
-                  src={matchedContent.svg_path}
+                  src={`http://34.244.172.132/uploads/issues_image/${
+                    matchedContent.svg_path.split("/")[5]
+                  }`}
                   alt=""
                   className="post-image"
                 />
@@ -348,7 +349,13 @@ function IssuePost({ selectedPost, isSeleted }) {
               {selectedPost.contents?.map((item) => (
                 <div className="media-card">
                   <div className="issue-post-img-media">
-                    <img src={item?.svg_path} alt="" className="post-image" />
+                    <img
+                      src={`http://34.244.172.132/uploads/issues_image/${
+                        item?.svg_path.split("/")[5]
+                      }`}
+                      alt=""
+                      className="post-image"
+                    />
                     <div className="img-post-details">
                       <div className="img-description">{item?.description}</div>
                     </div>
