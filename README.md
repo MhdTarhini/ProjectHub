@@ -46,7 +46,7 @@ With my project features engineers can create their own virtual world and collab
 
 | Tasks Section  | Loading screen |  Files Section |
 | ---| ---| ---|
-| ![Landing](./readme/TasksSection(1).jpg) | ![fsdaf](./readme/demo/1440x1024.png) | ![fsdaf](./readme/FilesSection.jpg) |
+| ![Landing](./readme/TasksSection.jpg) | ![fsdaf](./readme/demo/1440x1024.png) | ![fsdaf](./readme/FilesSection.jpg) |
 
 
 <br><br>
