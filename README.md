@@ -121,7 +121,7 @@ _Below is an example of how you can instruct your audience on installing and set
 [ProjectHub API's](./readme/ProjectHub-API's.postman_collection.json)
 ### Demo Accounts
 
-- email: loren@gmail.com, password: 1234567, and role: Manager of 2 projects (Hospital, Building) only one is Hospital project is Active.
+- email: loren@gmail.com, password: 1234567, and role: Manager of 2 projects (Hospital, Building) only Hospital project is Active.
 - email: leonardo@gmail.com, password: 1234567, and role: member in Architect Team in hospital project.
 - email: tala@gmail.com, password: 1234567, and role:  member in Site Team at hospital project.
 - email: tony@gmail.com, password:1234567, and role: member in Office Team at building project (pending project)
