@@ -61,7 +61,7 @@ With my project features engineers can create their own virtual world and collab
 | ---| ---| ---|
 | ![Landing](./readme/Dashboard_manager.jpg) | ![fsdaf](./readme/ProjectSection.jpg) | ![fsdaf](./readme/TeamMembers.jpg) |
 
-![fsdaf](./readme/ezgif.com-resize.gif)
+![fsdaf](./readme/gif.gif)
 <br><br>
 
 <!-- Tech stack -->
