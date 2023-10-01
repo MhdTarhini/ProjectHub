@@ -35,7 +35,7 @@ With my project features engineers can create their own virtual world and collab
 - As a manager, I want to change project statuses so that I can manage my projects effectively.
 
 <br><br>
-
+![fsdaf](./readme/ezgif.com-resize.gif)
 <!-- Prototyping -->
 <img src="./readme/title3.svg"/>
 
