@@ -116,4 +116,4 @@ _Below is an example of how you can instruct your audience on installing and set
    npm run eletron:start
    ```
 
-Now, you should be able to run Coffee Express locally and explore its features.
+Now, you should be able to run ProjectHub locally and explore its features.
