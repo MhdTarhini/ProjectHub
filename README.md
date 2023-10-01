@@ -46,7 +46,7 @@ With my project features engineers can create their own virtual world and collab
 
 | Tasks Section  | Loading Screen |  Files Section |
 | ---| ---| ---|
-| ![Landing](./readme/TasksSection.jpg) | ![fsdaf](./readme/ezgif.com-video-to-gif.gif) | ![fsdaf](./readme/FilesSection.jpg) |
+| ![Landing](./readme/TasksSection.jpg) | ![fsdaf](./readme/ezgif.com-resize.gif) | ![fsdaf](./readme/FilesSection.jpg) |
 
 
 <br><br>
