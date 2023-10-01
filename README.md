@@ -44,7 +44,7 @@ With my project features engineers can create their own virtual world and collab
 | ---| ---| ---|
 | ![Landing](./readme/login_page.png) | ![fsdaf](./readme/Dashborad.png) | ![fsdaf](./readme/Issues_Section.png) |
 
-| Tasks Section  |  Files Section |
+| Tasks Section  |  |  Files Section |
 | ---| ---| ---|
 | ![Landing](./readme/TasksSection.jpg) | ![fsdaf](./readme/FilesSection.jpg) |
 
