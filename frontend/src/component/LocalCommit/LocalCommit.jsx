@@ -194,7 +194,7 @@ function LocalCommit({
         <div className="input-upload-file">
           <label
             className={`btn updated-file ${
-              isLocalFileLoading ? "loading-green" : "n"
+              isLocalFileLoading ? "on-hold" : "n"
             }`}
             htmlFor="updated-file">
             <div className="download-icon">
@@ -233,7 +233,7 @@ function LocalCommit({
           />
           <div
             className={` btn-check ${
-              compareSuccess ? "btn color-btn-check" : "on-procress"
+              compareSuccess ? "btn color-btn-check" : "on-hold"
             }`}
             onClick={() => {
               setGoCheckConflict(true);
@@ -246,7 +246,7 @@ function LocalCommit({
         </div>
         <div className="check-commit">
           <button
-            className={` btn-commit ${compareSuccess ? "btn" : "on-procress"} ${
+            className={` btn-commit ${compareSuccess ? "btn" : "on-hold"} ${
               isLocalCommitLoading ? "loading-green" : "n"
             }`}
             onClick={() => {
@@ -261,7 +261,7 @@ function LocalCommit({
           </button>
           <button
             className={` btn-commit ${
-              compareSuccess && isCommited ? "btn" : "on-procress"
+              compareSuccess && isCommited ? "btn" : "on-hold"
             }`}
             onClick={() => {
               close();

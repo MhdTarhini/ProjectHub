@@ -225,3 +225,17 @@
     display: flex;
     gap: 10px;
 }
+.on-hold {
+    cursor: default;
+    display: inline-flex;
+    padding: 10px 20px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    align-self: center;
+    color: #FFF;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 8px;
+    background: #0f8fea8c;
+}

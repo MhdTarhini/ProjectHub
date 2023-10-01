@@ -62,7 +62,7 @@
     .card-title {
         color: #000;
         font-family: Inter;
-        font-size: 26px;
+        font-size: 25px;
         font-style: normal;
         font-weight: 800;
         line-height: normal;
@@ -148,7 +148,7 @@
 .card-title-files {
     padding: 10px 10px 5px 10px;
     font-family: Inter;
-    font-size: 26px;
+    font-size: 25px;
     font-style: normal;
     font-weight: 800;
     line-height: normal;
@@ -333,7 +333,7 @@ display: flex;
 .notification-title{
      color: #000;
         font-family: Inter;
-        font-size: 18px;
+        font-size: 25px;
         font-style: normal;
         font-weight:700;
         line-height: normal;
@@ -448,6 +448,7 @@ background: #FFF;
 .notification-card-conatainer {
     width: 550px;
     height: 270px;
+    padding: 10px 0px 0px 10px;
     flex-shrink: 0;
     border-radius: 5px;
     border: 1.5px solid var(--stroke, #E8E8E8);
@@ -504,15 +505,11 @@ background: #FFF;
 .card-dash {
     position: relative;
     width: 300px;
-    height: 50px;
-    padding: 0.5rem 0.5rem 0rem 0.5rem;
+    height: 45px;
+        padding: 0.5rem 0rem 0rem 0rem;
     /* background: rgba(198, 198, 198, 0.34); */
-    background-color: #0f8eea;
-    border-radius: 10px;
-    backdrop-filter: blur(5px);
-    border-bottom: 3px solid rgba(255, 255, 255, 0.440);
-    border-left: 2px rgba(255, 255, 255, 0.545) outset;
-    transform: skewX(2deg);
+    background-color: #0f8feac9;
+        border: 0.5px solid var(--stroke, #E8E8E8);
     transition: .4s;
     overflow: hidden;
     color: white;
@@ -559,7 +556,6 @@ background: #FFF;
 .card-dash .h11 {
     text-align: center;
     color: rgb(218, 244, 237);
-    text-shadow: -10px 5px 10px rgba(0, 0, 0, 0.573);
 }
 
 .button-accpt {

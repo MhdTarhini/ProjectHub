@@ -279,8 +279,8 @@ function ProjectsTable({ openedProject }) {
                       />
                     </svg>
                     <svg
-                      width="32px"
-                      height="32px"
+                      width="34px"
+                      height="34px"
                       viewBox="-0.01 0 20.026 20.026"
                       xmlns="http://www.w3.org/2000/svg"
                       onClick={() => {
@@ -306,7 +306,7 @@ function ProjectsTable({ openedProject }) {
                           data-name="primary"
                           d="M7.35,11a5.9,5.9,0,0,1-.27-3A6,6,0,0,1,19,9a5.94,5.94,0,0,1-1.34,3.77,1,1,0,0,0,.28,1.45A7,7,0,0,1,21,20a1,1,0,0,1-1,1H9"
                           fill="none"
-                          stroke="#000000"
+                          stroke=""
                           stroke-linecap="round"
                           stroke-linejoin="round"
                           stroke-width="2"
