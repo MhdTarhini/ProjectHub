@@ -48,8 +48,8 @@ class FileController extends Controller
 
         $file = new File();
         $file->name=$request->name;
-        $file->path_dxf = "http://127.0.0.1:8000/storage/".$dxf;
-        $file->path_svg = "http://127.0.0.1:8000/storage/".$svg;
+        $file->path_dxf = "http://34.244.172.132/storage/".$dxf;
+        $file->path_svg = "http://34.244.172.132/storage/".$svg;
         $file->version = $request->version;
         $file->project_id = $request->project_id;
         $file->user_id = Auth::id();

@@ -34,7 +34,7 @@ function Login() {
     data.append("authMethod", authMethod);
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/guest/login",
+        "http://34.244.172.132/api/guest/login",
         data
       );
       const userdata = await response.data;
@@ -108,7 +108,7 @@ function Login() {
       data.append("password", newPassword);
       try {
         const response = await axios.post(
-          "http://127.0.0.1:8000/api/guest/reset_password",
+          "http://34.244.172.132/api/guest/reset_password",
           data
         );
         const userdata = await response.data;
@@ -373,7 +373,7 @@ function Login() {
                 />
               </svg>
               <img
-                src="http://127.0.0.1:8000/uploads/assets/login-display.svg"
+                src="http://34.244.172.132/uploads/assets/login-display.svg"
                 alt="sss"
                 className="mid-svg"
                 style={{ zIndex: "1" }}

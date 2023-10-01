@@ -8,7 +8,7 @@ export const AuthContextProvider = ({ children }) => {
       "Authorization"
     ] = `Bearer ${user?.user?.token}`;
     const logout = async () => {
-      await axios.post("http://127.0.0.1:8000/api/logout");
+      await axios.post("http://34.244.172.132/api/logout");
       localStorage.clear();
     };
 

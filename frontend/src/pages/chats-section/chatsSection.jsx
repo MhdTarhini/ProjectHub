@@ -46,7 +46,7 @@ function ChatsSection() {
     try {
       const project_id = userData.active;
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/common/get_project_Member/${project_id}`
+        `http://34.244.172.132/api/common/get_project_Member/${project_id}`
       );
       const teamData = await response.data.data;
       setTeamMember(teamData);
@@ -63,7 +63,7 @@ function ChatsSection() {
   async function getRooms() {
     try {
       const response = await axios.get(
-        "http://127.0.0.1:8000/api/chat-section/get_rooms"
+        "http://34.244.172.132/api/chat-section/get_rooms"
       );
       const Rooms = await response.data;
       setUserRooms(Rooms.data);
@@ -162,13 +162,13 @@ function ChatsSection() {
     });
     try {
       const response = await axios.post(
-        `http://127.0.0.1:8000/api/chat-section/add_room`,
+        `http://34.244.172.132/api/chat-section/add_room`,
         {
           room_member: selected_id,
           project_id: userData.active,
           name: name,
           Room_db_id: RoomId ? RoomId : newRoomName,
-          room_image: "http://127.0.0.1:8000/uploads/users_image/default.png",
+          room_image: "http://34.244.172.132/uploads/users_image/default.png",
         }
       );
       const add_new_chat = await response.data;
@@ -265,7 +265,7 @@ function ChatsSection() {
                 src={
                   seletedRoomInfo.room_image
                     ? seletedRoomInfo.room_image
-                    : "http://127.0.0.1:8000/uploads/users_image/default.png"
+                    : "http://34.244.172.132/uploads/users_image/default.png"
                 }
                 alt=""
                 className="user-room-contact-img "

@@ -40,7 +40,7 @@ function CommitHistory({ allCommit }) {
   //   async function getfileCommit(file_id) {
   //     try {
   //       const response = await axios.get(
-  //         `http://127.0.0.1:8000/api/file-section/get_commits/${file_id}`
+  //         `http://34.244.172.132/api/file-section/get_commits/${file_id}`
   //       );
   //       const commitData = await response.data;
   //       setAllCommit(commitData.data);

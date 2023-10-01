@@ -63,7 +63,7 @@ function CommitMain({
     data.append("team_id", user.team_active);
     try {
       const response = await axios.post(
-        `http://127.0.0.1:8000/api/file-section/main_commit`,
+        `http://34.244.172.132/api/file-section/main_commit`,
         data
       );
       const commitData = await response.data;
@@ -81,7 +81,7 @@ function CommitMain({
     data.append("svg_data", svg_data);
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/file-section/check_conflict",
+        "http://34.244.172.132/api/file-section/check_conflict",
         data
       );
       const conflictSVG = await response.data;

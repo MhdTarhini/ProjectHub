@@ -45,7 +45,7 @@ const TasksSection = () => {
   async function handleUpdateTasks() {
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/task-section/uplaod_tasks",
+        "http://34.244.172.132/api/task-section/uplaod_tasks",
         {
           created_tasks: TasksData,
           created_links: createdLinks,
@@ -62,7 +62,7 @@ const TasksSection = () => {
   async function checkCalender() {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/task-section/checkCalender/${user.active}`
+        `http://34.244.172.132/api/task-section/checkCalender/${user.active}`
       );
       const ExistsCalender = await response.data;
       if (ExistsCalender.status === "success") {
@@ -79,7 +79,7 @@ const TasksSection = () => {
   async function CreateGantt() {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/task-section/create_calender/${user.active}`
+        `http://34.244.172.132/api/task-section/create_calender/${user.active}`
       );
       const CreateCalender = await response.data;
       if (CreateCalender.status === "success") {
@@ -145,7 +145,7 @@ const TasksSection = () => {
           ) : (
             <>
               <img
-                src="http://127.0.0.1:8000/uploads/assets/logo.svg"
+                src="http://34.244.172.132/uploads/assets/logo.svg"
                 alt="logo"
                 srcSet=""
                 className={`logo-tasks ${isAnimation ? " animate-logo" : ""}`}

@@ -78,7 +78,7 @@ function FilesContainer({
   async function getAIResponse(data) {
     // try {
     //   const response = await axios.post(
-    //     "http://127.0.0.1:8000/api/file-section/open_ai",
+    //     "http://34.244.172.132/api/file-section/open_ai",
     //     {
     //       data: data,
     //     }
@@ -95,7 +95,7 @@ function FilesContainer({
   async function getfileCommit(file_id) {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/file-section/get_commits/${file_id}`
+        `http://34.244.172.132/api/file-section/get_commits/${file_id}`
       );
       const commitData = await response.data;
       setAllCommit(commitData.data);
@@ -110,7 +110,7 @@ function FilesContainer({
     data.append("project_id", user.active);
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/file-section/get_files",
+        "http://34.244.172.132/api/file-section/get_files",
         data
       );
       const files = await response.data;
@@ -127,7 +127,7 @@ function FilesContainer({
     data.append("file_name", file_name);
     try {
       const response = await axios.post(
-        `http://127.0.0.1:8000/api/file-section/get_dxf_path`,
+        `http://34.244.172.132/api/file-section/get_dxf_path`,
         data
       );
       const dxf_path = await response.data;
@@ -153,7 +153,7 @@ function FilesContainer({
     data.append("svg_data", svg_data);
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/file-section/check_conflict",
+        "http://34.244.172.132/api/file-section/check_conflict",
         data
       );
       const conflictSVG = await response.data;
@@ -209,7 +209,7 @@ function FilesContainer({
   async function deletefile(file_id) {
     try {
       const response = await axios.delete(
-        `http://127.0.0.1:8000/api/file-section/delete_file/${file_id}`
+        `http://34.244.172.132/api/file-section/delete_file/${file_id}`
       );
       const deltedfile = await response.data;
       if (deltedfile.status === "success") {
@@ -355,7 +355,7 @@ function FilesContainer({
                   </div>
                 ) : (
                   <img
-                    src="http://127.0.0.1:8000/uploads/assets/loading.gif"
+                    src="http://34.244.172.132/uploads/assets/loading.gif"
                     alt=""
                     srcset=""
                   />

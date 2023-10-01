@@ -39,7 +39,7 @@ function Register() {
     data.append("remember_token", null);
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/guest/register",
+        "http://34.244.172.132/api/guest/register",
         data
       );
       const userdata = await response.data;
@@ -129,7 +129,7 @@ function Register() {
         </svg>
         <div className="register-description">
           <img
-            src="http://127.0.0.1:8000/uploads/assets/register-text.svg"
+            src="http://34.244.172.132/uploads/assets/register-text.svg"
             alt=""
             srcSet=""
           />

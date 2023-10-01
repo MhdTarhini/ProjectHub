@@ -68,7 +68,7 @@ function SharePost({ shareModel, close }) {
 
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/issue-section/add_edit_issue",
+        "http://34.244.172.132/api/issue-section/add_edit_issue",
         data
       );
       const added_issue = await response.data;

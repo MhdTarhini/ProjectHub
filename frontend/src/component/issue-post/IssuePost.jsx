@@ -32,7 +32,7 @@ function IssuePost({ selectedPost, isSeleted }) {
     try {
       const project_id = userData.active;
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/common/get_project_Member/${project_id}`
+        `http://34.244.172.132/api/common/get_project_Member/${project_id}`
       );
       const teamData = await response.data.data;
       setTeamMember(teamData);
@@ -78,7 +78,7 @@ function IssuePost({ selectedPost, isSeleted }) {
     });
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/issue-section/add_members",
+        "http://34.244.172.132/api/issue-section/add_members",
         {
           members: user_seleted_id,
           issue_id: selectedPost.id,
@@ -107,7 +107,7 @@ function IssuePost({ selectedPost, isSeleted }) {
     data.append("issue_id", selectedPost.id);
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/issue-section/add_media",
+        "http://34.244.172.132/api/issue-section/add_media",
         data
       );
       const new_content = await response.data;
@@ -132,7 +132,7 @@ function IssuePost({ selectedPost, isSeleted }) {
     data.append("issue_id", selectedPost.id);
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/issue-section/add_comment",
+        "http://34.244.172.132/api/issue-section/add_comment",
         data
       );
       const add_comment = await response.data;

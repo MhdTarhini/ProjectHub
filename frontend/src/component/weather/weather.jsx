@@ -17,19 +17,19 @@ function WeatherWidget() {
       weatherData &&
       weatherData.weather[0].main.toLowerCase().includes("clouds")
     ) {
-      setSvg("http://127.0.0.1:8000/uploads/assets/clouds.svg");
+      setSvg("http://34.244.172.132/uploads/assets/clouds.svg");
     }
     if (
       weatherData &&
       weatherData.weather[0].main.toLowerCase().includes("rain")
     ) {
-      setSvg("http://127.0.0.1:8000/uploads/assets/rain.svg");
+      setSvg("http://34.244.172.132/uploads/assets/rain.svg");
     }
     if (
       weatherData &&
       weatherData.weather[0].main.toLowerCase().includes("clear")
     ) {
-      setSvg("http://127.0.0.1:8000/uploads/assets/sun.svg");
+      setSvg("http://34.244.172.132/uploads/assets/sun.svg");
     }
   }, [weatherData]);
 

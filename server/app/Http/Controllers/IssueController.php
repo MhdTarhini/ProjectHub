@@ -45,7 +45,7 @@ class IssueController extends Controller
             }
 
             $content->description=$request->issue_image_descrition;
-            $content->svg_path="http://127.0.0.1:8000/uploads/issues_image/".$imageName;
+            $content->svg_path="http://34.244.172.132/uploads/issues_image/".$imageName;
             $content->issues_id=$issue->id;
             $content->user_id=$user->id;
             $content->save();
@@ -111,7 +111,7 @@ class IssueController extends Controller
         }
     $new_media=new IssueContent;
     $new_media->user_id=$user->id;
-    $new_media->svg_path="http://127.0.0.1:8000/uploads/issues_image/".$imageName;
+    $new_media->svg_path="http://34.244.172.132/uploads/issues_image/".$imageName;
     $new_media->issues_id=$request->issue_id;
     $new_media->description=$request->title;
     $new_media->save();

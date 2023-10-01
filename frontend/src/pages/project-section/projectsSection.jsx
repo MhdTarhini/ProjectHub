@@ -103,7 +103,7 @@ function ProjectsSection() {
     data.append("finished-at", null);
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/project-section/new_project",
+        "http://34.244.172.132/api/project-section/new_project",
         data
       );
       const new_project = await response.data;
@@ -154,7 +154,7 @@ function ProjectsSection() {
       data.append("status", status);
       try {
         const response = await axios.post(
-          "http://127.0.0.1:8000/api/project-section/update_status",
+          "http://34.244.172.132/api/project-section/update_status",
           data
         );
         const get_status = await response.data;
@@ -177,7 +177,7 @@ function ProjectsSection() {
   async function getProject() {
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/project-section/get_projects",
+        "http://34.244.172.132/api/project-section/get_projects",
         {
           member_projects: user.projects_Manager_id,
           manager_projects: user.projects_Member_id,

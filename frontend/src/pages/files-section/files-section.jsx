@@ -56,7 +56,7 @@ function FilesSection() {
     try {
       const project_id = user.active;
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/common/get_project_Member/${project_id}`
+        `http://34.244.172.132/api/common/get_project_Member/${project_id}`
       );
       const teamData = await response.data.data;
       setTeamMember(teamData);
@@ -125,7 +125,7 @@ function FilesSection() {
 
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/file-section/new_branch",
+        "http://34.244.172.132/api/file-section/new_branch",
         data
       );
       const new_branche = await response.data;
@@ -157,7 +157,7 @@ function FilesSection() {
     data.append("branche_id", selectedBranche.id);
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/file-section/upload_file",
+        "http://34.244.172.132/api/file-section/upload_file",
         data
       );
       const get_files = await response.data;
@@ -183,7 +183,7 @@ function FilesSection() {
     data.append("branch_id", selectedBranche.id);
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/file-section/pull_main",
+        "http://34.244.172.132/api/file-section/pull_main",
         data
       );
       const pull_files = await response.data;
@@ -205,7 +205,7 @@ function FilesSection() {
   async function deleteBranch() {
     try {
       const response = await axios.delete(
-        `http://127.0.0.1:8000/api/file-section/delete_branch/${selectedBranche.id}`
+        `http://34.244.172.132/api/file-section/delete_branch/${selectedBranche.id}`
       );
       const deleteBranch = await response.data;
       if (deleteBranch.status === "success") {
@@ -226,7 +226,7 @@ function FilesSection() {
   async function getBranches() {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/file-section/get_branches/${user.active}`
+        `http://34.244.172.132/api/file-section/get_branches/${user.active}`
       );
       const branchesData = await response.data;
       setBranches(branchesData.data);

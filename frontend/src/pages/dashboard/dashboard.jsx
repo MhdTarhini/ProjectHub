@@ -39,7 +39,7 @@ function Dashboard() {
     data.append("team_id", user.team_active);
     try {
       const response = await axios.post(
-        `http://127.0.0.1:8000/api/file-section/recent_files`,
+        `http://34.244.172.132/api/file-section/recent_files`,
         data
       );
       const recentFiles = await response.data;
@@ -52,7 +52,7 @@ function Dashboard() {
   async function getTasksTitle() {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/task-section/tasks_title/${user.active}`
+        `http://34.244.172.132/api/task-section/tasks_title/${user.active}`
       );
       const tasksTitle = await response.data;
       if (tasksTitle.status === "succcess") {
@@ -68,7 +68,7 @@ function Dashboard() {
   async function handleAcceptPushToMain() {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/file-section/get_main_commit/${user.active}`
+        `http://34.244.172.132/api/file-section/get_main_commit/${user.active}`
       );
       const mainCommitData = await response.data;
       setMainCommit(mainCommitData.data);
@@ -81,7 +81,7 @@ function Dashboard() {
   async function getRecentRooms() {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/chat-section/get_rooms`
+        `http://34.244.172.132/api/chat-section/get_rooms`
       );
       const recentRooms = await response.data;
       setRecentRoom(recentRooms.data);
@@ -95,7 +95,7 @@ function Dashboard() {
 
     try {
       const response = await axios.post(
-        `http://127.0.0.1:8000/api/file-section/accepte_push`,
+        `http://34.244.172.132/api/file-section/accepte_push`,
         data
       );
       const commitPushed = await response.data;
@@ -340,7 +340,7 @@ function Dashboard() {
                           <div className="card-content-file">
                             <div className="middel">
                               <img
-                                src="http://127.0.0.1:8000/storage/hello.svg"
+                                src={`http://34.244.172.132/storage/${commit.new_path_svg}`}
                                 alt=""
                                 srcset=""
                                 className="img-commit-not"

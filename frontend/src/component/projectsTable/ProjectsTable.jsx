@@ -71,7 +71,7 @@ function ProjectsTable({ openedProject }) {
     });
     try {
       const response = await axios.post(
-        `http://127.0.0.1:8000/api/project-section/add_members`,
+        `http://34.244.172.132/api/project-section/add_members`,
         {
           members: selected_users_id,
           team: selectedTeam.id,
@@ -96,7 +96,7 @@ function ProjectsTable({ openedProject }) {
   async function getAllUser() {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/common/get_all_users_not_active`
+        `http://34.244.172.132/api/common/get_all_users_not_active`
       );
       const users = await response.data.data;
       setallusers(users);
@@ -145,7 +145,7 @@ function ProjectsTable({ openedProject }) {
     data.append("project_id", userData.active);
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/project-section/remove_member",
+        "http://34.244.172.132/api/project-section/remove_member",
         data
       );
       const removed = await response.data;
@@ -171,7 +171,7 @@ function ProjectsTable({ openedProject }) {
     data.append("finished-at", null);
     try {
       const response = await axios.post(
-        `http://127.0.0.1:8000/api/project-section/new_project/${id}`,
+        `http://34.244.172.132/api/project-section/new_project/${id}`,
         data
       );
       const removed = await response.data;
@@ -194,7 +194,7 @@ function ProjectsTable({ openedProject }) {
     setCreatingTeamIsDone(false);
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/project-section/add_team",
+        "http://34.244.172.132/api/project-section/add_team",
         {
           team_name: newTeamName,
           project_id: editingProject.id,

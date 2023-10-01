@@ -41,7 +41,7 @@ function Navbar() {
             <div className="user-job">Civil engineer</div>
           </div>
           <img
-            src="http://127.0.0.1:8000/uploads/assets/default.png"
+            src="http://34.244.172.132/uploads/assets/default.png"
             alt="profile-image"
             className="profile-img-navbar"
           />

@@ -72,7 +72,7 @@ function IssuesSection() {
 
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/issue-section/add_edit_issue",
+        "http://34.244.172.132/api/issue-section/add_edit_issue",
         data
       );
       const added_issue = await response.data;
@@ -95,7 +95,7 @@ function IssuesSection() {
   async function getIssuesPosts() {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/issue-section/get_issues_posts/${userData.active}`
+        `http://34.244.172.132/api/issue-section/get_issues_posts/${userData.active}`
       );
       const allIssuesPosts = await response.data;
       console.log(allIssuesPosts);

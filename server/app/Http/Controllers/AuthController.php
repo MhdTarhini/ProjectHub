@@ -131,7 +131,7 @@ class AuthController extends Controller{
         $user->email = $request->email;
         $user->authMethod = $request->authMethod;
         $user->password = Hash::make($request->password);
-        $user->profile_img = $request->profile_img?$request->profile_img: "http://127.0.0.1:8000/uploads/userImages/default.png";
+        $user->profile_img = $request->profile_img?$request->profile_img: "http://34.244.172.132/uploads/userImages/default.png";
         $user->save();
 
         $token = Auth::login($user);

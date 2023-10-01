@@ -59,9 +59,9 @@ class CommitController extends Controller
 
         $commit=new Commit;
         $commit->message=$request->message;
-        $commit->new_path_dxf = "http://127.0.0.1:8000/storage/".$dxf;
-        $commit->compare_path_svg = "http://127.0.0.1:8000/storage/".$svg_compared;
-        $commit->new_path_svg = "http://127.0.0.1:8000/storage/".$svg;
+        $commit->new_path_dxf = "http://34.244.172.132/storage/".$dxf;
+        $commit->compare_path_svg = "http://34.244.172.132/storage/".$svg_compared;
+        $commit->new_path_svg = "http://34.244.172.132/storage/".$svg;
         $commit->old_path_dxf = $request->old_path_dxf;
         $commit->status = $request->status;
         $commit->user_id = Auth::id();
@@ -81,7 +81,7 @@ class CommitController extends Controller
         $file_name = "check-Conflict". time();
         $svg = $file_name.".svg";
         $path = Storage::disk('public')->put($svg, $request->svg_data);
-        $path_svg = "http://127.0.0.1:8000/storage/".$svg;
+        $path_svg = "http://34.244.172.132/storage/".$svg;
         return response()->json([
             'status' => 'success',
             'data'=>$path_svg
@@ -150,7 +150,7 @@ class CommitController extends Controller
         }else{
             $svg_compared = $commit_unique_id . "- compered" . ".svg";
             $path_dxf = Storage::disk('public')->put($svg_compared, $request->compare_path_svg);
-            $compare_path_svg="http://127.0.0.1:8000/storage/".$svg_compared;
+            $compare_path_svg="http://34.244.172.132/storage/".$svg_compared;
         }
 
         $new_path_svg = $commit_unique_id. ".svg";
@@ -165,9 +165,9 @@ class CommitController extends Controller
 
         $commit=new Commit;
         $commit->message=$request->message;
-        $commit->new_path_dxf ="http://127.0.0.1:8000/storage/".$dxf ;
+        $commit->new_path_dxf ="http://34.244.172.132/storage/".$dxf ;
         $commit->compare_path_svg = $compare_path_svg;
-        $commit->new_path_svg = "http://127.0.0.1:8000/storage/".$new_path_svg;
+        $commit->new_path_svg = "http://34.244.172.132/storage/".$new_path_svg;
         $commit->old_path_dxf = $request->old_path_dxf;
         $commit->status = $request->status;
         $commit->user_id = Auth::id();
