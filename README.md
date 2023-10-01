@@ -39,16 +39,15 @@ With my project features engineers can create their own virtual world and collab
 <!-- Prototyping -->
 <img src="./readme/title3.svg"/>
 
+### Mockups
+| Login screen  | Dashboard Section | Issues Section |
+| ---| ---| ---|
+| ![Landing](./readme/login_page.png) | ![fsdaf](./readme/Dashborad.png) | ![fsdaf](./readme/Issues_Section.png) |
 
-### Wireframes
-| Login screen  | Register screen |  Landing screen |
+| Tasks Section  | Loading screen |  Files Section |
 | ---| ---| ---|
 | ![Landing](./readme/demo/1440x1024.png) | ![fsdaf](./readme/demo/1440x1024.png) | ![fsdaf](./readme/demo/1440x1024.png) |
 
-### Mockups
-| Login screen  | Menu Screen | Order Screen |
-| ---| ---| ---|
-| ![Landing](./readme/login_page.png) | ![fsdaf](./readme/Dashborad.png) | ![fsdaf](./readme/Issues_Section.png) |
 
 <br><br>
 
@@ -57,15 +56,9 @@ With my project features engineers can create their own virtual world and collab
 
 > Using the wireframes and mockups as a guide, we implemented the Coffee Express app with the following features:
 
-### User Screens (Mobile)
-| Login screen  | Register screen | Landing screen | Loading screen |
-| ---| ---| ---| ---|
-| ![Landing](https://placehold.co/900x1600) | ![fsdaf](https://placehold.co/900x1600) | ![fsdaf](https://placehold.co/900x1600) | ![fsdaf](https://placehold.co/900x1600) |
-| Home screen  | Menu Screen | Order Screen | Checkout Screen |
-| ![Landing](https://placehold.co/900x1600) | ![fsdaf](https://placehold.co/900x1600) | ![fsdaf](https://placehold.co/900x1600) | ![fsdaf](https://placehold.co/900x1600) |
 
-### Admin Screens (Web)
-| Login screen  | Register screen |  Landing screen |
+### Admin Screens (Desktop)
+| Dshbored Section  | Project Section |  Team Members screen |
 | ---| ---| ---|
 | ![Landing](./readme/demo/1440x1024.png) | ![fsdaf](./readme/demo/1440x1024.png) | ![fsdaf](./readme/demo/1440x1024.png) |
 | Home screen  | Menu Screen | Order Screen |
@@ -103,18 +96,25 @@ This is an example of how to list things you need to use the software and how to
 
 _Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. Clone the repo
    ```sh
-   git clone https://github.com/your_username_/Project-Name.git
+   git clone https://github.com/MhdTarhini/ProjectHub.git
    ```
-3. Install NPM packages
+2. Install NPM packages
    ```sh
    npm install
    ```
-4. Enter your API in `config.js`
+3. Enter eletron file
+   ```
+   cd electron
+   ```
+4. Run React
    ```js
-   const API_KEY = 'ENTER YOUR API';
+ npm run react:start
+   ```
+5. Run Electron
+   ```js
+ npm run eletron:start
    ```
 
 Now, you should be able to run Coffee Express locally and explore its features.
