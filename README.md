@@ -71,7 +71,7 @@ With my project features engineers can create their own virtual world and collab
 
 ###  ProjectHub is built using the following technologies:
 
-- This project uses the [Flutter app development framework](https://flutter.dev/). Flutter is a cross-platform hybrid app development platform which allows us to use a single codebase for apps on mobile, desktop, and the web.
+- This project uses the [Electron app development framework](https://www.electronjs.org/). Electron embeds Chromium and Node.js to enable web developers to create desktop applications.
 - For persistent storage (database), the app uses the [Hive](https://hivedb.dev/) package which allows the app to create a custom storage schema and save it to a local database.
 - To send local push notifications, the app uses the [flutter_local_notifications](https://pub.dev/packages/flutter_local_notifications) package which supports Android, iOS, and macOS.
   - 🚨 Currently, notifications aren't working on macOS. This is a known issue that we are working to resolve!
