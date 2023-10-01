@@ -76,20 +76,20 @@ function FilesContainer({
   }
 
   async function getAIResponse(data) {
-    // try {
-    //   const response = await axios.post(
-    //     "http://34.244.172.132/api/file-section/open_ai",
-    //     {
-    //       data: data,
-    //     }
-    //   );
-    //   const reponseai = await response.data;
-    //   if (reponseai.status === "success") {
-    //     setDetailsAI(reponseai.data);
-    //   }
-    // } catch (error) {
-    //   console.error(error);
-    // }
+    try {
+      const response = await axios.post(
+        "http://34.244.172.132/api/file-section/open_ai",
+        {
+          data: data,
+        }
+      );
+      const reponseai = await response.data;
+      if (reponseai.status === "success") {
+        setDetailsAI(reponseai.data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   async function getfileCommit(file_id) {
@@ -305,9 +305,17 @@ function FilesContainer({
                                         key={file.id}
                                         onClick={() => {
                                           setOpenedFileDetails(file);
-                                          setSeletedFile(file.path_svg);
+                                          setSeletedFile(
+                                            `http://34.244.172.132/storage/${
+                                              file.path_svg.split("/")[4]
+                                            }`
+                                          );
                                           openFileModal();
-                                          getDxfData(file.path_dxf);
+                                          getDxfData(
+                                            `http://34.244.172.132/storage/${
+                                              file.path_dxf.split("/")[4]
+                                            }`
+                                          );
                                           getfileCommit(file.id);
                                           getMainFilePath(file.name);
                                           setIsDoneCommitMain(false);
@@ -321,7 +329,9 @@ function FilesContainer({
                                           />
                                         ) : (
                                           <img
-                                            src={file.path_svg}
+                                            src={`http://34.244.172.132/storage/${
+                                              file.path_svg.split("/")[4]
+                                            }`}
                                             className="file-section-card-img"
                                             alt={file.name}
                                           />
@@ -371,16 +381,26 @@ function FilesContainer({
                             key={file.id}
                             onClick={() => {
                               setOpenedFileDetails(file);
-                              setSeletedFile(file.path_svg);
+                              setSeletedFile(
+                                `http://34.244.172.132/storage/${
+                                  file.path_svg.split("/")[4]
+                                }`
+                              );
                               openFileModal();
                               setOpen(true);
-                              getDxfData(file.path_dxf);
+                              getDxfData(
+                                `http://34.244.172.132/storage/${
+                                  file.path_dxf.split("/")[4]
+                                }`
+                              );
                               getfileCommit(file.id);
                               getMainFilePath(file.name);
                               setIsDoneCommitMain(false);
                             }}>
                             <img
-                              src={file.path_svg}
+                              src={`http://34.244.172.132/storage/${
+                                file.path_svg.split("/")[4]
+                              }`}
                               className="file-section-card-img"
                               alt={file.name}
                             />
@@ -478,7 +498,7 @@ function FilesContainer({
                                   <div>
                                     <div className="file-dxf">
                                       <img
-                                        src="dxf-icon.png"
+                                        src="http://34.244.172.132/uploads/assets/dxf-icon.png"
                                         alt="dxf icon"
                                         className="dxf-icon"
                                       />
@@ -663,7 +683,7 @@ function FilesContainer({
         style={{ overlay: { background: "rgb(0 0 0 / 30%)" } }}>
         {conflictSvg ? (
           <img
-            src={conflictSvg}
+            src={`http://34.244.172.132/storage/${conflictSvg.split("/")[4]}`}
             style={{ height: 700 }}
             alt="SVG"
             srcSet=""

@@ -134,7 +134,7 @@ function Login() {
               <div className="login-side">
                 <div className="top-login">
                   <img
-                    src="./logo.svg"
+                    src="http://34.244.172.132/uploads/assets/logo.svg"
                     alt="logo"
                     srcSet=""
                     className="logo-login"
