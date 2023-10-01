@@ -5,7 +5,6 @@ import { channels } from "../../shared/constants";
 import Modal from "react-modal";
 import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
 import base64 from "base-64";
 import Loading from "../common/loading/loading";
 import Message from "../common/Message/message";
