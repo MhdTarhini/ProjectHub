@@ -32,6 +32,9 @@ I'm looking to incorporate AI more extensively by analyzing plan details and sug
 - As a user, I want to share my issues so that I can resolve them faster.
 - As a user, I want to tag specific members related to my issue so that I can communicate directly.
 - As a user, I want to reset my password so that I lose my files.
+
+### Manager Stories
+
 - As a manager, I want to see all project titles so that I can stay organized.
 - As a manager, I want to add users to projects so that I can maintain control.
 - As a manager, I want to approve files from members so that I can ensure quality and organization.
@@ -48,9 +51,7 @@ I'm looking to incorporate AI more extensively by analyzing plan details and sug
 | ---| ---| ---|
 | ![Landing](./readme/loginpage.jpg) | ![fsdaf](./readme/Dashborad.jpg) | ![fsdaf](./readme/IssuesSection.jpg) |
 
-| Tasks Section  | Loading Screen |  Files Section |
-| ---| ---| ---|
-| ![Landing](./readme/TasksSection.jpg) | ![fsdaf](./readme/ezgif.com-resize.gif) | ![fsdaf](./readme/FilesSection.jpg) |
+
 
 
 <br><br>
@@ -61,7 +62,16 @@ I'm looking to incorporate AI more extensively by analyzing plan details and sug
 > Using the wireframes and mockups as a guide, we implemented the ProjectHub app with the following features:
 
 
+### User Screens (Desktop)
+
+
+| Tasks Section  | Loading Screen |  Files Section |
+| ---| ---| ---|
+| ![Landing](./readme/TasksSection.jpg) | ![fsdaf](./readme/ezgif.com-resize.gif) | ![fsdaf](./readme/FilesSection.jpg) |
+
 ### Admin Screens (Desktop)
+
+
 | Dshbored Section  | Project Section |  Team Members screen |
 | ---| ---| ---|
 | ![Landing](./readme/Dashboard_manager.jpg) | ![fsdaf](./readme/ProjectSection.jpg) | ![fsdaf](./readme/TeamMembers.jpg) |
