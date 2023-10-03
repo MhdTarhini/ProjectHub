@@ -43,10 +43,8 @@ I'm looking to incorporate AI more extensively by analyzing plan details and sug
 ### Manager Stories
 
 - As a manager, I want to see all project titles so that I can stay organized.
-- As a manager, I want to add users to projects so that I can maintain control.
 - As a manager, I want to approve files from members so that I can ensure quality and organization.
 - As a manager, I want to create new teams so that I can enhance work quality.
-- As a manager, I want to add and remove members so that I can control the budget and work capacity.
 - As a manager, I want to change project statuses so that I can manage my projects effectively.
 
 <br><br>
