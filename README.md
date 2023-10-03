@@ -110,7 +110,7 @@ data : {'Slab': [{'prop': {'L,W': (55.4, 68.3), 'Area': 2457.283}, 'quantity': 1
 ```
 Response : 
 ```js
-This Plan Contine Slab with 55.4 m*68.3m Area: 2457.283 m2, Opening with L,W: 3.0 m, 4.9 m Area: 14.7 m2, L,W: 4.6 m, 2.2 m Area: 10.12 m2,L,W: 2.8 m, 2.8 m Area: 7.84 m2, Columns with L,W: 0.6 m, 0.2 m Area: 0.12 m2 Quantity: 69, L,W: 0.2 m, 0.6 m Area: 0.12 m2 Quantity: 2, Shear wall L,W: 3.2 m, 5.1 m Area: 16.32 m2 Quantity: 1 L,W: 3.0 m, 5.0 m Area: 7.5 m2 Quantity: 1 L,W: 2.8 m, 5.5 m Area: 7.7 m2 Quantity: 1 L,W: 4.8 m, 3.5 m Area: 14.16 m2 Quantity: 1 L,W: 7.0 m, 1.6 m Area: 11.2 m2 Quantity: 1 L,W: 7.0 m, 4.2 m Area: 7.0 m2 Quantity: 1
+This File Containe Slab with 55.4 m*68.3m Area: 2457.283 m2, Opening with L,W: 3.0 m, 4.9 m Area: 14.7 m2, L,W: 4.6 m, 2.2 m Area: 10.12 m2,L,W: 2.8 m, 2.8 m Area: 7.84 m2, Columns with L,W: 0.6 m, 0.2 m Area: 0.12 m2 Quantity: 69, L,W: 0.2 m, 0.6 m Area: 0.12 m2 Quantity: 2, Shear wall L,W: 3.2 m, 5.1 m Area: 16.32 m2 Quantity: 1 L,W: 3.0 m, 5.0 m Area: 7.5 m2 Quantity: 1 L,W: 2.8 m, 5.5 m Area: 7.7 m2 Quantity: 1 L,W: 4.8 m, 3.5 m Area: 14.16 m2 Quantity: 1 L,W: 7.0 m, 1.6 m Area: 11.2 m2 Quantity: 1 L,W: 7.0 m, 4.2 m Area: 7.0 m2 Quantity: 1
 ```
 <br><br>
 
