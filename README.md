@@ -104,10 +104,12 @@ I'm looking to incorporate AI more extensively by analyzing plan details and sug
 
 <a name="OpenAi" ></a>
 <img src="./readme/title8.svg"/>
+POST http://34.244.172.132/api/file-section/open_ai
 ```js
-{'Slab': [{'prop': {'L,W': (55.4, 68.3), 'Area': 2457.283}, 'quantity': 1}], 'opening': [{'prop': {'L,W': (3.0, 4.9), 'Area': 14.7}, 'quantity': 1}, {'prop': {'L,W': (4.6, 2.2), 'Area': 10.12}, 'quantity': 1}, {'prop': {'L,W': (2.8, 2.8), 'Area': 7.84}, 'quantity': 1}], 'Columns': [{'prop': {'L,W': (0.6, 0.2), 'Area': 
+data : {'Slab': [{'prop': {'L,W': (55.4, 68.3), 'Area': 2457.283}, 'quantity': 1}], 'opening': [{'prop': {'L,W': (3.0, 4.9), 'Area': 14.7}, 'quantity': 1}, {'prop': {'L,W': (4.6, 2.2), 'Area': 10.12}, 'quantity': 1}, {'prop': {'L,W': (2.8, 2.8), 'Area': 7.84}, 'quantity': 1}], 'Columns': [{'prop': {'L,W': (0.6, 0.2), 'Area': 
 0.12}, 'quantity': 69}, {'prop': {'L,W': (0.2, 0.6), 'Area': 0.12}, 'quantity': 2}], 'shear wall': [{'prop': {'L,W': (3.2, 5.1), 'Area': 16.32}, 'quantity': 1}, {'prop': {'L,W': (3.0, 5.0), 'Area': 7.5}, 'quantity': 1}, {'prop': {'L,W': (2.8, 5.5), 'Area': 7.7}, 'quantity': 1}, {'prop': {'L,W': (4.8, 3.5), 'Area': 14.16}, 'quantity': 1}, {'prop': {'L,W': (7.0, 1.6), 'Area': 11.2}, 'quantity': 1}, {'prop': {'L,W': (7.0, 4.2), 'Area': 7.0}, 'quantity': 1}]}
 ```
+Response : 
 ```js
 This Plan Contine Slab with 55.4 m*68.3m Area: 2457.283 m2, Opening with L,W: 3.0 m, 4.9 m Area: 14.7 m2, L,W: 4.6 m, 2.2 m Area: 10.12 m2,L,W: 2.8 m, 2.8 m Area: 7.84 m2, Columns with L,W: 0.6 m, 0.2 m Area: 0.12 m2 Quantity: 69, L,W: 0.2 m, 0.6 m Area: 0.12 m2 Quantity: 2, Shear wall L,W: 3.2 m, 5.1 m Area: 16.32 m2 Quantity: 1 L,W: 3.0 m, 5.0 m Area: 7.5 m2 Quantity: 1 L,W: 2.8 m, 5.5 m Area: 7.7 m2 Quantity: 1 L,W: 4.8 m, 3.5 m Area: 14.16 m2 Quantity: 1 L,W: 7.0 m, 1.6 m Area: 11.2 m2 Quantity: 1 L,W: 7.0 m, 4.2 m Area: 7.0 m2 Quantity: 1
 ```
