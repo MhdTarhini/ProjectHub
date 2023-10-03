@@ -164,7 +164,7 @@ _Below is an example of how you can instruct your audience on installing and set
    ```
 3. Enter eletron file
    ```js
-   cd electron .\venv\Scripts\activate
+   cd electron
    ```
 4. Activate Python Env.
    ```js
@@ -174,7 +174,7 @@ _Below is an example of how you can instruct your audience on installing and set
    ```js
    npm run react:start
    ```
-6. Run Electron
+6. After run react successfuly, Run Electron
    ```js
    npm run eletron:start
    ```
