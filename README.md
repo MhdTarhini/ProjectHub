@@ -1,8 +1,24 @@
 <img src="./readme/title1.svg"/>
-
 <br><br>
 
+<img src="./readme/title7.svg"/> 
+
+
+- [Project Description](#project-description)
+- [User Types](#user-types)
+- [Features of the App](#features-of-the-app)
+- [Tech Stack](#tech-stack)
+- [Prototyping](#prototyping)
+- [Demo](#Demo)
+- [OpenAi](#OpenAi)
+- [Performance](#Performance)
+- [How to Run](#how-to-run)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+
+
 <!-- project philosophy -->
+<a name="project-description"></a>
 <img src="./readme/title2.svg"/>
 
 A platform that collaborates project engineers process in a professional and easier way, engaging owner and manager with project process, real-time communication between engineers about issues and updates and their several other features.
@@ -44,6 +60,7 @@ I'm looking to incorporate AI more extensively by analyzing plan details and sug
 
 <br><br>
 <!-- Prototyping -->
+<a name="prototyping"></a>
 <img src="./readme/title3.svg"/>
 
 ### Mockups
@@ -58,6 +75,7 @@ I'm looking to incorporate AI more extensively by analyzing plan details and sug
 
 <!-- Implementation -->
 <img src="./readme/title4.svg"/>
+<a name="Demo" ></a>
 
 > Using the wireframes and mockups as a guide, we implemented the ProjectHub app with the following features:
 
@@ -79,7 +97,18 @@ I'm looking to incorporate AI more extensively by analyzing plan details and sug
 ![fsdaf](./readme/gif.gif)
 <br><br>
 
+<a name="OpenAi" ></a>
+<img src="./readme/title8.svg"/>
+<br><br>
+
+
+<a name="Performance" ></a>
+<img src="./readme/title9.svg"/> 
+> The following tests were conducted in Postman to assess the functionality of my application's primary APIs
+<br><br>
+
 <!-- Tech stack -->
+<a name="tech-stack" ></a>
 <img src="./readme/title5.svg"/>
 
 ###  ProjectHub is built using the following technologies:
