@@ -120,6 +120,18 @@ This Plan Contine Slab with 55.4 m*68.3m Area: 2457.283 m2, Opening with L,W: 3.
 <a name="Performance" ></a>
 <img src="./readme/title9.svg"/> 
 > The following tests were conducted in Postman to assess the functionality of my application's primary APIs
+> URL : http://34.244.172.132/api/file-section/get_files
+```js
+PASS
+The data length must be greater than zero
+PASS
+Response time is within acceptable range
+```
+> URL : http://34.244.172.132/api/file-section/open_ai
+```
+Status = 200OK Time = 5.40 s
+```
+
 <br><br>
 
 
