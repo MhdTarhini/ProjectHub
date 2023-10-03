@@ -126,11 +126,13 @@ This Plan Contine Slab with 55.4 m*68.3m Area: 2457.283 m2, Opening with L,W: 3.
 PASS The data length must be greater than zero 
 PASS Response time is within acceptable range //497 ms
 ```
-> URL : 
-```
 
+> URL : http://34.244.172.132/api/file-section/main_commit
 ```
-
+PASS: Response time is within acceptable range //353 ms
+PASS Response status code is 200
+PASS Response has the required fields
+```
 <br><br>
 
 
