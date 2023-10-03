@@ -4,8 +4,8 @@
 <img src="./readme/title7.svg"/> 
 
 
-- [Project Philosophy](#project-description)
-- [User Types](#user-types)
+- [Project Description](#project-description)
+- [User Types Stories](#user-types)
 - [Features of the App](#features-of-the-app)
 - [Tech Stack](#tech-stack)
 - [Prototyping](#prototyping)
@@ -28,6 +28,7 @@ With my project features engineers can create their own virtual world and collab
 
 I'm looking to incorporate AI more extensively by analyzing plan details and suggesting solutions to any problem based on historical data. Additionally, I aim to assist engineers by structuring and designing buildings, focusing on the concrete and steel aspects, as well as in an architectural manner.
 
+<a name="User Types"></a>
 ### User Stories
 
 - As a user, I want to upload my files so that I can share them with team members.
@@ -68,8 +69,22 @@ I'm looking to incorporate AI more extensively by analyzing plan details and sug
 | ---| ---| ---|
 | ![Landing](./readme/loginpage.jpg) | ![fsdaf](./readme/Dashborad.jpg) | ![fsdaf](./readme/IssuesSection.jpg) |
 
+<br><br>
 
+<!-- Tech stack -->
+<a name="tech-stack" ></a>
+<img src="./readme/title5.svg"/>
 
+###  ProjectHub is built using the following technologies:
+
+- This project uses the [Electron framework](https://www.electronjs.org/). Electron embeds Chromium and [Node.js](https://nodejs.org/en) to enable web developers to create desktop applications.
+- For persistent storage (database), the app uses [MySQL](https://www.mysql.com/) package which allows the app to create a custom storage schema and save it to a local database.
+- On paralllel with Electron I Used [Python](https://www.python.org/) where is a programming language that lets you work more quickly and integrate your systems more effectively.
+- As a Frontend [React](https://react.dev/) that declarative, efficient, and flexible JavaScript library for building user interfaces or UI components.
+- For handling database records I used [Laraverl](https://laravel.com/) that include Eloquent where is an object relational mapper (ORM).
+- [Firbase](https://firebase.google.com/?gad=1&gclid=CjwKCAjwseSoBhBXEiwA9iZtxsTCyMaNaWShkDwkOZYQTfNahGinS-OquPbbTv-_aUAEuz1BWX6ACBoCNA0QAvD_BwE&gclsrc=aw.ds) To handle the Create rooms and real-time messaging between Teams member.
+- [OpenAI](https://openai.com/) to read the plan details and content, and provide the area and dimensions of each object.
+- [aws](https://aws.amazon.com/) Hosting the server side [Laraverl](https://laravel.com/) on IP Address: 34.244.172.132 
 
 <br><br>
 
@@ -107,22 +122,7 @@ I'm looking to incorporate AI more extensively by analyzing plan details and sug
 > The following tests were conducted in Postman to assess the functionality of my application's primary APIs
 <br><br>
 
-<!-- Tech stack -->
-<a name="tech-stack" ></a>
-<img src="./readme/title5.svg"/>
 
-###  ProjectHub is built using the following technologies:
-
-- This project uses the [Electron framework](https://www.electronjs.org/). Electron embeds Chromium and [Node.js](https://nodejs.org/en) to enable web developers to create desktop applications.
-- For persistent storage (database), the app uses [MySQL](https://www.mysql.com/) package which allows the app to create a custom storage schema and save it to a local database.
-- On paralllel with Electron I Used [Python](https://www.python.org/) where is a programming language that lets you work more quickly and integrate your systems more effectively.
-- As a Frontend [React](https://react.dev/) that declarative, efficient, and flexible JavaScript library for building user interfaces or UI components.
-- For handling database records I used [Laraverl](https://laravel.com/) that include Eloquent where is an object relational mapper (ORM).
-- [Firbase](https://firebase.google.com/?gad=1&gclid=CjwKCAjwseSoBhBXEiwA9iZtxsTCyMaNaWShkDwkOZYQTfNahGinS-OquPbbTv-_aUAEuz1BWX6ACBoCNA0QAvD_BwE&gclsrc=aw.ds) To handle the Create rooms and real-time messaging between Teams member.
-- [OpenAI](https://openai.com/) to read the plan details and content, and provide the area and dimensions of each object.
-- [aws](https://aws.amazon.com/) Hosting the server side [Laraverl](https://laravel.com/) on IP Address: 34.244.172.132 
-
-<br><br>
 
 <!-- How to run -->
 <img src="./readme/title6.svg"/>
