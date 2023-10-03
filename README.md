@@ -4,7 +4,7 @@
 <img src="./readme/title7.svg"/> 
 
 
-- [Project Description](#project-description)
+- [Project Philosophy](#project-description)
 - [User Types](#user-types)
 - [Features of the App](#features-of-the-app)
 - [Tech Stack](#tech-stack)
