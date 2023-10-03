@@ -32,23 +32,13 @@ I'm looking to incorporate AI more extensively by analyzing plan details and sug
 ### User Stories
 
 - As a user, I want to upload my files so that I can share them with team members.
-- As a user, I want to receive updated and modified files so that I can stay informed.
 - As a user, I want to create a new branch so that I can post my files separately.
-- As a user, I want check plan details so that I can have knowladge.
+- As a user, I want check files details so that I can have knowladge.
 - As a user, I want to create a new branch so that I can post unapproved update files without modifying the original.
 - As a user, I want to create a new copy of the main file so that I can make changes in it.
-- As a user, I want to check if there are any conflicts between my files and the main one so that I can stay organized.
-- As a user, I want to see all changes and conflict so that i can accepted or not.
-- As a user, I want to accept or reject files before uploading them so that I can maintain control.
-- As a user, I want to request permission to upload a new version to the main branch so that I can share my work.
 - As a user, I want to view my old updates so that I can reuse them.
-- As a user, I want to create a chat room with other members so that I can communicate and share opinions.
-- As a user, I want to organize my daily tasks in a sequential manner so that I can work efficiently.
-- As a user, I want to review my daily tasks so that I can stay organized.
 - As a user, I want to schedule my tasks by priority so that I can manage my workload effectively.
-- As a user, I want to share my issues so that I can resolve them faster.
 - As a user, I want to tag specific members related to my issue so that I can communicate directly.
-- As a user, I want to reset my password so that I lose my files.
 
 ### Manager Stories
 
