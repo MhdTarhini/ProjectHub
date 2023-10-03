@@ -72,7 +72,7 @@ I'm looking to incorporate AI more extensively by analyzing plan details and sug
 - On paralllel with Electron I Used [Python](https://www.python.org/) where is a programming language that lets you work more quickly and integrate your systems more effectively.
 - As a Frontend [React](https://react.dev/) that declarative, efficient, and flexible JavaScript library for building user interfaces or UI components.
 - For handling database records I used [Laraverl](https://laravel.com/) that include Eloquent where is an object relational mapper (ORM).
-- [Firbase](https://firebase.google.com/?gad=1&gclid=CjwKCAjwseSoBhBXEiwA9iZtxsTCyMaNaWShkDwkOZYQTfNahGinS-OquPbbTv-_aUAEuz1BWX6ACBoCNA0QAvD_BwE&gclsrc=aw.ds) To handle the Create rooms and real-time messaging between Teams member.
+- [Firbase](https://firebase.google.com/?gad=1&gclid=CjwKCAjwseSoBhBXEiwA9iZtxsTCyMaNaWShkDwkOZYQTfNahGinS-OquPbbTv-_aUAEuz1BWX6ACBoCNA0QAvD_BwE&gclsrc=aw.ds) To Enable [Google](https://mail.google.com/) Auth & Create rooms for real-time messaging between Teams member .
 - [OpenAI](https://openai.com/) to read the plan details and content, and provide the area and dimensions of each object.
 - [aws](https://aws.amazon.com/) Hosting the server side [Laraverl](https://laravel.com/) on IP Address: 34.244.172.132 
 
