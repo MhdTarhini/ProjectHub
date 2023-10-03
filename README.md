@@ -104,7 +104,8 @@ I'm looking to incorporate AI more extensively by analyzing plan details and sug
 
 <a name="OpenAi" ></a>
 <img src="./readme/title8.svg"/>
-POST http://34.244.172.132/api/file-section/open_ai
+
+> POST http://34.244.172.132/api/file-section/open_ai
 ```js
 data : {'Slab': [{'prop': {'L,W': (55.4, 68.3), 'Area': 2457.283}, 'quantity': 1}], 'opening': [{'prop': {'L,W': (3.0, 4.9), 'Area': 14.7}, 'quantity': 1}, {'prop': {'L,W': (4.6, 2.2), 'Area': 10.12}, 'quantity': 1}, {'prop': {'L,W': (2.8, 2.8), 'Area': 7.84}, 'quantity': 1}], 'Columns': [{'prop': {'L,W': (0.6, 0.2), 'Area': 
 0.12}, 'quantity': 69}, {'prop': {'L,W': (0.2, 0.6), 'Area': 0.12}, 'quantity': 2}], 'shear wall': [{'prop': {'L,W': (3.2, 5.1), 'Area': 16.32}, 'quantity': 1}, {'prop': {'L,W': (3.0, 5.0), 'Area': 7.5}, 'quantity': 1}, {'prop': {'L,W': (2.8, 5.5), 'Area': 7.7}, 'quantity': 1}, {'prop': {'L,W': (4.8, 3.5), 'Area': 14.16}, 'quantity': 1}, {'prop': {'L,W': (7.0, 1.6), 'Area': 11.2}, 'quantity': 1}, {'prop': {'L,W': (7.0, 4.2), 'Area': 7.0}, 'quantity': 1}]}
