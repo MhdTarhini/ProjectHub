@@ -9,23 +9,60 @@
 		{
 			"name": "Register",
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": []
 			},
-			"response": []
+			"response": {
+    "status": "success",
+    "data": {
+        "first_name": "joe12345",
+        "last_name": "joe",
+        "email": "joe12345@gmail.com",
+        "authMethod": "email",
+        "profile_img": "http://34.244.172.132/uploads/userImages/default.png",
+        "updated_at": "2023-10-03T16:00:26.000000Z",
+        "created_at": "2023-10-03T16:00:26.000000Z",
+        "id": 15,
+        "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMzQuMjQ0LjE3Mi4xMzIvYXBpL2d1ZXN0L3JlZ2lzdGVyIiwiaWF0IjoxNjk2MzQ4ODI2LCJleHAiOjE2OTYzNTI0MjYsIm5iZiI6MTY5NjM0ODgyNiwianRpIjoiMk1DNVJ5OTVRc25uZmNRaSIsInN1YiI6IjE1IiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.DCy1ZY1EjJ_2ysLDVQrZud_HUgPgeGK-ZfzWlSCZGJI"
+    }
+}
 		},
 		{
 			"name": "login",
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": []
 			},
-			"response": []
+			"response": {
+    "status": "success",
+    "data": {
+        "user": {
+            "id": 6,
+            "first_name": "loren",
+            "last_name": "loren",
+            "email": "loren@gmail.com",
+            "authMethod": "email",
+            "profile_img": "http://34.244.172.132/uploads/assets/default.png",
+            "created_at": "2023-10-01T17:20:50.000000Z",
+            "updated_at": "2023-10-01T17:20:50.000000Z",
+            "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMzQuMjQ0LjE3Mi4xMzIvYXBpL2d1ZXN0L2xvZ2luIiwiaWF0IjoxNjk2MzQ4NDI3LCJleHAiOjE2OTYzNTIwMjcsIm5iZiI6MTY5NjM0ODQyNywianRpIjoiVVJzR0hiMlhkVTdWR3pUWiIsInN1YiI6IjYiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.sYwy8Pm9-3yyMU5Jr7Gny9tqQo5zKX5szARrRov3A9Q"
+        },
+        "teams_id": [],
+        "projects_Member_id": [],
+        "projects_Manager_id": [
+            4,
+            5
+        ],
+        "active": 4,
+        "team_active": null,
+        "main_branch": 7
+    }
+}
 		},
 		{
 			"name": "Create_Project",
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": []
 			},
 			"response": []
@@ -33,15 +70,111 @@
 		{
 			"name": "getFiles",
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": []
 			},
-			"response": []
+			"response": 			"response": {
+    "status": "success",
+    "data": [
+        {
+            "id": 7,
+            "name": "main",
+            "project_id": 4,
+            "team_id": null,
+            "created_at": "2023-10-01T17:30:11.000000Z",
+            "updated_at": "2023-10-01T17:30:11.000000Z",
+            "members": {},
+            "project": {},
+            "files": []
+        },
+        {
+            "id": 9,
+            "name": "Site Team",
+            "project_id": 4,
+            "team_id": 3,
+            "created_at": "2023-10-01T17:37:40.000000Z",
+            "updated_at": "2023-10-01T17:37:40.000000Z",
+            "members": {},
+            "project": {},
+            "files": [
+                {
+                    "id": 12,
+                    "name": "new file",
+                    "path_dxf": "http://34.244.172.132/storage/new file.dxf",
+                    "path_svg": "http://34.244.172.132/storage/new file.svg",
+                    "version": "1",
+                    "project_id": 4,
+                    "user_id": 6,
+                    "branche_id": 9,
+                    "created_at": "2023-10-01T17:50:30.000000Z",
+                    "updated_at": "2023-10-01T17:50:30.000000Z",
+                    "user": {
+                        "id": 6,
+                        "first_name": "loren",
+                        "last_name": "loren",
+                        "email": "loren@gmail.com",
+                        "authMethod": "email",
+                        "profile_img": "http://34.244.172.132/uploads/assets/default.png",
+                        "created_at": "2023-10-01T17:20:50.000000Z",
+                        "updated_at": "2023-10-01T17:20:50.000000Z"
+                    },
+                    "project": null
+                }
+            ]
+        },
+        {
+            "id": 11,
+            "name": "Tala branch",
+            "project_id": 4,
+            "team_id": null,
+            "created_at": "2023-10-01T18:59:17.000000Z",
+            "updated_at": "2023-10-01T18:59:17.000000Z",
+            "members": {},
+            "project": {},
+            "files": [
+                {
+                    "id": 13,
+                    "name": "File floor 1",
+                    "path_dxf": "http://34.244.172.132/storage/qYLdtK61P6uU7Pja.dxf",
+                    "path_svg": "http://34.244.172.132/storage/qYLdtK61P6uU7Pja.svg",
+                    "version": "2",
+                    "project_id": 4,
+                    "user_id": 8,
+                    "branche_id": 11,
+                    "created_at": "2023-10-01T18:59:43.000000Z",
+                    "updated_at": "2023-10-01T19:08:39.000000Z",
+                    "user": {
+                        "id": 8,
+                        "first_name": "tala",
+                        "last_name": "Tala",
+                        "email": "tala@gmail.com",
+                        "authMethod": "email",
+                        "profile_img": "http://34.244.172.132/uploads/assets/default.png",
+                        "created_at": "2023-10-01T17:34:07.000000Z",
+                        "updated_at": "2023-10-01T17:34:07.000000Z"
+                    },
+                    "project": null
+                }
+            ]
+        },
+        {
+            "id": 12,
+            "name": "Architect Team",
+            "project_id": 4,
+            "team_id": 5,
+            "created_at": "2023-10-01T19:38:57.000000Z",
+            "updated_at": "2023-10-01T19:38:57.000000Z",
+            "members": {},
+            "project": {},
+            "files": []
+        }
+    ]
+}
 		},
 		{
 			"name": "Open AI",
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": []
 			},
 			"response": []
@@ -49,7 +182,7 @@
 		{
 			"name": "Get user commits",
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": []
 			},
 			"response": []
@@ -57,7 +190,7 @@
 		{
 			"name": "Commit to  main",
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": []
 			},
 			"response": []
@@ -65,7 +198,7 @@
 		{
 			"name": "Get_taks",
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": []
 			},
 			"response": []
