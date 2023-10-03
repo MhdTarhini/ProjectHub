@@ -141,13 +141,17 @@ _Below is an example of how you can instruct your audience on installing and set
    ```
 3. Enter eletron file
    ```js
-   cd electron
+   cd electron .\venv\Scripts\activate
    ```
-4. Run React
+4. Activate Python Env.
+   ```js
+   .\venv\Scripts\activate
+   ```
+5. Run React
    ```js
    npm run react:start
    ```
-5. Run Electron
+6. Run Electron
    ```js
    npm run eletron:start
    ```
