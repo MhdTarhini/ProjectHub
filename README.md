@@ -129,7 +129,7 @@ PASS Response time is within acceptable range //497 ms
 
 > URL : http://34.244.172.132/api/file-section/main_commit
 ```
-PASS: Response time is within acceptable range //353 ms
+PASS Response time is within acceptable range //353 ms
 PASS Response status code is 200
 PASS Response has the required fields
 ```
