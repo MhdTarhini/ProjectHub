@@ -8,7 +8,7 @@ let mainWindow;
 
 const isMac = process.platform === "darwin";
 
-process.env.NODE_ENV = "dev";
+process.env.NODE_ENV = "production";
 
 const isDev = process.env.NODE_ENV !== "production";
 
