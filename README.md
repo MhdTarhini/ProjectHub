@@ -174,7 +174,7 @@ _Below is an example of how you can instruct your audience on installing and set
    ```
 6. After run react successfuly, Run Electron
    ```js
-   npm run eletron:start
+   npm run electron:start
    ```
 
 ### Postman Collection
