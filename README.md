@@ -23,7 +23,8 @@
 
 A platform that improves collaboration among engineers in the project process in a more professional and easier way, base on a version control system to handle files and track changes, direct engaging manager with project process, real-time communication between engineers by chat rooms or issues posts, tasks management (Gantt chart) and several other features.
 
-Communication between engineer can increase the work functionality and troubleshooting 
+Communication between engineer can increase the work functionality and troubleshooting.
+
 With my project features engineers can create their own virtual world and collaborate. The platform empowers users with advanced version control, allowing them to identify conflicts between their files and the primary versions. They can review all changes and potential conflicts, deciding whether to accept or reject them. This ensures users always have control over their content. The ability to share issues and communicate about them is vital. However, the most important feature is managing their tasks using a Gantt Chart that provides the best management practices
 
 I'm looking to incorporate AI more extensively by analyzing plan details and suggesting solutions to any problem based on historical data. Additionally, I aim to assist engineers by structuring and designing buildings, focusing on the concrete and steel aspects, as well as in an architectural manner.
